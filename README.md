@@ -1,9 +1,9 @@
-# Topic Title
+# Regression Analysis
 
 
 ## Impetus
 
-This is a description of the basic template file for a course component repository
+Regression is the development of a functional model describing how one (or more) response variables change *due to* systematic changes in one (or more) predictor variables.
 
 ## Student Learning Objectives
 
