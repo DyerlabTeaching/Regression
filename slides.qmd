@@ -830,19 +830,15 @@ $\delta AIC = AIC - min( AIC )$
 
 
 
-## AIC {.smaller .scrollable}
+## AIC & ∂AIC {.smaller .scrollable}
 
 ```{r echo=FALSE}
 df.random$AIC <- sapply( random.models, 
                          FUN = AIC, 
                          simplify = TRUE )
 
-df.random$deltaAIC = df.random$AIC - min( df.random$A)
-```
-
-
-```{r echo=FALSE}
 df.random %>%
+  mutate( deltaAIC = AIC - min(AIC) ) %>%
   select( -P ) %>%
   kable( escape = FALSE,
          row.names = FALSE, 
