@@ -6,6 +6,8 @@ format:
     toc: false
 ---
 
+![](media/models.png)
+
 ```{r setup, include=FALSE}
 library( tidyverse )
 library( nycflights13 )

@@ -7,16 +7,17 @@ Regression is the development of a functional model describing how one (or more)
 
 ## Student Learning Objectives
 
-At the end of this topic, you should be able to:  
- - *Learning Objective 1* 
- - *Learning Objective 2*
- - *Learning Objective 3* 
+At the end of this topic, you should be able to:    
+ - Conceptually describe the process of least square regression.  
+ - Perform a linear regression with one or more predictor variables using the `lm()` function.  
+ - Evaluate the fit of the models by examining both the residuals and fitted values.  
+ - Describe and implement methods necessary to select the best model from a set of potential candidate models using a metric such as AIC.  
 
 ## Content
- - [Slides](slides.html)
- - [Narrative](narrative.html)
- - [In Class](in-class.html)
- - Data Set
+ - The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for regression.
+ - A set of longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) text on regresssion model development.
+ - An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
+
 
 ## Contact Information
 
