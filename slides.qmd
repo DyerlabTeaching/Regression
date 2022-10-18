@@ -615,7 +615,8 @@ fit.wind <- lm( Ozone ~ Wind, data = df.air )
 ```
 
 
-:::{.fragment}
+## Base Models - What Influences Ozone
+
 ```{r echo=FALSE}
 data.frame( Model = c( "Ozone ~ Solar",
                        "Ozone ~ Temp",
@@ -634,7 +635,6 @@ df.models %>%
          align='l') %>%
   kable_classic_2()
 ```
-:::
 
 
 
