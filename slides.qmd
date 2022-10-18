@@ -518,7 +518,8 @@ Grabbing the predicted values $\hat{y}$ from the model.
 ```{r}
 df$yhat <- predict( fit )
 df %>% 
-  ggplot( aes(x,yhat) ) + geom_line() + geom_point()
+  ggplot( aes(x,yhat) ) + geom_line() + geom_point() +
+  geom_point( aes(y=y), col="darkred", size=2)
 ```
 
 
