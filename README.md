@@ -18,6 +18,7 @@ At the end of this topic, you should be able to:
  - The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for regression.
  - A set of longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) text on regresssion model development.
  - An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
+ - A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic.  
 
 
 ## Contact Information
