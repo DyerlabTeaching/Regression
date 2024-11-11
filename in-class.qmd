@@ -1,5 +1,5 @@
 ---
-title: "Regression In Class Activity"
+title: "Regression Homework Activity"
 format: 
   html:
     code-tools: true

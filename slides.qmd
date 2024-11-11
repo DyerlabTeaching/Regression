@@ -673,7 +673,7 @@ df.models %>%
   kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 1973 - 30 September 1973.",
          digits = 3,
          align="l") %>%
-  kable_classic_2()
+  kable_classic()
 ```
 
 
@@ -696,22 +696,22 @@ df.models <- rbind( df.models,
                                 ))
 
 
-df.models$P = cell_spec( format( df.models$P, 
-                                 digits=3, 
-                                 scientific=TRUE), 
-                         color = ifelse( df.models$P == min(df.models$P), 
-                                         "red",
-                                         "black"))
-df.models$R2 = cell_spec( format( df.models$R2, 
-                                  digits=3, 
-                                  scientific=TRUE), 
-                          color = ifelse( df.models$R2 == max( df.models$R2), 
-                                          "green",
-                                          "black"))
+#df.models$P = cell_spec( format( df.models$P, 
+#                                 digits=3, 
+#                                 scientific=TRUE), 
+#                         color = ifelse( df.models$P == min(df.models$P), 
+#                                         "red",
+#                                         "black"))
+#df.models$R2 = cell_spec( format( df.models$R2, 
+#                                  digits=3, 
+#                                  scientific=TRUE), 
+#                          color = ifelse( df.models$R2 == max( df.models$R2), 
+#                                          "green",
+#                                          "black"))
 
 df.models %>%
   mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
-  kable( escape = FALSE) %>%
+  kable( escape = FALSE ) %>%
   kable_paper( "striped", full_width = FALSE )
 ```
 
@@ -824,10 +824,6 @@ To compare, we evaluate the differences in AIC for alternative models.
 
 $\delta AIC = AIC - min( AIC )$
 :::
-
-
-
-
 
 
 
