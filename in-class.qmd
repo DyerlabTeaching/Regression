@@ -27,45 +27,9 @@ We also have some data related to local weather conditions.
 summary( weather )
 ```
 
-I'm going to make a synthetic data set consisting of flights out of JFK for the *ExpressJet* airlines.  Since the weather data is on the hour, I also make a synthetic varible `Month.Day.Hour` so that I can join the weather data to this one.
 
-```{r}
-flights %>%
-  filter( origin == "JFK", carrier == "EV") %>%
-  mutate( DateTime = paste(month,day,hour, sep=".")) %>%
-  select( DateTime, 
-          `Departure Delay` = dep_delay,
-          `Departure Time` = sched_dep_time) %>%
-  droplevels() -> df.jfk 
-summary( df.jfk )
-```
+# Question
 
-Now I'll do the same with the weather data.
-
-```{r}
-weather %>%
-  filter( origin == "JFK") %>% 
-  mutate( DateTime = paste(month,day,hour, sep=".")) %>%
-  select( -origin, -year, -month, -day, -hour, -time_hour ) -> df.weather 
-summary( df.weather )
-```
-
-Now, I'm going to `merge` these two `data.frame` objects using the common `key` I made `DateTime`.
-
-```{r}
-merge( df.jfk, df.weather, by="DateTime" ) %>%
-  select( -DateTime ) -> df 
-
-summary( df )
-```
-
-
-# Activity
-
-What features of this data set may impact the departure delay for flights coming out of JFK on *ExpressJet* Airlines?
-
-
-
-
+What weather features best explain departure delays from JFK for `ExpressJet` airlines?
 
 
