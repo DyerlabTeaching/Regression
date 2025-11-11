@@ -19,17 +19,53 @@ For this we will use some data on flights into and out of Newark (EWR), JFK, and
 
 ```{r}
 summary( flights) 
+flights |> 
+  filter( carrier == "EV" ) |>
+  mutate( DTH = paste( month, day, hour(time_hour), sep="." ) ) |>
+  select( dep_delay, DTH ) -> df1
+names( df1 )
+
 ```
 
 We also have some data related to local weather conditions.
 
 ```{r}
 summary( weather )
+weather |>
+  mutate( DTH = paste( month, day, hour(time_hour), sep = "." ) ) |>
+  filter( origin == "JFK") |>
+  select( -year, -month, -day, -hour, -time_hour, -origin) -> df2 
+names(df2)
 ```
+
+
+```{r}
+merge( df1, df2, by = "DTH") -> df 
+summary( df )
+```
+
+
 
 
 # Question
 
 What weather features best explain departure delays from JFK for `ExpressJet` airlines?
+
+
+```{r}
+df |>
+  filter( !is.na( dep_delay ) ) |> 
+  filter( !is.na( pressure ) ) |>
+  filter( !is.na( wind_dir )) |> 
+  select( -wind_gust, -DTH ) -> df
+```
+
+
+## Stepwise Approach
+
+```{r}
+cor(df)
+```
+
 
 
