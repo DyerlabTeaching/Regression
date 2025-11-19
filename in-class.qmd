@@ -58,7 +58,62 @@ df |>
   filter( !is.na( pressure ) ) |>
   filter( !is.na( wind_dir )) |> 
   select( -wind_gust, -DTH ) -> df
+
+names(df)
 ```
+
+
+## The Pedantic Approach
+
+
+1. Find 1st order interactions
+2. Find best one
+3. Fit best
+4. Goto 1
+
+
+```{r}
+fit.1 <- lm( dep_delay ~ temp, data = df )
+fit.2 <- lm( dep_delay ~ dewp, data = df )
+fit.3 <- lm( dep_delay ~ humid, data = df )
+fit.4 <- lm( dep_delay ~ wind_dir, data = df )
+fit.5 <- lm( dep_delay ~ wind_speed, data = df )
+fit.6 <- lm( dep_delay ~ precip, data = df )
+fit.7 <- lm( dep_delay ~ pressure, data = df )
+fit.8 <- lm( dep_delay ~ visib, data = df )
+
+
+aic.1 <- AIC(fit.1)
+aic.2 <- AIC(fit.2)
+aic.3 <- AIC(fit.3)
+aic.4 <- AIC(fit.4)
+aic.5 <- AIC(fit.5)
+aic.6 <- AIC(fit.6)
+aic.7 <- AIC(fit.7)
+aic.8 <- AIC(fit.8)
+
+
+data.frame( model = 1:8,
+            R2 = c( summary(fit.1)$r.squared,
+                    summary(fit.2)$r.squared,
+                    summary(fit.3)$r.squared,
+                    summary(fit.4)$r.squared,
+                    summary(fit.5)$r.squared,
+                    summary(fit.6)$r.squared,
+                    summary(fit.7)$r.squared,
+                    summary(fit.8)$r.squared ), 
+            AIC = c( aic.1,
+                     aic.2,
+                     aic.3,
+                     aic.4,
+                     aic.5,
+                     aic.6,
+                     aic.7,
+                     aic.8
+                     )) |>
+  mutate( dAIC = AIC - min(AIC)) 
+```
+
 
 
 ## Stepwise Approach
@@ -66,6 +121,38 @@ df |>
 ```{r}
 cor(df)
 ```
+
+
+
+```{r}
+fit.s.1 <- lm( dep_delay ~ pressure, data=df )
+summary( fit.s.1 )
+```
+
+
+```{r}
+res <- resid(fit.s.1 ) # residual data 
+res
+```
+
+
+
+```{r}
+df$resid <- res 
+cor( df )
+```
+
+
+```{r}
+fit.s.2 <- lm( dep_delay ~ pressure + visib, data = df )
+
+
+
+data.frame( Model = c("pressure", "pressure + visib"),
+            AIC = c( AIC( fit.s.1), AIC(fit.s.2 ) ) ) |>
+  mutate( delta = AIC - min(AIC) )
+```
+
 
 
 
