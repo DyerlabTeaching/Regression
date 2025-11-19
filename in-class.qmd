@@ -146,13 +146,24 @@ cor( df )
 ```{r}
 fit.s.2 <- lm( dep_delay ~ pressure + visib, data = df )
 
-
-
 data.frame( Model = c("pressure", "pressure + visib"),
             AIC = c( AIC( fit.s.1), AIC(fit.s.2 ) ) ) |>
   mutate( delta = AIC - min(AIC) )
 ```
 
+So pressure + visib is good, what about next variable?
 
+```{r}
+res <- resid( fit.s.2 )
+df$resid <- res 
+cor( df )
+```
+
+
+```{r}
+fit.s.3 <- lm( dep_delay ~ pressure + visib + wind_speed , data = df )
+summary( fit.s.3 )
+
+```
 
 
