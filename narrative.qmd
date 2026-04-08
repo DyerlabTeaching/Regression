@@ -501,7 +501,7 @@ So if we just add random data to a model, we get a better fit!!!!  Sounds great.
 
 This is a well-known situation in statistics.  An in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
 
-## Model Fitting
+## Akaike Information Content
 
 To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of pedictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
 
