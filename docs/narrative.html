@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,7 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="narrative_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="narrative_files/libs/quarto-html/anchor.min.js"></script>
 <link href="narrative_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="narrative_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="narrative_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="narrative_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="narrative_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="narrative_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -140,11 +140,11 @@ window.Quarto = {
 <p><span class="math display">\[
 \sigma_{Total}^2 = \sigma_{Model}^2 + \sigma_{Residual}^2
 \]</span></p>
-<p>In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is <em>residual</em> (or left over). For regression analyses, consider the simple linear regression model.</p>
+<p><mark>In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is <em>residual</em> (or left over).</mark> For regression analyses, consider the simple linear regression model.</p>
 <p><span class="math display">\[
 y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 \]</span></p>
-<p>Where th terms <span class="math inline">\(\beta_0\)</span> is the where the expected line interscepts the y-axis when <span class="math inline">\(x = 0\)</span>, the coefficient <span class="math inline">\(\beta_1\)</span> is the rate at which the <span class="math inline">\(y\)</span> (the results) changes <em>per unit change</em> in <span class="math inline">\(x\)</span> (the predictor, and <span class="math inline">\(\epsilon\)</span> is the left over variation (residual) that each point has.</p>
+<p>Where the terms <span class="math inline">\(\beta_0\)</span> is where the expected line intersects the y-axis when <span class="math inline">\(x = 0\)</span>, the coefficient <span class="math inline">\(\beta_1\)</span> is the rate at which the <span class="math inline">\(y\)</span> (the results) changes <em>per unit change</em> in <span class="math inline">\(x\)</span> (the predictor), and <span class="math inline">\(\epsilon\)</span> is the left over variation (residual) that each point has.</p>
 <p>The null hypothesis for this kind of regression model is</p>
 <p><span class="math inline">\(H_O: \beta_1 = 0\)</span></p>
 <p>We could have a hypothesis that <span class="math inline">\(\beta_0 = 0\)</span> but that is often not that interesting of an idea since that is a constant term in the equation (n.b., we could subtract it out from both sides). If we have more than one predictor variable, the null hypothesis becomes <span class="math inline">\(H_O: \beta_i = 0; \forall i\)</span> (that upside down triangle is ‘for all’).</p>
@@ -173,22 +173,22 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 </div>
 </div>
-<p>The notion here is to be estimate the underlying formula for that red line that describes the variation in the original values in how <code>y</code> changes systematically across measured values of <code>x</code>.</p>
+<p>The notion here is to estimate the underlying formula for that red line that describes the variation in the original values in how <code>y</code> changes systematically across measured values of <code>x</code>.</p>
 <section id="least-squares-fitting" class="level2">
 <h2 class="anchored" data-anchor-id="least-squares-fitting">Least Squares Fitting</h2>
-<p>So how do we figure this out? One of the most common ways is to uses a methods called <em>Least Squared Distance</em> fitting. To describe this, consider a set of hypothetical random models with random values estimated for both the intercept (<span class="math inline">\(\beta_0\)</span>) and slope (<span class="math inline">\(\beta_1\)</span>) coefficients. These <em>could be</em> close to a good models or not.</p>
+<p>So how do we figure this out? One of the most common ways is to use a method called <em>Least Squared Distance</em> fitting. To describe this, consider a set of hypothetical random models with random values estimated for both the intercept (<span class="math inline">\(\beta_0\)</span>) and slope (<span class="math inline">\(\beta_1\)</span>) coefficients. These <em>could be</em> close to a good models or not.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">beta0 =</span> <span class="fu">runif</span>(<span class="dv">250</span>,<span class="sc">-</span><span class="dv">20</span>,<span class="dv">40</span>),</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0             beta1        
- Min.   :-19.783   Min.   :-4.9645  
- 1st Qu.: -2.133   1st Qu.:-2.4417  
- Median : 11.142   Median : 0.1917  
- Mean   : 11.272   Mean   : 0.1081  
- 3rd Qu.: 25.260   3rd Qu.: 2.5136  
- Max.   : 39.979   Max.   : 4.8768  </code></pre>
+ Min.   :-19.791   Min.   :-4.8677  
+ 1st Qu.: -4.624   1st Qu.:-2.2463  
+ Median : 11.310   Median : 0.1055  
+ Mean   : 10.308   Mean   : 0.0476  
+ 3rd Qu.: 24.983   3rd Qu.: 2.3278  
+ Max.   : 39.696   Max.   : 4.9760  </code></pre>
 </div>
 </div>
 <p>We can plot these and the original data and all these randomly defined models.</p>
@@ -209,7 +209,7 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 </div>
 <p>A least squares fit is one that minimizes the distances of each point (in the y-axis) from the line created by the model. In the graph below, we can see this would be the distances (squared so we do not have positive and negative values) along the y-axis, between each point and the fitted line.</p>
-<p>The “best model” here is one that minimizes the sum of squared distances distances.</p>
+<p>The “best model” here is one that minimizes the sum of squared distances.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -220,10 +220,10 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 </div>
 <p>Let’s look at those hypothetical models. I’m going to make a few little functions to help make the code look easy.</p>
-<p>First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an interscept and slope from the original points.</p>
+<p>First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an intercept and slope from the original points.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( interscept, slope, X, Y ) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  yhat <span class="ot">&lt;-</span> interscept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( intercept, slope, X, Y ) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  yhat <span class="ot">&lt;-</span> intercept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> Y <span class="sc">-</span> yhat</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( <span class="fu">sqrt</span>( <span class="fu">mean</span>( diff <span class="sc">^</span> <span class="dv">2</span> ) ) )</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -239,13 +239,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       beta0      beta1     dist
-1 38.7696966  2.9912441 24.10155
-2 21.3270914 -2.0519428 26.03677
-3 13.4385808 -3.1242674 39.47095
-4  0.5095216 -2.4801289 47.47778
-5  8.2028923  2.7166006 10.05342
-6 39.5722601  0.1921999 12.47722</code></pre>
+<pre><code>       beta0     beta1     dist
+1  14.504255 -1.938041 31.24552
+2 -15.487657 -2.355466 62.06198
+3  28.395453 -2.624401 23.87907
+4  24.345132 -1.303829 19.14200
+5  22.829692 -4.606488 40.37771
+6  -7.327974  4.324346 16.86006</code></pre>
 </div>
 </div>
 <p>If we look through these models, we can see which are better than others by sorting in increasing squared distance.</p>
@@ -283,7 +283,7 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 </div>
 </div>
-<p>In addition to a random search, we can be a bit more systematic about it and make a grid of interscept and slope values, using a <em>grid search</em>.</p>
+<p>In addition to a random search, we can be a bit more systematic about it and make a grid of intercept and slope values, using a <em>grid search</em>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>( <span class="at">beta0 =</span> <span class="fu">seq</span>(<span class="dv">15</span>,<span class="dv">20</span>, <span class="at">length =</span> <span class="dv">25</span>),</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">beta1 =</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="fl">3.5</span>, <span class="at">length =</span> <span class="dv">25</span>))</span>
@@ -310,7 +310,7 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 </div>
 </div>
-<p>You could imagine that we could iteratively soom in this grid and find the best fit combination of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> values until we converged on a really well fit set.</p>
+<p>You could imagine that we could iteratively zoom in this grid and find the best fit combination of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> values until we converged on a really well fit set.</p>
 <p>There is a more direct way to get to these results (though is much less pretty to look at) using the <code>lm()</code> linear models function.</p>
 </section>
 <section id="our-friend-lm" class="level2">
@@ -329,7 +329,7 @@ Coefficients:
      17.280        2.625  </code></pre>
 </div>
 </div>
-<p>We can see that for the values of the coefficients (labeled <em>Interscept</em> and <em>x</em>), it has a <code>model_distance()</code> of</p>
+<p>We can see that for the values of the coefficients (labeled <em>Intercept</em> and <em>x</em>), it has a <code>model_distance()</code> of</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_distance</span>( <span class="sc">-</span><span class="fl">1.76</span>, <span class="fl">3.385</span>, df<span class="sc">$</span>x, df<span class="sc">$</span>y )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -350,7 +350,7 @@ Coefficients:
 </section>
 <section id="model-fit" class="level2">
 <h2 class="anchored" data-anchor-id="model-fit">Model Fit</h2>
-<p>We can estimate a bunch of different models but before we look to see if it well behaved. There are several interesting plots that we can examine from the model object such as:</p>
+<p>We can estimate a bunch of different models but before we look to see if it is well behaved. There are several interesting plots that we can examine from the model object such as:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -384,7 +384,7 @@ Coefficients:
 </section>
 <section id="analysis-of-variance-tables---decomposing-variation" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-of-variance-tables---decomposing-variation">Analysis of Variance Tables - Decomposing Variation</h2>
-<p>Thus far, we’ve been able to estiamte a model, but is it one that explains a significant amount of variation? To determine this, we use the <em>analysis of variance table</em>.</p>
+<p>Thus far, we’ve been able to estimate a model, but is it one that explains a significant amount of variation? To determine this, we use the <em>analysis of variance table</em>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -413,7 +413,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li><span class="math inline">\(MS_{Residual} = \frac{SS_{Residual}}{df_{Residual}}\)</span></li>
 </ul></li>
 <li><p>The <span class="math inline">\(F\)</span>-statistic is from a known distribution and is defined by the ratio of Mean Squared values.</p></li>
-<li><p><code>Pr(&gt;F)</code> is the probability associated the value of the <span class="math inline">\(F\)</span>-statistic and is dependent upon the degrees of freedom for the model and residuals.</p></li>
+<li><p><code>Pr(&gt;F)</code> is the probability associated with the value of the <span class="math inline">\(F\)</span>-statistic and is dependent upon the degrees of freedom for the model and residuals.</p></li>
 </ul>
 </section>
 <section id="variance-explained" class="level2">
@@ -456,7 +456,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
  [9] "adj.r.squared" "fstatistic"    "cov.unscaled" </code></pre>
 </div>
 </div>
-<p>Notice that the <code>p-value</code> is not in this list… It is estimable from the <code>fstatistic</code> and <code>df</code> values and here is a quick function that returns the raw p-value by looking up the are under the curve equal to or greater than the observed <code>fstatistic</code> with those degrees of freedom.</p>
+<p>Notice that the <code>p-value</code> is not in this list… It is estimable from the <code>fstatistic</code> and <code>df</code> values and here is a quick function that returns the raw p-value by looking up the area under the curve equal to or greater than the observed <code>fstatistic</code> with those degrees of freedom.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>get_pval <span class="ot">&lt;-</span> <span class="cf">function</span>( model ) {</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
@@ -532,7 +532,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </section>
 <section id="comparing-models" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-models">Comparing Models</h2>
-<p>OK, so we have a model that appears to suggest that the predicted values in <code>x</code> can explain the variation observed in <code>y</code>. Great. But, is this the best model or only one that is sufficiently <em>meh</em> such that we can reject the null hypothesis. How can we tell?</p>
+<p>OK, so we have a model that appears to suggest that the predicted values in <code>x</code> can explain the variation observed in <code>y</code>. Great. But, is this the best model or only one that is sufficiently <em>meh</em> such that we can reject the null hypothesis? How can we tell?</p>
 <p>There are two parameters that we have already looked at that may help. These are:</p>
 <ul>
 <li><p>The <code>P-value</code>: Models with smaller probabilities could be considered more informative.</p></li>
@@ -551,7 +551,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
- NA's   :37       NA's   :7                                       </code></pre>
+ NAs    :37       NAs    :7                                       </code></pre>
 </div>
 </div>
 <p>Let’s assume that we are interested in trying to explain the variation in <code>Ozone</code> (the response) by one or more of the other variables as predictors.</p>
@@ -587,12 +587,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">%&gt;%</span></span>
 <span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>( <span class="sc">-</span>R2 ) <span class="sc">%&gt;%</span></span>
 <span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973."</span>,</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-minimal caption-top table table-sm table-striped small">
-<caption>Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -625,7 +625,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><span class="math display">\[
 y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
 \]</span></p>
-<p>Now, we are estimating two regression coefficients and an interscept. For three predictors, this gives us 3 more models.</p>
+<p>Now, we are estimating two regression coefficients and an intercept. For three predictors, this gives us 3 more models.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fit.temp.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fit.temp.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span>
@@ -646,12 +646,12 @@ y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>                                ))</span>
 <span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">%&gt;%</span></span>
 <span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973."</span>,</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
 <span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-minimal caption-top table table-sm table-striped small">
-<caption>Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -726,12 +726,12 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">%&gt;%</span></span>
 <span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">digits=</span><span class="dv">3</span>, <span class="at">scientific =</span> <span class="cn">TRUE</span>) ) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability."</span>,</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability."</span>,</span>
 <span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top table table-sm table-striped small">
-<caption>Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973. Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973. Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -742,38 +742,38 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;1.21e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;1.79e-04&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;1.21e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;1.79e-04&lt;/span&gt;</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;4.88e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;4.88e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;3.62e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;9.27e-13&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;3.62e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;9.27e-13&lt;/span&gt;</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;5.69e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;5.69e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;5.10e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;5.10e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;4.49e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: black !important;" &gt;9.99e-15&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;4.49e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;9.99e-15&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
-<td style="text-align: left;">&lt;span style=" color: green !important;" &gt;6.06e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style=" color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: green !important;" &gt;6.06e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -783,7 +783,7 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <section id="effects-of-adding-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="effects-of-adding-parameters">Effects of Adding Parameters</h3>
 <p>Before we can answer this, we should be clear about one thing. We are getting more variance explained by adding more predictor variables. In fact, by adding any variable, whether they are informative or not, one can explain some amount of the Sums of Squares in a model. Taken to the extreme, this means that we could add an infinite number of explanatory variables to a model and explain all the variation there is!</p>
-<p>Here is an example using our small data set. I’m going to make several models, one of which is the original one and the remaining add one more predeictor varible that is made up of a random variables. We will then look at the <span class="math inline">\(R^2\)</span> of each of these models.</p>
+<p>Here is an example using our small data set. I’m going to make several models, one of which is the original one and the remaining add one more predictor variable that is made up of a random variable. We will then look at the <span class="math inline">\(R^2\)</span> of each of these models.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>random.models  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp"</span>]] <span class="ot">&lt;-</span> fit.temp</span>
@@ -862,42 +862,42 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: right;">0.6068</td>
+<td style="text-align: right;">0.6097</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.6072</td>
+<td style="text-align: right;">0.6436</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.6073</td>
+<td style="text-align: right;">0.6636</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.6093</td>
+<td style="text-align: right;">0.6745</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.6094</td>
+<td style="text-align: right;">0.6849</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.6150</td>
+<td style="text-align: right;">0.6885</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.6185</td>
+<td style="text-align: right;">0.6899</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.6196</td>
+<td style="text-align: right;">0.6954</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 </tbody>
@@ -905,12 +905,12 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 </div>
 </div>
 <p>So if we just add random data to a model, we get a better fit!!!! Sounds great. That is easy! I can <strong>always</strong> get the best fit there is!</p>
-<p>This is a well-known situation in statistics. An in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.</p>
+<p>This is a well-known situation in statistics. And in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.</p>
 </section>
 </section>
 <section id="akaike-information-content" class="level2">
 <h2 class="anchored" data-anchor-id="akaike-information-content">Akaike Information Content</h2>
-<p>To get around this, we have a few tools at our disposal. The most common approach is to look at the <em>information content</em> in each model relative to the amount of pedictor variables. In essence, we must <em>punish</em> ourselves for adding more predictors so that we do not all run around and add random data to our models. The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.</p>
+<p>To get around this, we have a few tools at our disposal. The most common approach is to look at the <em>information content</em> in each model relative to the amount of predictor variables. In essence, we must <em>punish</em> ourselves for adding more predictors so that we do not all run around and add random data to our models. The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.</p>
 <p><span class="math display">\[
 AIC = -2 \ln L + 2p
 \]</span></p>
@@ -919,7 +919,7 @@ AIC = -2 \ln L + 2p
 <p><span class="math display">\[
 \delta AIC = AIC - min(AIC)
 \]</span></p>
-<p>The prevailing notion is that models that have <span class="math inline">\(\delta AIC &lt; 2.0\)</span> should be considered as almost equally informative, where as those whose <span class="math inline">\(\delta AIC &gt; 5.0\)</span> are to be rejected as being informative. That <span class="math inline">\(2.0 \le \delta AIC \le 5.0\)</span> range is where it gets a bit fuzzy.</p>
+<p>The prevailing notion is that models that have <span class="math inline">\(\delta AIC &lt; 2.0\)</span> should be considered as almost equally informative, whereas <mark>those whose <span class="math inline">\(\delta AIC &gt; 5.0\)</span> are to be rejected as being informative</mark>. That <span class="math inline">\(2.0 \le \delta AIC \le 5.0\)</span> range is where it gets a bit fuzzy.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>df.random<span class="sc">$</span>AIC <span class="ot">&lt;-</span> <span class="fu">sapply</span>( random.models, </span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">FUN =</span> AIC, </span>
@@ -929,14 +929,14 @@ AIC = -2 \ln L + 2p
 <span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>df.random <span class="sc">%&gt;%</span></span>
 <span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>P ) <span class="sc">%&gt;%</span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973 with variance explained, AIC, and ∂AIC for alternative models."</span>,</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models."</span>,</span>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">row.names =</span> <span class="cn">FALSE</span>, </span>
 <span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top table table-sm table-striped small">
-<caption>Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973 with variance explained, AIC, and ∂AIC for alternative models.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Models</th>
@@ -950,91 +950,91 @@ AIC = -2 \ln L + 2p
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
 <td style="text-align: right;">1067.706</td>
-<td style="text-align: right;">68.989</td>
+<td style="text-align: right;">83.837</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
 <td style="text-align: right;">0.362</td>
 <td style="text-align: right;">1093.187</td>
-<td style="text-align: right;">94.470</td>
+<td style="text-align: right;">109.318</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
 <td style="text-align: right;">0.121</td>
 <td style="text-align: right;">1083.714</td>
-<td style="text-align: right;">84.997</td>
+<td style="text-align: right;">99.845</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
 <td style="text-align: right;">0.569</td>
 <td style="text-align: right;">1049.741</td>
-<td style="text-align: right;">51.024</td>
+<td style="text-align: right;">65.872</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.510</td>
 <td style="text-align: right;">1020.820</td>
-<td style="text-align: right;">22.103</td>
+<td style="text-align: right;">36.950</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.449</td>
 <td style="text-align: right;">1033.816</td>
-<td style="text-align: right;">35.098</td>
+<td style="text-align: right;">49.946</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: right;">0.606</td>
 <td style="text-align: right;">998.717</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">14.848</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: right;">0.607</td>
-<td style="text-align: right;">1000.457</td>
-<td style="text-align: right;">1.740</td>
+<td style="text-align: right;">0.610</td>
+<td style="text-align: right;">999.648</td>
+<td style="text-align: right;">15.779</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.607</td>
-<td style="text-align: right;">1002.346</td>
-<td style="text-align: right;">3.629</td>
+<td style="text-align: right;">0.644</td>
+<td style="text-align: right;">991.549</td>
+<td style="text-align: right;">7.680</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.607</td>
-<td style="text-align: right;">1004.312</td>
-<td style="text-align: right;">5.595</td>
+<td style="text-align: right;">0.664</td>
+<td style="text-align: right;">987.135</td>
+<td style="text-align: right;">3.266</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.609</td>
-<td style="text-align: right;">1005.741</td>
-<td style="text-align: right;">7.024</td>
+<td style="text-align: right;">0.674</td>
+<td style="text-align: right;">985.503</td>
+<td style="text-align: right;">1.634</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.609</td>
-<td style="text-align: right;">1007.718</td>
-<td style="text-align: right;">9.001</td>
+<td style="text-align: right;">0.685</td>
+<td style="text-align: right;">983.869</td>
+<td style="text-align: right;">0.000</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.615</td>
-<td style="text-align: right;">1008.121</td>
-<td style="text-align: right;">9.404</td>
+<td style="text-align: right;">0.689</td>
+<td style="text-align: right;">984.595</td>
+<td style="text-align: right;">0.725</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.618</td>
-<td style="text-align: right;">1009.118</td>
-<td style="text-align: right;">10.401</td>
+<td style="text-align: right;">0.690</td>
+<td style="text-align: right;">986.117</td>
+<td style="text-align: right;">2.247</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.620</td>
-<td style="text-align: right;">1010.789</td>
-<td style="text-align: right;">12.072</td>
+<td style="text-align: right;">0.695</td>
+<td style="text-align: right;">986.112</td>
+<td style="text-align: right;">2.243</td>
 </tr>
 </tbody>
 </table>

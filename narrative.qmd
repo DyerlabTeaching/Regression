@@ -20,14 +20,14 @@ $$
 \sigma_{Total}^2 = \sigma_{Model}^2 + \sigma_{Residual}^2
 $$
 
-In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is *residual* (or left over).  For regression analyses, consider the simple linear regression model.
+<mark>In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is *residual* (or left over).</mark>  For regression analyses, consider the simple linear regression model.
 
 
 $$
 y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 $$
 
-Where th terms $\beta_0$ is the where the expected line interscepts the y-axis when $x = 0$, the coefficient $\beta_1$ is the rate at which the $y$ (the results) changes *per unit change* in $x$ (the predictor, and $\epsilon$ is the left over variation (residual) that each point has.  
+Where the terms $\beta_0$ is where the expected line intersects the y-axis when $x = 0$, the coefficient $\beta_1$ is the rate at which the $y$ (the results) changes *per unit change* in $x$ (the predictor), and $\epsilon$ is the left over variation (residual) that each point has.
 
 The null hypothesis for this kind of regression model is 
 
@@ -51,12 +51,12 @@ ggplot( df, aes(x,y) ) +
   geom_point() 
 ```
 
-The notion here is to be estimate the underlying formula for that red line that describes the variation in the original values in how `y` changes systematically across measured values of `x`.
+The notion here is to estimate the underlying formula for that red line that describes the variation in the original values in how `y` changes systematically across measured values of `x`.
 
 
 ## Least Squares Fitting
 
-So how do we figure this out?  One of the most common ways is to uses a methods called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the intercept ($\beta_0$) and slope ($\beta_1$) coefficients.  These *could be* close to a good models or not.
+So how do we figure this out?  One of the most common ways is to use a method called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the intercept ($\beta_0$) and slope ($\beta_1$) coefficients.  These *could be* close to a good models or not.
 
 ```{r}
 models <- data.frame( beta0 = runif(250,-20,40),
@@ -78,7 +78,7 @@ ggplot() +
 
 A least squares fit is one that minimizes the distances of each point (in the y-axis) from the line created by the model.  In the graph below, we can see this would be the distances (squared so we do not have positive and negative values) along the y-axis, between each point and the fitted line.
 
-The "best model" here is one that minimizes the sum of squared distances distances.
+The "best model" here is one that minimizes the sum of squared distances.
 
 ```{r echo=FALSE}
 fit <- lm( y ~ x, data=df )
@@ -98,11 +98,11 @@ ggplot( df ) +
 
 Let's look at those hypothetical models.  I'm going to make a few little functions to help make the code look easy.
 
-First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an interscept and slope from the original points.
+First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an intercept and slope from the original points.
 
 ```{r}
-model_distance <- function( interscept, slope, X, Y ) {
-  yhat <- interscept + slope * X
+model_distance <- function( intercept, slope, X, Y ) {
+  yhat <- intercept + slope * X
   diff <- Y - yhat
   return( sqrt( mean( diff ^ 2 ) ) )
 }
@@ -148,7 +148,7 @@ ggplot( models, aes(x = beta0,
     geom_point()
 ```
 
-In addition to a random search, we can be a bit more systematic about it and make a grid of interscept and slope values, using a *grid search*.
+In addition to a random search, we can be a bit more systematic about it and make a grid of intercept and slope values, using a *grid search*.
 
 
 ```{r}
@@ -171,7 +171,7 @@ ggplot( grid, aes(x = beta0,
   geom_point()
 ```
 
-You could imagine that we could iteratively soom in this grid and find the best fit combination of $\beta_0$ and $\beta_1$ values until we converged on a really well fit set.
+You could imagine that we could iteratively zoom in this grid and find the best fit combination of $\beta_0$ and $\beta_1$ values until we converged on a really well fit set.
 
 There is a more direct way to get to these results (though is much less pretty to look at) using the `lm()` linear models function.
 
@@ -185,7 +185,7 @@ fit <- lm( y ~ x, data = df )
 fit
 ```
 
-We can see that for the values of the coefficients (labeled *Interscept* and *x*), it has a `model_distance()` of
+We can see that for the values of the coefficients (labeled *Intercept* and *x*), it has a `model_distance()` of
 
 ```{r}
 model_distance( -1.76, 3.385, df$x, df$y )
@@ -205,7 +205,7 @@ Fortunately, we have a lot of additional information available to us because we 
 
 ## Model Fit
 
-We can estimate a bunch of different models but before we look to see if it well behaved.  There are several interesting plots that we can examine from the model object such as:
+We can estimate a bunch of different models but before we look to see if it is well behaved.  There are several interesting plots that we can examine from the model object such as:
 
 ```{r}
 plot( fit, which = 1 )
@@ -223,7 +223,7 @@ plot( fit, which = 5 )
 
 ## Analysis of Variance Tables - Decomposing Variation
 
-Thus far, we've been able to estiamte a model, but is it one that explains a significant amount of variation? To determine this, we use the *analysis of variance table*.
+Thus far, we've been able to estimate a model, but is it one that explains a significant amount of variation? To determine this, we use the *analysis of variance table*.
 
 
 ```{r}
@@ -245,7 +245,7 @@ The terms in this table are:
     
 - The $F$-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
 
-- `Pr(>F)` is the probability associated the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
+- `Pr(>F)` is the probability associated with the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
 
 
 ## Variance Explained
@@ -270,7 +270,7 @@ Just like the model itself, the `summary.lm` object also has all these data cont
 names( summary( fit ) )
 ```
 
-Notice that the `p-value` is not in this list...  It is estimable from the `fstatistic` and `df` values and here is a quick function that returns the raw p-value by looking up the are under the curve equal to or greater than the observed `fstatistic` with those degrees of freedom.
+Notice that the `p-value` is not in this list...  It is estimable from the `fstatistic` and `df` values and here is a quick function that returns the raw p-value by looking up the area under the curve equal to or greater than the observed `fstatistic` with those degrees of freedom.
 
 ```{r}
 get_pval <- function( model ) {
@@ -327,7 +327,7 @@ abline(0, 0, lty=2, col="red")
 
 ## Comparing Models
 
-OK, so we have a model that appears to suggest that the predicted values in `x` can explain the variation observed in `y`.  Great.  But, is this the best model or only one that is sufficiently *meh* such that we can reject the null hypothesis.  How can we tell?
+OK, so we have a model that appears to suggest that the predicted values in `x` can explain the variation observed in `y`.  Great.  But, is this the best model or only one that is sufficiently *meh* such that we can reject the null hypothesis?  How can we tell?
 
 There are two parameters that we have already looked at that may help.  These are:
 
@@ -370,7 +370,7 @@ data.frame( Model = c( "Ozone ~ Solar",
 df.models %>%
   arrange( -R2 ) %>%
   mutate( P = format( P, scientific=TRUE, digits=3)) %>%
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.",
          digits = 3) %>%
   kable_minimal()
 ```
@@ -383,7 +383,7 @@ $$
 y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
 $$
 
-Now, we are estimating two regression coefficients and an interscept.  For three predictors, this gives us 3 more models.
+Now, we are estimating two regression coefficients and an intercept.  For three predictors, this gives us 3 more models.
 
 
 ```{r}
@@ -409,7 +409,7 @@ df.models <- rbind( df.models,
                                 ))
 df.models %>%
   mutate( P = format( P, scientific=TRUE, digits=3)) %>%
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.",
          digits = 3) %>%
   kable_minimal()
 ```
@@ -452,7 +452,7 @@ df.models$R2 = cell_spec( format( df.models$R2,
 
 df.models %>%
   mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.",
          escape = FALSE) %>%
   kable_paper( "striped", full_width = FALSE )
 ```
@@ -463,7 +463,7 @@ So how do we figure out which one is best?
 
 Before we can answer this, we should be clear about one thing.  We are getting more variance explained by adding more predictor variables.  In fact, by adding any variable, whether they are informative or not, one can explain some amount of the Sums of Squares in a model.  Taken to the extreme, this means that we could add an infinite number of explanatory variables to a model and explain all the variation there is!  
 
-Here is an example using our small data set.   I'm going to make several models, one of which is the original one and the remaining add one more predeictor varible that is made up of a random variables.  We will then look at the $R^2$ of each of these models.
+Here is an example using our small data set.   I'm going to make several models, one of which is the original one and the remaining add one more predictor variable that is made up of a random variable.  We will then look at the $R^2$ of each of these models.
 
 ```{r}
 random.models  <- list()
@@ -499,11 +499,11 @@ df.random %>%
 
 So if we just add random data to a model, we get a better fit!!!!  Sounds great.  That is easy!  I can **always** get the best fit there is!
 
-This is a well-known situation in statistics.  An in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
+This is a well-known situation in statistics.  And in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
 
 ## Akaike Information Content
 
-To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of pedictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
+To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of predictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
 
 
 $$
@@ -519,7 +519,7 @@ $$
 \delta AIC = AIC - min(AIC)
 $$
 
-The prevailing notion is that models that have $\delta AIC < 2.0$ should be considered as almost equally informative, where as those whose $\delta AIC > 5.0$ are to be rejected as being informative.  That $2.0 \le \delta AIC \le 5.0$ range is where it gets a bit fuzzy. 
+The prevailing notion is that models that have $\delta AIC < 2.0$ should be considered as almost equally informative, whereas <mark>those whose $\delta AIC > 5.0$ are to be rejected as being informative</mark>.  That $2.0 \le \delta AIC \le 5.0$ range is where it gets a bit fuzzy. 
 
 ```{r}
 
@@ -531,7 +531,7 @@ df.random$deltaAIC = df.random$AIC - min( df.random$A)
 
 df.random %>%
   select( -P ) %>%
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 2973 - 30 September 2973 with variance explained, AIC, and ∂AIC for alternative models.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models.",
          escape = FALSE,
          row.names = FALSE, 
          digits = 3) %>%
