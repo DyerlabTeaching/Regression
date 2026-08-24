@@ -1,9 +1,6 @@
 ---
 title: "Regression Homework Activity"
-format: 
-  html:
-    code-tools: true
-    toc: false
+format: html
 ---
 
 ![](media/models.png)
