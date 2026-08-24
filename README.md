@@ -6,23 +6,33 @@
 
 Regression is the development of a functional model describing how one (or more) response variables change *due to* systematic changes in one (or more) predictor variables.
 
-## Student Learning Objectives
+## Module Learning Objectives
 
-At the end of this topic, you should be able to:    
- - Conceptually describe the process of least square regression.  
- - Perform a linear regression with one or more predictor variables using the `lm()` function.  
- - Evaluate the fit of the models by examining both the residuals and fitted values.  
- - Describe and implement methods necessary to select the best model from a set of potential candidate models using a metric such as AIC.  
+### Fit Linear Regression Models
+
+> Learners will conceptually describe the process of least squares regression and perform linear regression with one or more predictor variables using the `lm()` function.
+
+- **Bloom's Levels:** Understand, Apply
+- **Reinforces:** Extends the correlation concepts from Correlation into an explicit functional model of how a response variable changes with predictors.
+- **Notes:** The conceptual description of least squares is expected before the mechanical use of `lm()`.
+
+### Evaluate and Select Among Regression Models
+
+> Learners will evaluate model fit by examining residuals and fitted values, and select the best model from a set of candidates using an information criterion such as AIC.
+
+- **Bloom's Levels:** Analyze, Evaluate
+- **Reinforces:** Introduces model comparison and selection, a skill that generalizes beyond regression to any model-fitting context later in the curriculum.
+- **Notes:** Residual diagnostics are treated as a required check, not an optional afterthought, before trusting a fitted model.
 
 ## Content
- - The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for regression.
- - A set of longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) text on regression model development.
- - An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
- - A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic.  
 
+- The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for regression.
+- A set of longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) text on regression model development.
+- An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
+- A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic.
 
 ## Contact Information
 
-If you need to contact me, I am available at:  
- - Email: rjdyer@vcu.edu
- - Twitter: [@dyerlab](https://twitter.com/dyerlab/)
+If you need to contact me, I am available at:
+- Email: [rjdyer@vcu.edu](mailto://rjdyer@vcu.edu)
+- Web: [rodneydyer.com](https://rodneydyer.com)
