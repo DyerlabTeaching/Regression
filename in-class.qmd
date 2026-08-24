@@ -1,5 +1,5 @@
 ---
-title: "Regression Homework Activity"
+title: "In Class Activity - Regression"
 format: html
 ---
 
