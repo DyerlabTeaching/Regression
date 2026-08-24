@@ -84,7 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Regression Homework Activity</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<h1 class="title">Regression Homework Activity</h1>
 </div>
 
 
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344  
  3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729  
  Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359  
-                                                 NA's   :8255                 
+                                                 NAs    :8255                 
    dep_delay          arr_time    sched_arr_time   arr_delay       
  Min.   : -43.00   Min.   :   1   Min.   :   1   Min.   : -86.000  
  1st Qu.:  -5.00   1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000  
@@ -122,23 +122,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :  12.64   Mean   :1502   Mean   :1536   Mean   :   6.895  
  3rd Qu.:  11.00   3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000  
  Max.   :1301.00   Max.   :2400   Max.   :2359   Max.   :1272.000  
- NA's   :8255      NA's   :8713                  NA's   :9430      
-   carrier              flight       tailnum             origin         
- Length:336776      Min.   :   1   Length:336776      Length:336776     
- Class :character   1st Qu.: 553   Class :character   Class :character  
- Mode  :character   Median :1496   Mode  :character   Mode  :character  
-                    Mean   :1972                                        
-                    3rd Qu.:3465                                        
-                    Max.   :8500                                        
+ NAs    :8255      NAs    :8713                  NAs    :9430      
+      carrier           flight          tailnum             origin      
+ Length   :336776   Min.   :   1   Length   :336776   Length   :336776  
+ N.unique :    16   1st Qu.: 553   N.unique :  4043   N.unique :     3  
+ N.blank  :     0   Median :1496   N.blank  :     0   N.blank  :     0  
+ Min.nchar:     2   Mean   :1972   Min.nchar:     5   Min.nchar:     3  
+ Max.nchar:     2   3rd Qu.:3465   Max.nchar:     6   Max.nchar:     3  
+                    Max.   :8500   NAs      :  2512                     
                                                                         
-     dest              air_time        distance         hour      
- Length:336776      Min.   : 20.0   Min.   :  17   Min.   : 1.00  
- Class :character   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
- Mode  :character   Median :129.0   Median : 872   Median :13.00  
-                    Mean   :150.7   Mean   :1040   Mean   :13.18  
-                    3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
+        dest           air_time        distance         hour      
+ Length   :336776   Min.   : 20.0   Min.   :  17   Min.   : 1.00  
+ N.unique :   105   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
+ N.blank  :     0   Median :129.0   Median : 872   Median :13.00  
+ Min.nchar:     3   Mean   :150.7   Mean   :1040   Mean   :13.18  
+ Max.nchar:     3   3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
                     Max.   :695.0   Max.   :4983   Max.   :23.00  
-                    NA's   :9430                                  
+                    NAs    :9430                                  
      minute        time_hour                  
  Min.   : 0.00   Min.   :2013-01-01 05:00:00  
  1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00  
@@ -161,14 +161,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( weather )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    origin               year          month             day       
- Length:26115       Min.   :2013   Min.   : 1.000   Min.   : 1.00  
- Class :character   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
- Mode  :character   Median :2013   Median : 7.000   Median :16.00  
-                    Mean   :2013   Mean   : 6.504   Mean   :15.68  
-                    3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
-                    Max.   :2013   Max.   :12.000   Max.   :31.00  
-                                                                   
+<pre><code>       origin           year          month             day       
+ Length   :26115   Min.   :2013   Min.   : 1.000   Min.   : 1.00  
+ N.unique :    3   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
+ N.blank  :    0   Median :2013   Median : 7.000   Median :16.00  
+ Min.nchar:    3   Mean   :2013   Mean   : 6.504   Mean   :15.68  
+ Max.nchar:    3   3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
+                   Max.   :2013   Max.   :12.000   Max.   :31.00  
+                                                                  
       hour            temp             dewp           humid       
  Min.   : 0.00   Min.   : 10.94   Min.   :-9.94   Min.   : 12.74  
  1st Qu.: 6.00   1st Qu.: 39.92   1st Qu.:26.06   1st Qu.: 47.05  
@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :11.49   Mean   : 55.26   Mean   :41.44   Mean   : 62.53  
  3rd Qu.:17.00   3rd Qu.: 69.98   3rd Qu.:57.92   3rd Qu.: 78.79  
  Max.   :23.00   Max.   :100.04   Max.   :78.08   Max.   :100.00  
-                 NA's   :1        NA's   :1       NA's   :1       
+                 NAs    :1        NAs    :1       NAs    :1       
     wind_dir       wind_speed         wind_gust         precip        
  Min.   :  0.0   Min.   :   0.000   Min.   :16.11   Min.   :0.000000  
  1st Qu.:120.0   1st Qu.:   6.905   1st Qu.:20.71   1st Qu.:0.000000  
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :199.8   Mean   :  10.517   Mean   :25.49   Mean   :0.004469  
  3rd Qu.:290.0   3rd Qu.:  13.809   3rd Qu.:28.77   3rd Qu.:0.000000  
  Max.   :360.0   Max.   :1048.361   Max.   :66.75   Max.   :1.210000  
- NA's   :460     NA's   :4          NA's   :20778                     
+ NAs    :460     NAs    :4          NAs    :20778                     
     pressure          visib          time_hour                  
  Min.   : 983.8   Min.   : 0.000   Min.   :2013-01-01 01:00:00  
  1st Qu.:1012.9   1st Qu.:10.000   1st Qu.:2013-04-01 21:30:00  
@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :1017.9   Mean   : 9.255   Mean   :2013-07-01 18:26:37  
  3rd Qu.:1023.0   3rd Qu.:10.000   3rd Qu.:2013-09-30 13:00:00  
  Max.   :1042.1   Max.   :10.000   Max.   :2013-12-30 18:00:00  
- NA's   :2729                                                   </code></pre>
+ NAs    :2729                                                   </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>weather <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">DTH =</span> <span class="fu">paste</span>( month, day, <span class="fu">hour</span>(time_hour), <span class="at">sep =</span> <span class="st">"."</span> ) ) <span class="sc">|&gt;</span></span>
@@ -208,14 +208,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>( df1, df2, <span class="at">by =</span> <span class="st">"DTH"</span>) <span class="ot">-&gt;</span> df </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     DTH              dep_delay           temp            dewp      
- Length:53964       Min.   :-32.00   Min.   :12.02   Min.   :-9.04  
- Class :character   1st Qu.: -5.00   1st Qu.:42.08   1st Qu.:26.96  
- Mode  :character   Median : -1.00   Median :57.02   Median :42.98  
-                    Mean   : 19.94   Mean   :56.46   Mean   :42.24  
-                    3rd Qu.: 25.00   3rd Qu.:71.06   3rd Qu.:57.92  
-                    Max.   :548.00   Max.   :98.06   Max.   :78.08  
-                    NA's   :2813                                    
+<pre><code>        DTH          dep_delay           temp            dewp      
+ Length   :53964   Min.   :-32.00   Min.   :12.02   Min.   :-9.04  
+ N.unique : 5988   1st Qu.: -5.00   1st Qu.:42.08   1st Qu.:26.96  
+ N.blank  :    0   Median : -1.00   Median :57.02   Median :42.98  
+ Min.nchar:    5   Mean   : 19.94   Mean   :56.46   Mean   :42.24  
+ Max.nchar:    8   3rd Qu.: 25.00   3rd Qu.:71.06   3rd Qu.:57.92  
+                   Max.   :548.00   Max.   :98.06   Max.   :78.08  
+                   NAs    :2813                                    
      humid           wind_dir     wind_speed       wind_gust    
  Min.   : 15.21   Min.   :  0   Min.   : 0.000   Min.   :16.11  
  1st Qu.: 45.26   1st Qu.:140   1st Qu.: 8.055   1st Qu.:23.02  
@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   : 61.99   Mean   :204   Mean   :12.163   Mean   :27.38  
  3rd Qu.: 79.07   3rd Qu.:290   3rd Qu.:16.111   3rd Qu.:31.07  
  Max.   :100.00   Max.   :360   Max.   :37.976   Max.   :66.75  
-                  NA's   :477   NA's   :24       NA's   :43460  
+                  NAs    :477   NAs    :24       NAs    :43460  
      precip            pressure          visib     
  Min.   :0.000000   Min.   : 985.7   Min.   : 0.0  
  1st Qu.:0.000000   1st Qu.:1013.1   1st Qu.:10.0  
@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :0.003856   Mean   :1018.1   Mean   : 9.2  
  3rd Qu.:0.000000   3rd Qu.:1023.1   3rd Qu.:10.0  
  Max.   :0.650000   Max.   :1042.1   Max.   :10.0  
-                    NA's   :5657                   </code></pre>
+                    NAs    :5657                   </code></pre>
 </div>
 </div>
 <section id="question" class="level1">
@@ -18860,8 +18860,6 @@ Multiple R-squared:  0.02412,   Adjusted R-squared:  0.02405
 F-statistic: 378.8 on 3 and 45984 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<!-- -->
-
 </section>
 </section>
 
@@ -18937,57 +18935,6 @@ F-statistic: 378.8 on 3 and 45984 DF,  p-value: &lt; 2.2e-16</code></pre>
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
-    }
-    const viewSource = window.document.getElementById('quarto-view-source') ||
-                       window.document.getElementById('quarto-code-tools-source');
-    if (viewSource) {
-      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-      viewSource.addEventListener("click", function(e) {
-        if (sourceUrl) {
-          // rstudio viewer pane
-          if (/\bcapabilities=\b/.test(window.location)) {
-            window.open(sourceUrl);
-          } else {
-            window.location.href = sourceUrl;
-          }
-        } else {
-          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-          modal.show();
-        }
-        return false;
-      });
-    }
-    function toggleCodeHandler(show) {
-      return function(e) {
-        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-        for (let i=0; i<detailsSrc.length; i++) {
-          const details = detailsSrc[i].parentElement;
-          if (show) {
-            details.open = true;
-          } else {
-            details.removeAttribute("open");
-          }
-        }
-        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-        const fromCls = show ? "hidden" : "unhidden";
-        const toCls = show ? "unhidden" : "hidden";
-        for (let i=0; i<cellCodeDivs.length; i++) {
-          const codeDiv = cellCodeDivs[i];
-          if (codeDiv.classList.contains(fromCls)) {
-            codeDiv.classList.remove(fromCls);
-            codeDiv.classList.add(toCls);
-          } 
-        }
-        return false;
-      }
-    }
-    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-    if (hideAllCode) {
-      hideAllCode.addEventListener("click", toggleCodeHandler(false));
-    }
-    const showAllCode = window.document.getElementById("quarto-show-all-code");
-    if (showAllCode) {
-      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -19317,177 +19264,7 @@ F-statistic: 378.8 on 3 and 45984 DF,  p-value: &lt; 2.2e-16</code></pre>
       }
     }
   });
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Regression Homework Activity"</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="al">![](media/models.png)</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( tidyverse )</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( nycflights13 )</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>Since regression analysis is such a fundamental component of inferences, I thought it would be a good idea to try to work through a few more examples to give you some more practice.  </span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>For this we will use some data on flights into and out of Newark (EWR), JFK, and La Guardia airports in NYC metropolitan area.</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( flights) </span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span> </span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( carrier <span class="sc">==</span> <span class="st">"EV"</span> ) <span class="sc">|&gt;</span></span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">DTH =</span> <span class="fu">paste</span>( month, day, <span class="fu">hour</span>(time_hour), <span class="at">sep=</span><span class="st">"."</span> ) ) <span class="sc">|&gt;</span></span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( dep_delay, DTH ) <span class="ot">-&gt;</span> df1</span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>( df1 )</span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>We also have some data related to local weather conditions.</span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( weather )</span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>weather <span class="sc">|&gt;</span></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">DTH =</span> <span class="fu">paste</span>( month, day, <span class="fu">hour</span>(time_hour), <span class="at">sep =</span> <span class="st">"."</span> ) ) <span class="sc">|&gt;</span></span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( origin <span class="sc">==</span> <span class="st">"JFK"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>year, <span class="sc">-</span>month, <span class="sc">-</span>day, <span class="sc">-</span>hour, <span class="sc">-</span>time_hour, <span class="sc">-</span>origin) <span class="ot">-&gt;</span> df2 </span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df2)</span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>( df1, df2, <span class="at">by =</span> <span class="st">"DTH"</span>) <span class="ot">-&gt;</span> df </span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df )</span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a><span class="fu"># Question</span></span>
-<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a>What weather features best explain departure delays from JFK for <span class="in">`ExpressJet`</span> airlines?</span>
-<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-60"><a href="#cb29-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-63"><a href="#cb29-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-64"><a href="#cb29-64" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb29-65"><a href="#cb29-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( dep_delay ) ) <span class="sc">|&gt;</span> </span>
-<span id="cb29-66"><a href="#cb29-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( pressure ) ) <span class="sc">|&gt;</span></span>
-<span id="cb29-67"><a href="#cb29-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( wind_dir )) <span class="sc">|&gt;</span> </span>
-<span id="cb29-68"><a href="#cb29-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>wind_gust, <span class="sc">-</span>DTH ) <span class="ot">-&gt;</span> df</span>
-<span id="cb29-69"><a href="#cb29-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-70"><a href="#cb29-70" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span>
-<span id="cb29-71"><a href="#cb29-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-72"><a href="#cb29-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-73"><a href="#cb29-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-74"><a href="#cb29-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Pedantic Approach</span></span>
-<span id="cb29-75"><a href="#cb29-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-76"><a href="#cb29-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-77"><a href="#cb29-77" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Find 1st order interactions</span>
-<span id="cb29-78"><a href="#cb29-78" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Find best one</span>
-<span id="cb29-79"><a href="#cb29-79" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Fit best</span>
-<span id="cb29-80"><a href="#cb29-80" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Goto 1</span>
-<span id="cb29-81"><a href="#cb29-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-82"><a href="#cb29-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-85"><a href="#cb29-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-86"><a href="#cb29-86" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> temp, <span class="at">data =</span> df )</span>
-<span id="cb29-87"><a href="#cb29-87" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> dewp, <span class="at">data =</span> df )</span>
-<span id="cb29-88"><a href="#cb29-88" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> humid, <span class="at">data =</span> df )</span>
-<span id="cb29-89"><a href="#cb29-89" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> wind_dir, <span class="at">data =</span> df )</span>
-<span id="cb29-90"><a href="#cb29-90" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> wind_speed, <span class="at">data =</span> df )</span>
-<span id="cb29-91"><a href="#cb29-91" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.6</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> precip, <span class="at">data =</span> df )</span>
-<span id="cb29-92"><a href="#cb29-92" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.7</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> pressure, <span class="at">data =</span> df )</span>
-<span id="cb29-93"><a href="#cb29-93" aria-hidden="true" tabindex="-1"></a>fit<span class="fl">.8</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> visib, <span class="at">data =</span> df )</span>
-<span id="cb29-94"><a href="#cb29-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-95"><a href="#cb29-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-96"><a href="#cb29-96" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.1</span>)</span>
-<span id="cb29-97"><a href="#cb29-97" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.2</span>)</span>
-<span id="cb29-98"><a href="#cb29-98" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.3</span>)</span>
-<span id="cb29-99"><a href="#cb29-99" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.4</span>)</span>
-<span id="cb29-100"><a href="#cb29-100" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.5</span>)</span>
-<span id="cb29-101"><a href="#cb29-101" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.6</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.6</span>)</span>
-<span id="cb29-102"><a href="#cb29-102" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.7</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.7</span>)</span>
-<span id="cb29-103"><a href="#cb29-103" aria-hidden="true" tabindex="-1"></a>aic<span class="fl">.8</span> <span class="ot">&lt;-</span> <span class="fu">AIC</span>(fit<span class="fl">.8</span>)</span>
-<span id="cb29-104"><a href="#cb29-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-105"><a href="#cb29-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-106"><a href="#cb29-106" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">model =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>,</span>
-<span id="cb29-107"><a href="#cb29-107" aria-hidden="true" tabindex="-1"></a>            <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>(fit<span class="fl">.1</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-108"><a href="#cb29-108" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.2</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-109"><a href="#cb29-109" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.3</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-110"><a href="#cb29-110" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.4</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-111"><a href="#cb29-111" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.5</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-112"><a href="#cb29-112" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.6</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-113"><a href="#cb29-113" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.7</span>)<span class="sc">$</span>r.squared,</span>
-<span id="cb29-114"><a href="#cb29-114" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>(fit<span class="fl">.8</span>)<span class="sc">$</span>r.squared ), </span>
-<span id="cb29-115"><a href="#cb29-115" aria-hidden="true" tabindex="-1"></a>            <span class="at">AIC =</span> <span class="fu">c</span>( aic<span class="fl">.1</span>,</span>
-<span id="cb29-116"><a href="#cb29-116" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.2</span>,</span>
-<span id="cb29-117"><a href="#cb29-117" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.3</span>,</span>
-<span id="cb29-118"><a href="#cb29-118" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.4</span>,</span>
-<span id="cb29-119"><a href="#cb29-119" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.5</span>,</span>
-<span id="cb29-120"><a href="#cb29-120" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.6</span>,</span>
-<span id="cb29-121"><a href="#cb29-121" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.7</span>,</span>
-<span id="cb29-122"><a href="#cb29-122" aria-hidden="true" tabindex="-1"></a>                     aic<span class="fl">.8</span></span>
-<span id="cb29-123"><a href="#cb29-123" aria-hidden="true" tabindex="-1"></a>                     )) <span class="sc">|&gt;</span></span>
-<span id="cb29-124"><a href="#cb29-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">dAIC =</span> AIC <span class="sc">-</span> <span class="fu">min</span>(AIC)) </span>
-<span id="cb29-125"><a href="#cb29-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-126"><a href="#cb29-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-127"><a href="#cb29-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-128"><a href="#cb29-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-129"><a href="#cb29-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stepwise Approach</span></span>
-<span id="cb29-130"><a href="#cb29-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-133"><a href="#cb29-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-134"><a href="#cb29-134" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(df)</span>
-<span id="cb29-135"><a href="#cb29-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-136"><a href="#cb29-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-137"><a href="#cb29-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-138"><a href="#cb29-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-141"><a href="#cb29-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-142"><a href="#cb29-142" aria-hidden="true" tabindex="-1"></a>fit.s<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> pressure, <span class="at">data=</span>df )</span>
-<span id="cb29-143"><a href="#cb29-143" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( fit.s<span class="fl">.1</span> )</span>
-<span id="cb29-144"><a href="#cb29-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-145"><a href="#cb29-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-146"><a href="#cb29-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-149"><a href="#cb29-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-150"><a href="#cb29-150" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">resid</span>(fit.s<span class="fl">.1</span> ) <span class="co"># residual data </span></span>
-<span id="cb29-151"><a href="#cb29-151" aria-hidden="true" tabindex="-1"></a>res</span>
-<span id="cb29-152"><a href="#cb29-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-153"><a href="#cb29-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-154"><a href="#cb29-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-155"><a href="#cb29-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-158"><a href="#cb29-158" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-159"><a href="#cb29-159" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>resid <span class="ot">&lt;-</span> res </span>
-<span id="cb29-160"><a href="#cb29-160" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>( df )</span>
-<span id="cb29-161"><a href="#cb29-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-162"><a href="#cb29-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-163"><a href="#cb29-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-166"><a href="#cb29-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-167"><a href="#cb29-167" aria-hidden="true" tabindex="-1"></a>fit.s<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> pressure <span class="sc">+</span> visib, <span class="at">data =</span> df )</span>
-<span id="cb29-168"><a href="#cb29-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-169"><a href="#cb29-169" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"pressure"</span>, <span class="st">"pressure + visib"</span>),</span>
-<span id="cb29-170"><a href="#cb29-170" aria-hidden="true" tabindex="-1"></a>            <span class="at">AIC =</span> <span class="fu">c</span>( <span class="fu">AIC</span>( fit.s<span class="fl">.1</span>), <span class="fu">AIC</span>(fit.s<span class="fl">.2</span> ) ) ) <span class="sc">|&gt;</span></span>
-<span id="cb29-171"><a href="#cb29-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">delta =</span> AIC <span class="sc">-</span> <span class="fu">min</span>(AIC) )</span>
-<span id="cb29-172"><a href="#cb29-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-173"><a href="#cb29-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-174"><a href="#cb29-174" aria-hidden="true" tabindex="-1"></a>So pressure + visib is good, what about next variable?</span>
-<span id="cb29-175"><a href="#cb29-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-178"><a href="#cb29-178" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-179"><a href="#cb29-179" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">resid</span>( fit.s<span class="fl">.2</span> )</span>
-<span id="cb29-180"><a href="#cb29-180" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>resid <span class="ot">&lt;-</span> res </span>
-<span id="cb29-181"><a href="#cb29-181" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>( df )</span>
-<span id="cb29-182"><a href="#cb29-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-183"><a href="#cb29-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-184"><a href="#cb29-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-187"><a href="#cb29-187" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb29-188"><a href="#cb29-188" aria-hidden="true" tabindex="-1"></a>fit.s<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">lm</span>( dep_delay <span class="sc">~</span> pressure <span class="sc">+</span> visib <span class="sc">+</span> wind_speed , <span class="at">data =</span> df )</span>
-<span id="cb29-189"><a href="#cb29-189" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( fit.s<span class="fl">.3</span> )</span>
-<span id="cb29-190"><a href="#cb29-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-191"><a href="#cb29-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb29-192"><a href="#cb29-192" aria-hidden="true" tabindex="-1"></a></span>
-</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
-</div></div></div></div></div>
+  </script>
 </div> <!-- /content -->
 
 

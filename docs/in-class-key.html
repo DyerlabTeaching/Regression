@@ -84,7 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Regression Homework Activity</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<h1 class="title">Regression Homework Activity</h1>
 </div>
 
 
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344  
  3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729  
  Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359  
-                                                 NA's   :8255                 
+                                                 NAs    :8255                 
    dep_delay          arr_time    sched_arr_time   arr_delay       
  Min.   : -43.00   Min.   :   1   Min.   :   1   Min.   : -86.000  
  1st Qu.:  -5.00   1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000  
@@ -122,23 +122,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :  12.64   Mean   :1502   Mean   :1536   Mean   :   6.895  
  3rd Qu.:  11.00   3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000  
  Max.   :1301.00   Max.   :2400   Max.   :2359   Max.   :1272.000  
- NA's   :8255      NA's   :8713                  NA's   :9430      
-   carrier              flight       tailnum             origin         
- Length:336776      Min.   :   1   Length:336776      Length:336776     
- Class :character   1st Qu.: 553   Class :character   Class :character  
- Mode  :character   Median :1496   Mode  :character   Mode  :character  
-                    Mean   :1972                                        
-                    3rd Qu.:3465                                        
-                    Max.   :8500                                        
+ NAs    :8255      NAs    :8713                  NAs    :9430      
+      carrier           flight          tailnum             origin      
+ Length   :336776   Min.   :   1   Length   :336776   Length   :336776  
+ N.unique :    16   1st Qu.: 553   N.unique :  4043   N.unique :     3  
+ N.blank  :     0   Median :1496   N.blank  :     0   N.blank  :     0  
+ Min.nchar:     2   Mean   :1972   Min.nchar:     5   Min.nchar:     3  
+ Max.nchar:     2   3rd Qu.:3465   Max.nchar:     6   Max.nchar:     3  
+                    Max.   :8500   NAs      :  2512                     
                                                                         
-     dest              air_time        distance         hour      
- Length:336776      Min.   : 20.0   Min.   :  17   Min.   : 1.00  
- Class :character   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
- Mode  :character   Median :129.0   Median : 872   Median :13.00  
-                    Mean   :150.7   Mean   :1040   Mean   :13.18  
-                    3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
+        dest           air_time        distance         hour      
+ Length   :336776   Min.   : 20.0   Min.   :  17   Min.   : 1.00  
+ N.unique :   105   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
+ N.blank  :     0   Median :129.0   Median : 872   Median :13.00  
+ Min.nchar:     3   Mean   :150.7   Mean   :1040   Mean   :13.18  
+ Max.nchar:     3   3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
                     Max.   :695.0   Max.   :4983   Max.   :23.00  
-                    NA's   :9430                                  
+                    NAs    :9430                                  
      minute        time_hour                  
  Min.   : 0.00   Min.   :2013-01-01 05:00:00  
  1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00  
@@ -153,14 +153,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( weather )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    origin               year          month             day       
- Length:26115       Min.   :2013   Min.   : 1.000   Min.   : 1.00  
- Class :character   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
- Mode  :character   Median :2013   Median : 7.000   Median :16.00  
-                    Mean   :2013   Mean   : 6.504   Mean   :15.68  
-                    3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
-                    Max.   :2013   Max.   :12.000   Max.   :31.00  
-                                                                   
+<pre><code>       origin           year          month             day       
+ Length   :26115   Min.   :2013   Min.   : 1.000   Min.   : 1.00  
+ N.unique :    3   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
+ N.blank  :    0   Median :2013   Median : 7.000   Median :16.00  
+ Min.nchar:    3   Mean   :2013   Mean   : 6.504   Mean   :15.68  
+ Max.nchar:    3   3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
+                   Max.   :2013   Max.   :12.000   Max.   :31.00  
+                                                                  
       hour            temp             dewp           humid       
  Min.   : 0.00   Min.   : 10.94   Min.   :-9.94   Min.   : 12.74  
  1st Qu.: 6.00   1st Qu.: 39.92   1st Qu.:26.06   1st Qu.: 47.05  
@@ -168,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :11.49   Mean   : 55.26   Mean   :41.44   Mean   : 62.53  
  3rd Qu.:17.00   3rd Qu.: 69.98   3rd Qu.:57.92   3rd Qu.: 78.79  
  Max.   :23.00   Max.   :100.04   Max.   :78.08   Max.   :100.00  
-                 NA's   :1        NA's   :1       NA's   :1       
+                 NAs    :1        NAs    :1       NAs    :1       
     wind_dir       wind_speed         wind_gust         precip        
  Min.   :  0.0   Min.   :   0.000   Min.   :16.11   Min.   :0.000000  
  1st Qu.:120.0   1st Qu.:   6.905   1st Qu.:20.71   1st Qu.:0.000000  
@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :199.8   Mean   :  10.517   Mean   :25.49   Mean   :0.004469  
  3rd Qu.:290.0   3rd Qu.:  13.809   3rd Qu.:28.77   3rd Qu.:0.000000  
  Max.   :360.0   Max.   :1048.361   Max.   :66.75   Max.   :1.210000  
- NA's   :460     NA's   :4          NA's   :20778                     
+ NAs    :460     NAs    :4          NAs    :20778                     
     pressure          visib          time_hour                  
  Min.   : 983.8   Min.   : 0.000   Min.   :2013-01-01 01:00:00  
  1st Qu.:1012.9   1st Qu.:10.000   1st Qu.:2013-04-01 21:30:00  
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :1017.9   Mean   : 9.255   Mean   :2013-07-01 18:26:37  
  3rd Qu.:1023.0   3rd Qu.:10.000   3rd Qu.:2013-09-30 13:00:00  
  Max.   :1042.1   Max.   :10.000   Max.   :2013-12-30 18:00:00  
- NA's   :2729                                                   </code></pre>
+ NAs    :2729                                                   </code></pre>
 </div>
 </div>
 <p>Make a synthetic data set consisting of flights out of JFK for the <em>ExpressJet</em> airlines.</p>
@@ -200,14 +200,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> df.jfk </span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df.jfk )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   DateTime         Departure Delay  Departure Time
- Length:1408        Min.   :-19.00   Min.   : 559  
- Class :character   1st Qu.: -6.00   1st Qu.: 959  
- Mode  :character   Median : -2.00   Median :1355  
-                    Mean   : 18.52   Mean   :1237  
-                    3rd Qu.: 16.00   3rd Qu.:1900  
-                    Max.   :536.00   Max.   :1945  
-                    NA's   :82                     </code></pre>
+<pre><code>      DateTime    Departure Delay  Departure Time
+ Length   :1408   Min.   :-19.00   Min.   : 559  
+ N.unique :1408   1st Qu.: -6.00   1st Qu.: 959  
+ N.blank  :   0   Median : -2.00   Median :1355  
+ Min.nchar:   5   Mean   : 18.52   Mean   :1237  
+ Max.nchar:   8   3rd Qu.: 16.00   3rd Qu.:1900  
+                  Max.   :536.00   Max.   :1945  
+                  NAs    :82                     </code></pre>
 </div>
 </div>
 <p>Now I’ll do the same with the weather data.</p>
@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :54.47   Mean   :41.86   Mean   : 65.21   Mean   :204.2  
  3rd Qu.:69.08   3rd Qu.:57.92   3rd Qu.: 82.73   3rd Qu.:290.0  
  Max.   :98.06   Max.   :78.08   Max.   :100.00   Max.   :360.0  
-                                                  NA's   :51     
+                                                  NAs    :51     
    wind_speed       wind_gust         precip            pressure     
  Min.   : 0.000   Min.   :16.11   Min.   :0.000000   Min.   : 985.7  
  1st Qu.: 6.905   1st Qu.:23.02   1st Qu.:0.000000   1st Qu.:1013.1  
@@ -233,15 +233,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :11.468   Mean   :27.56   Mean   :0.003985   Mean   :1018.2  
  3rd Qu.:14.960   3rd Qu.:31.07   3rd Qu.:0.000000   3rd Qu.:1023.3  
  Max.   :42.579   Max.   :66.75   Max.   :0.660000   Max.   :1042.1  
- NA's   :3        NA's   :7199                       NA's   :831     
-     visib          DateTime        
- Min.   : 0.000   Length:8706       
- 1st Qu.:10.000   Class :character  
- Median :10.000   Mode  :character  
- Mean   : 9.178                     
- 3rd Qu.:10.000                     
- Max.   :10.000                     
-                                    </code></pre>
+ NAs    :3        NAs    :7199                       NAs    :831     
+     visib             DateTime   
+ Min.   : 0.000   Length   :8706  
+ 1st Qu.:10.000   N.unique :8705  
+ Median :10.000   N.blank  :   0  
+ Mean   : 9.178   Min.nchar:   5  
+ 3rd Qu.:10.000   Max.nchar:   8  
+ Max.   :10.000                   
+                                  </code></pre>
 </div>
 </div>
 <p>Join these two data frames so you ahve JFK flights and Weather my time.</p>
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   : 18.53   Mean   :1236   Mean   :55.92   Mean   :42.44  
  3rd Qu.: 16.00   3rd Qu.:1900   3rd Qu.:69.98   3rd Qu.:59.00  
  Max.   :536.00   Max.   :1945   Max.   :96.98   Max.   :78.08  
- NA's   :81                                                     
+ NAs    :81                                                     
      humid           wind_dir       wind_speed       wind_gust    
  Min.   : 18.19   Min.   :  0.0   Min.   : 0.000   Min.   :16.11  
  1st Qu.: 46.13   1st Qu.:130.0   1st Qu.: 8.055   1st Qu.:23.02  
@@ -266,7 +266,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   : 63.49   Mean   :203.5   Mean   :11.865   Mean   :27.57  
  3rd Qu.: 80.75   3rd Qu.:290.0   3rd Qu.:14.960   3rd Qu.:31.07  
  Max.   :100.00   Max.   :360.0   Max.   :33.373   Max.   :46.03  
-                  NA's   :12      NA's   :2        NA's   :1148   
+                  NAs    :12      NAs    :2        NAs    :1148   
      precip            pressure          visib      
  Min.   :0.000000   Min.   : 985.7   Min.   : 0.00  
  1st Qu.:0.000000   1st Qu.:1013.0   1st Qu.:10.00  
@@ -274,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Mean   :0.003407   Mean   :1018.1   Mean   : 9.17  
  3rd Qu.:0.000000   3rd Qu.:1023.2   3rd Qu.:10.00  
  Max.   :0.480000   Max.   :1041.9   Max.   :10.00  
-                    NA's   :135                     </code></pre>
+                    NAs    :135                     </code></pre>
 </div>
 </div>
 <section id="activity" class="level1">
@@ -446,8 +446,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 2 Visibility + Wind Dir 2372.894</code></pre>
 </div>
 </div>
-<!-- -->
-
 </section>
 
 </main>
@@ -522,57 +520,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
-    }
-    const viewSource = window.document.getElementById('quarto-view-source') ||
-                       window.document.getElementById('quarto-code-tools-source');
-    if (viewSource) {
-      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-      viewSource.addEventListener("click", function(e) {
-        if (sourceUrl) {
-          // rstudio viewer pane
-          if (/\bcapabilities=\b/.test(window.location)) {
-            window.open(sourceUrl);
-          } else {
-            window.location.href = sourceUrl;
-          }
-        } else {
-          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-          modal.show();
-        }
-        return false;
-      });
-    }
-    function toggleCodeHandler(show) {
-      return function(e) {
-        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-        for (let i=0; i<detailsSrc.length; i++) {
-          const details = detailsSrc[i].parentElement;
-          if (show) {
-            details.open = true;
-          } else {
-            details.removeAttribute("open");
-          }
-        }
-        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-        const fromCls = show ? "hidden" : "unhidden";
-        const toCls = show ? "unhidden" : "hidden";
-        for (let i=0; i<cellCodeDivs.length; i++) {
-          const codeDiv = cellCodeDivs[i];
-          if (codeDiv.classList.contains(fromCls)) {
-            codeDiv.classList.remove(fromCls);
-            codeDiv.classList.add(toCls);
-          } 
-        }
-        return false;
-      }
-    }
-    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-    if (hideAllCode) {
-      hideAllCode.addEventListener("click", toggleCodeHandler(false));
-    }
-    const showAllCode = window.document.getElementById("quarto-show-all-code");
-    if (showAllCode) {
-      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -902,109 +849,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
       }
     }
   });
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Regression Homework Activity"</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: false</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="al">![](media/models.png)</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( tidyverse )</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( nycflights13 )</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>Since regression analysis is such a fundamental component of inferences, I thought it would be a good idea to try to work through a few more examples to give you some more practice.  </span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>For this we will use some data on flights into and out of Newark (EWR), JFK, and La Guardia airports in NYC metropolitan area.</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( flights) </span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>We also have some data related to local weather conditions.</span>
-<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( weather )</span>
-<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>Make a synthetic data set consisting of flights out of JFK for the *ExpressJet* airlines.  </span>
-<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Since the weather data is on the hour, I also make a synthetic varible `Month.Day.Hour` so that I can join the weather data to this one.</span></span>
-<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( origin <span class="sc">==</span> <span class="st">"JFK"</span>, carrier <span class="sc">==</span> <span class="st">"EV"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">DateTime =</span> <span class="fu">paste</span>(month,day,hour, <span class="at">sep=</span><span class="st">"."</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( DateTime, </span>
-<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>          <span class="st">`</span><span class="at">Departure Delay</span><span class="st">`</span> <span class="ot">=</span> dep_delay,</span>
-<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>          <span class="st">`</span><span class="at">Departure Time</span><span class="st">`</span> <span class="ot">=</span> sched_dep_time) <span class="sc">%&gt;%</span></span>
-<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> df.jfk </span>
-<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df.jfk )</span>
-<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>Now I'll do the same with the weather data.</span>
-<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>weather <span class="sc">%&gt;%</span></span>
-<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( origin <span class="sc">==</span> <span class="st">"JFK"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">DateTime =</span> <span class="fu">paste</span>(month,day,hour, <span class="at">sep=</span><span class="st">"."</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>origin, <span class="sc">-</span>year, <span class="sc">-</span>month, <span class="sc">-</span>day, <span class="sc">-</span>hour, <span class="sc">-</span>time_hour ) <span class="ot">-&gt;</span> df.weather </span>
-<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df.weather )</span>
-<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>Join these two data frames so you ahve JFK flights and Weather my time.</span>
-<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>( df.jfk, df.weather, <span class="at">by=</span><span class="st">"DateTime"</span> ) <span class="sc">%&gt;%</span></span>
-<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>DateTime ) <span class="ot">-&gt;</span> df </span>
-<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df )</span>
-<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a><span class="fu"># Activity</span></span>
-<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a>What features of this data set may impact the departure delay for flights coming out of JFK on *ExpressJet* Airlines?</span>
-<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb27-84"><a href="#cb27-84" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb27-85"><a href="#cb27-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( wind_gust ) ) <span class="sc">|&gt;</span> </span>
-<span id="cb27-86"><a href="#cb27-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( pressure ) ) <span class="sc">|&gt;</span></span>
-<span id="cb27-87"><a href="#cb27-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( <span class="st">`</span><span class="at">Departure Delay</span><span class="st">`</span>)) <span class="ot">-&gt;</span> df </span>
-<span id="cb27-88"><a href="#cb27-88" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb27-89"><a href="#cb27-89" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df ) </span>
-<span id="cb27-90"><a href="#cb27-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-91"><a href="#cb27-91" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>( df)</span>
-<span id="cb27-92"><a href="#cb27-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-93"><a href="#cb27-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-94"><a href="#cb27-94" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Departure Delay</span><span class="st">`</span> <span class="sc">~</span> visib, <span class="at">data =</span> df )</span>
-<span id="cb27-95"><a href="#cb27-95" aria-hidden="true" tabindex="-1"></a>fit1 </span>
-<span id="cb27-96"><a href="#cb27-96" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit1)</span>
-<span id="cb27-97"><a href="#cb27-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-98"><a href="#cb27-98" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Resid <span class="ot">&lt;-</span> <span class="fu">resid</span>( fit1 )</span>
-<span id="cb27-99"><a href="#cb27-99" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>( df )</span>
-<span id="cb27-100"><a href="#cb27-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-101"><a href="#cb27-101" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="st">`</span><span class="at">Departure Delay</span><span class="st">`</span> <span class="sc">~</span> visib <span class="sc">+</span> wind_dir, <span class="at">data =</span> df )</span>
-<span id="cb27-102"><a href="#cb27-102" aria-hidden="true" tabindex="-1"></a>fit2</span>
-<span id="cb27-103"><a href="#cb27-103" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit2 )</span>
-<span id="cb27-104"><a href="#cb27-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-105"><a href="#cb27-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-106"><a href="#cb27-106" aria-hidden="true" tabindex="-1"></a>df.aic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">model =</span> <span class="fu">c</span>(<span class="st">"Visibility"</span>, <span class="st">"Visibility + Wind Dir"</span>), </span>
-<span id="cb27-107"><a href="#cb27-107" aria-hidden="true" tabindex="-1"></a>                      <span class="at">aic =</span> <span class="fu">c</span>(<span class="fu">AIC</span>( fit1 ),<span class="fu">AIC</span>( fit2 )) )</span>
-<span id="cb27-108"><a href="#cb27-108" aria-hidden="true" tabindex="-1"></a>df.aic</span>
-<span id="cb27-109"><a href="#cb27-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb27-110"><a href="#cb27-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-111"><a href="#cb27-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-112"><a href="#cb27-112" aria-hidden="true" tabindex="-1"></a></span>
-</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
-</div></div></div></div></div>
+  </script>
 </div> <!-- /content -->
 
 
