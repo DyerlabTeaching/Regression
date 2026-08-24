@@ -10,157 +10,27 @@ library( tidyverse )
 library( nycflights13 )
 ```
 
-Since regression analysis is such a fundamental component of inferences, I thought it would be a good idea to try to work through a few more examples to give you some more practice.  
+Since regression analysis is such a fundamental component of inferences, I thought it would be a good idea to try to work through a few more examples to give you some more practice.
 
 For this we will use some data on flights into and out of Newark (EWR), JFK, and La Guardia airports in NYC metropolitan area.
 
 ```{r}
-summary( flights) 
-flights |> 
-  filter( carrier == "EV" ) |>
-  mutate( DTH = paste( month, day, hour(time_hour), sep="." ) ) |>
-  select( dep_delay, DTH ) -> df1
-names( df1 )
-
+summary( flights )
 ```
 
 We also have some data related to local weather conditions.
 
 ```{r}
 summary( weather )
-weather |>
-  mutate( DTH = paste( month, day, hour(time_hour), sep = "." ) ) |>
-  filter( origin == "JFK") |>
-  select( -year, -month, -day, -hour, -time_hour, -origin) -> df2 
-names(df2)
 ```
-
-
-```{r}
-merge( df1, df2, by = "DTH") -> df 
-summary( df )
-```
-
-
-
 
 # Question
 
 What weather features best explain departure delays from JFK for `ExpressJet` airlines?
 
+Use the `flights` and `weather` data sets above to build a data set of departure delays and weather conditions for JFK/ExpressJet flights, then fit and compare regression models to answer the question.
 
 ```{r}
-df |>
-  filter( !is.na( dep_delay ) ) |> 
-  filter( !is.na( pressure ) ) |>
-  filter( !is.na( wind_dir )) |> 
-  select( -wind_gust, -DTH ) -> df
-
-names(df)
-```
-
-
-## The Pedantic Approach
-
-
-1. Find 1st order interactions
-2. Find best one
-3. Fit best
-4. Goto 1
-
-
-```{r}
-fit.1 <- lm( dep_delay ~ temp, data = df )
-fit.2 <- lm( dep_delay ~ dewp, data = df )
-fit.3 <- lm( dep_delay ~ humid, data = df )
-fit.4 <- lm( dep_delay ~ wind_dir, data = df )
-fit.5 <- lm( dep_delay ~ wind_speed, data = df )
-fit.6 <- lm( dep_delay ~ precip, data = df )
-fit.7 <- lm( dep_delay ~ pressure, data = df )
-fit.8 <- lm( dep_delay ~ visib, data = df )
-
-
-aic.1 <- AIC(fit.1)
-aic.2 <- AIC(fit.2)
-aic.3 <- AIC(fit.3)
-aic.4 <- AIC(fit.4)
-aic.5 <- AIC(fit.5)
-aic.6 <- AIC(fit.6)
-aic.7 <- AIC(fit.7)
-aic.8 <- AIC(fit.8)
-
-
-data.frame( model = 1:8,
-            R2 = c( summary(fit.1)$r.squared,
-                    summary(fit.2)$r.squared,
-                    summary(fit.3)$r.squared,
-                    summary(fit.4)$r.squared,
-                    summary(fit.5)$r.squared,
-                    summary(fit.6)$r.squared,
-                    summary(fit.7)$r.squared,
-                    summary(fit.8)$r.squared ), 
-            AIC = c( aic.1,
-                     aic.2,
-                     aic.3,
-                     aic.4,
-                     aic.5,
-                     aic.6,
-                     aic.7,
-                     aic.8
-                     )) |>
-  mutate( dAIC = AIC - min(AIC)) 
-```
-
-
-
-## Stepwise Approach
-
-```{r}
-cor(df)
-```
-
-
-
-```{r}
-fit.s.1 <- lm( dep_delay ~ pressure, data=df )
-summary( fit.s.1 )
-```
-
-
-```{r}
-res <- resid(fit.s.1 ) # residual data 
-res
-```
-
-
-
-```{r}
-df$resid <- res 
-cor( df )
-```
-
-
-```{r}
-fit.s.2 <- lm( dep_delay ~ pressure + visib, data = df )
-
-data.frame( Model = c("pressure", "pressure + visib"),
-            AIC = c( AIC( fit.s.1), AIC(fit.s.2 ) ) ) |>
-  mutate( delta = AIC - min(AIC) )
-```
-
-So pressure + visib is good, what about next variable?
-
-```{r}
-res <- resid( fit.s.2 )
-df$resid <- res 
-cor( df )
-```
-
-
-```{r}
-fit.s.3 <- lm( dep_delay ~ pressure + visib + wind_speed , data = df )
-summary( fit.s.3 )
+# Your code here
 
 ```
-
-
