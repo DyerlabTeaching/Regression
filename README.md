@@ -31,6 +31,14 @@ Regression is the development of a functional model describing how one (or more)
 - An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
 - A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic.
 
+## Assessment
+
+- A [homework](https://dyerlabteaching.github.io/Regression/homework.html) assignment on the topic.
+
+## Logistics
+
+- A [Teaching Log](https://dyerlabteaching.github.io/Regression/log.html) record of delivery and notes.
+
 ## Contact Information
 
 If you need to contact me, I am available at:
