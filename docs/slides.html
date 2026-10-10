@@ -241,13 +241,13 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb1-2"><a href=""></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
 <span id="cb1-3"><a href=""></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     beta0             beta1         
- Min.   :-19.796   Min.   :-4.95994  
- 1st Qu.: -7.777   1st Qu.:-2.21131  
- Median :  6.301   Median : 0.07079  
- Mean   :  8.441   Mean   : 0.11166  
- 3rd Qu.: 24.426   3rd Qu.: 2.46060  
- Max.   : 39.958   Max.   : 4.95395  </code></pre>
+<pre><code>     beta0             beta1        
+ Min.   :-19.598   Min.   :-4.9365  
+ 1st Qu.: -4.274   1st Qu.:-2.5385  
+ Median : 10.611   Median :-0.2273  
+ Mean   :  9.573   Mean   :-0.1091  
+ 3rd Qu.: 21.650   3rd Qu.: 2.4200  
+ Max.   : 39.864   Max.   : 4.9770  </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -290,13 +290,13 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb4-7"><a href=""></a>}</span>
 <span id="cb4-8"><a href=""></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      beta0     beta1     dist
-1 -7.375588  4.651977 15.61575
-2  4.200233 -1.959842 40.83772
-3  8.387190 -1.718626 35.46853
-4  2.017924 -4.619716 59.14127
-5 -9.781472 -2.529774 57.59827
-6 36.261688 -1.168502 12.23777</code></pre>
+<pre><code>       beta0      beta1     dist
+1 28.7849851 -2.3686944 22.09158
+2 15.1029467  0.5388660 15.80474
+3 -2.7209410  3.2435006 17.49930
+4 20.6735662  3.7980586 11.64837
+5 26.9316197 -0.7176156 13.99879
+6  0.4951626  0.5963720 29.02303</code></pre>
 </div>
 </div>
 </section>
@@ -388,7 +388,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <section id="section" class="slide level2">
 <h2>&nbsp;</h2>
 
-<img data-src="https://live.staticflickr.com/65535/50588297022_62f043a616_c_d.jpg" class="r-stretch"></section>
+<img data-src="media/flickr_50588297022.jpg" class="r-stretch"></section>
 <section id="specifying-a-formula" class="slide level2">
 <h2>Specifying a Formula</h2>
 <p>For <code>R</code> to perform these analyses for us, we need to be able to specify the <em>function</em> that we will use to represent the data (just like we did for <code>plot(y~x)</code>). Assuming the predictor is named <code>x</code> and the response is <code>y</code>, we have:</p>
@@ -917,35 +917,35 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: left;">0.6062</td>
+<td style="text-align: left;">0.6059</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: left;">0.6143</td>
+<td style="text-align: left;">0.6075</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: left;">0.6208</td>
+<td style="text-align: left;">0.6081</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: left;">0.6296</td>
+<td style="text-align: left;">0.6255</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: left;">0.6337</td>
+<td style="text-align: left;">0.6255</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: left;">0.6354</td>
+<td style="text-align: left;">0.6258</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: left;">0.6354</td>
+<td style="text-align: left;">0.6283</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: left;">0.6404</td>
+<td style="text-align: left;">0.6330</td>
 </tr>
 </tbody>
 </table>
@@ -1036,50 +1036,50 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
 <td style="text-align: right;">0.606</td>
-<td style="text-align: right;">1000.618</td>
-<td style="text-align: right;">1.901</td>
+<td style="text-align: right;">1000.708</td>
+<td style="text-align: right;">1.991</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.614</td>
-<td style="text-align: right;">1000.338</td>
-<td style="text-align: right;">1.621</td>
+<td style="text-align: right;">0.607</td>
+<td style="text-align: right;">1002.276</td>
+<td style="text-align: right;">3.559</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.621</td>
-<td style="text-align: right;">1000.436</td>
-<td style="text-align: right;">1.719</td>
+<td style="text-align: right;">0.608</td>
+<td style="text-align: right;">1004.095</td>
+<td style="text-align: right;">5.378</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.630</td>
-<td style="text-align: right;">999.833</td>
-<td style="text-align: right;">1.116</td>
+<td style="text-align: right;">0.625</td>
+<td style="text-align: right;">1001.063</td>
+<td style="text-align: right;">2.346</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.634</td>
-<td style="text-align: right;">1000.606</td>
-<td style="text-align: right;">1.889</td>
+<td style="text-align: right;">0.626</td>
+<td style="text-align: right;">1003.047</td>
+<td style="text-align: right;">4.330</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.635</td>
-<td style="text-align: right;">1002.094</td>
-<td style="text-align: right;">3.377</td>
+<td style="text-align: right;">0.626</td>
+<td style="text-align: right;">1004.963</td>
+<td style="text-align: right;">6.246</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.635</td>
-<td style="text-align: right;">1004.086</td>
-<td style="text-align: right;">5.369</td>
+<td style="text-align: right;">0.628</td>
+<td style="text-align: right;">1006.219</td>
+<td style="text-align: right;">7.502</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.640</td>
-<td style="text-align: right;">1004.536</td>
-<td style="text-align: right;">5.819</td>
+<td style="text-align: right;">0.633</td>
+<td style="text-align: right;">1006.815</td>
+<td style="text-align: right;">8.098</td>
 </tr>
 </tbody>
 </table>
