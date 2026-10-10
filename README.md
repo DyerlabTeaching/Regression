@@ -1,6 +1,6 @@
 # Regression Analysis
 
-![](https://github.com/DyerlabTeaching/Regression/raw/main/media/models.png)
+![](https://dyerlabteaching.github.io/Regression/media/models.png)
 
 ## Impetus
 

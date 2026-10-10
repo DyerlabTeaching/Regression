@@ -1,7 +1,7 @@
 ---
 title: "Regression"
 author: Rodney Dyer, PhD
-format: revealjs
+format: dyerlab-revealjs
 execute: 
   echo: true
 ---

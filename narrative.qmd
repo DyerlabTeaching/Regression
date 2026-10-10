@@ -1,6 +1,6 @@
 ---
 title: "Regression"
-format: html
+format: dyerlab-narrative-html
 ---
 ![](media/models.png)
 

@@ -1,6 +1,6 @@
 ---
 title: "In Class Activity - Regression"
-format: html
+format: dyerlab-html
 ---
 
 ![](media/models.png)
