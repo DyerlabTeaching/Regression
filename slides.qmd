@@ -275,7 +275,7 @@ ggplot( grid, aes(x = beta0,
 
 ## &nbsp; 
 
-![](https://live.staticflickr.com/65535/50588297022_62f043a616_c_d.jpg)
+![](media/flickr_50588297022.jpg)
 
 
 
