@@ -335,7 +335,7 @@ There are two parameters that we have already looked at that may help.  These ar
 
 - The $R^2$: Models that explain more of the variation may be considered more informative.
 
-Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlab.github.io/ENVS-Lectures/r_language/data_frames/homework.nb.html).
+Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlabteaching.github.io/Data-Containers/narrative.html).
 
 ```{r}
 airquality %>%
