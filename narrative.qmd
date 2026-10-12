@@ -2,7 +2,14 @@
 title: "Regression"
 format: dyerlab-narrative-html
 ---
-![](media/models.png)
+
+<!-- BEGIN module:header — generated from module.yml; edit that, not this -->
+
+![](media/module_image.jpg){fig-alt="A donkey on the beach near Ixtapa, Mexico."}
+
+> The overall goal of any model is to provide a low-level description of patterns within the data.
+
+<!-- END module:header -->
 
 ```{r setup, include=FALSE}
 library( knitr )
@@ -11,8 +18,6 @@ library( tidyverse )
 theme_set( theme_minimal( base_size = 16) )
 ```
 
-
-> The overall goal of any model is to provide a low-level description of patterns within the data.
 
 If we think of all the variation in a data set, we can partition it into the following components:
 
@@ -202,7 +207,6 @@ grid %>%
 Fortunately, we have a lot of additional information available to us because we used the `lm()` function.
 
 
-
 ## Model Fit
 
 We can estimate a bunch of different models but before we look to see if it is well behaved.  There are several interesting plots that we can examine from the model object such as:
@@ -322,7 +326,6 @@ We almost **always** need to look at the residuals of a regression model to help
 plot( resids ~ yhat, bty="n", xlab="Predicted Values", ylab="Residuals (yhat - y)", pch=16 )
 abline(0, 0, lty=2, col="red")
 ```
-
 
 
 ## Comparing Models

@@ -1,6 +1,10 @@
-# Regression Analysis
+# Regression
 
-![](https://dyerlabteaching.github.io/Regression/media/models.png)
+<!-- BEGIN module:header — generated from module.yml; edit that, not this -->
+
+![A donkey on the beach near Ixtapa, Mexico.](https://dyerlabteaching.github.io/Regression/media/module_image.jpg)
+
+<!-- END module:header -->
 
 ## Impetus
 
@@ -26,10 +30,14 @@ Regression is the development of a functional model describing how one (or more)
 
 ## Content
 
-- The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for regression.
-- A set of longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) text on regression model development.
+<!-- BEGIN module:resources — generated from module.yml; edit that, not this -->
+
+- The [slides](https://dyerlabteaching.github.io/Regression/slides.html) for this topic.
+- A longer [narrative](https://dyerlabteaching.github.io/Regression/narrative.html) that goes into more depth.
 - An [in-class](https://dyerlabteaching.github.io/Regression/in-class.html) activity.
 - A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic.
+
+<!-- END module:resources -->
 
 ## Assessment
 

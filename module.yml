@@ -1,0 +1,10 @@
+title: "Regression"
+repo: Regression
+image:
+  file: media/module_image.jpg
+  alt: "A donkey on the beach near Ixtapa, Mexico."
+epigraph: >-
+  The overall goal of any model is to provide a low-level description of
+  patterns within the data.
+resources:
+  - "A [video](https://youtu.be/V-6zwksvvwk) of the lecture components of this topic."
