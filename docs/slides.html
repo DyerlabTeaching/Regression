@@ -242,12 +242,12 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb1-3"><a href=""></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0             beta1        
- Min.   :-19.965   Min.   :-4.9482  
- 1st Qu.: -7.740   1st Qu.:-2.6707  
- Median :  7.750   Median :-0.2677  
- Mean   :  8.274   Mean   :-0.1383  
- 3rd Qu.: 25.108   3rd Qu.: 2.2503  
- Max.   : 39.808   Max.   : 4.9935  </code></pre>
+ Min.   :-19.994   Min.   :-4.9706  
+ 1st Qu.: -4.177   1st Qu.:-2.8298  
+ Median : 12.500   Median :-0.5086  
+ Mean   : 11.365   Mean   :-0.2297  
+ 3rd Qu.: 26.174   3rd Qu.: 2.3411  
+ Max.   : 39.534   Max.   : 4.9323  </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -291,12 +291,12 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb4-8"><a href=""></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       beta0      beta1     dist
-1  -7.268578  2.8986425 23.64729
-2  27.065503 -1.4491565 17.99488
-3 -10.345671  0.6848561 39.05557
-4   1.427956  4.0351897 10.46134
-5 -13.567335  0.9713629 40.56625
-6  39.523158  3.4212957 27.22725</code></pre>
+1  -1.735797 -4.1708439 59.90800
+2  30.580318  2.4200222 13.26371
+3   7.104675 -2.0030616 38.39076
+4 -11.277219  3.0812940 26.60414
+5  30.174181 -1.3919689 15.66145
+6  18.413352  0.1145719 15.49724</code></pre>
 </div>
 </div>
 </section>
@@ -633,7 +633,7 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <p>Grabbing the predicted values <span class="math inline">\(\hat{y}\)</span> from the model.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>df<span class="sc">$</span>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>( fit )</span>
-<span id="cb33-2"><a href=""></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href=""></a>df <span class="sc">|&gt;</span> </span>
 <span id="cb33-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(x,yhat) ) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb33-4"><a href=""></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(<span class="at">y=</span>y), <span class="at">col=</span><span class="st">"darkred"</span>, <span class="at">size=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
@@ -644,7 +644,7 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <p>The residuals are the distances between the observed value and its corresponding value on the fitted line.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>df<span class="sc">$</span>residuals <span class="ot">&lt;-</span> <span class="fu">residuals</span>( fit ) </span>
-<span id="cb34-2"><a href=""></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href=""></a>df <span class="sc">|&gt;</span></span>
 <span id="cb34-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(yhat, residuals) ) <span class="sc">+</span> </span>
 <span id="cb34-4"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb34-5"><a href=""></a>  <span class="fu">geom_abline</span>( <span class="at">slope=</span><span class="dv">0</span>,<span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -668,7 +668,7 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <h2>New Data Set</h2>
 <p>Let’s start by looking at some air quality data, that is built into <code>R</code> as an example data set.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>airquality <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>airquality <span class="sc">|&gt;</span></span>
 <span id="cb35-2"><a href=""></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="ot">-&gt;</span> df.air</span>
 <span id="cb35-3"><a href=""></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -917,35 +917,35 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: left;">0.6061</td>
+<td style="text-align: left;">0.6062</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: left;">0.6088</td>
+<td style="text-align: left;">0.6125</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: left;">0.6091</td>
+<td style="text-align: left;">0.6200</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: left;">0.6138</td>
+<td style="text-align: left;">0.6205</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: left;">0.6138</td>
+<td style="text-align: left;">0.6207</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: left;">0.6162</td>
+<td style="text-align: left;">0.6269</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: left;">0.6163</td>
+<td style="text-align: left;">0.6280</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: left;">0.6230</td>
+<td style="text-align: left;">0.6285</td>
 </tr>
 </tbody>
 </table>
@@ -1036,50 +1036,50 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
 <td style="text-align: right;">0.606</td>
-<td style="text-align: right;">1000.651</td>
-<td style="text-align: right;">1.934</td>
+<td style="text-align: right;">1000.618</td>
+<td style="text-align: right;">1.901</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.609</td>
-<td style="text-align: right;">1001.891</td>
-<td style="text-align: right;">3.174</td>
+<td style="text-align: right;">0.612</td>
+<td style="text-align: right;">1000.852</td>
+<td style="text-align: right;">2.135</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.609</td>
-<td style="text-align: right;">1003.815</td>
-<td style="text-align: right;">5.098</td>
+<td style="text-align: right;">0.620</td>
+<td style="text-align: right;">1000.664</td>
+<td style="text-align: right;">1.947</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.614</td>
-<td style="text-align: right;">1004.474</td>
-<td style="text-align: right;">5.757</td>
+<td style="text-align: right;">0.621</td>
+<td style="text-align: right;">1002.523</td>
+<td style="text-align: right;">3.806</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.614</td>
-<td style="text-align: right;">1006.472</td>
-<td style="text-align: right;">7.755</td>
+<td style="text-align: right;">0.621</td>
+<td style="text-align: right;">1004.471</td>
+<td style="text-align: right;">5.754</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.616</td>
-<td style="text-align: right;">1007.772</td>
-<td style="text-align: right;">9.054</td>
+<td style="text-align: right;">0.627</td>
+<td style="text-align: right;">1004.637</td>
+<td style="text-align: right;">5.920</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.616</td>
-<td style="text-align: right;">1009.760</td>
-<td style="text-align: right;">11.043</td>
+<td style="text-align: right;">0.628</td>
+<td style="text-align: right;">1006.303</td>
+<td style="text-align: right;">7.585</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.623</td>
-<td style="text-align: right;">1009.784</td>
-<td style="text-align: right;">11.067</td>
+<td style="text-align: right;">0.629</td>
+<td style="text-align: right;">1008.148</td>
+<td style="text-align: right;">9.431</td>
 </tr>
 </tbody>
 </table>
