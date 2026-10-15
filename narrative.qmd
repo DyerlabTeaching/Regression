@@ -199,8 +199,8 @@ model_distance( -1.76, 3.385, df$x, df$y )
 which we can see is pretty close in terms of the coefficients and has a smaller model distance than those examined in the grid.
 
 ```{r}
-grid %>%
-  arrange( dist ) %>%
+grid |>
+  arrange( dist ) |>
   head( n = 1) 
 ```
 
@@ -341,7 +341,7 @@ There are two parameters that we have already looked at that may help.  These ar
 Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlabteaching.github.io/Data-Containers/narrative.html).
 
 ```{r}
-airquality %>%
+airquality |>
   select( -Month, -Day ) -> df.air
 summary( df.air )
 ```
@@ -370,11 +370,11 @@ data.frame( Model = c( "Ozone ~ Solar",
                    get_pval( fit.temp ),
                    get_pval( fit.wind ) ) ) -> df.models
 
-df.models %>%
-  arrange( -R2 ) %>%
-  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+df.models |>
+  arrange( -R2 ) |>
+  mutate( P = format( P, scientific=TRUE, digits=3)) |>
   kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.",
-         digits = 3) %>%
+         digits = 3) |>
   kable_minimal()
 ```
 
@@ -410,10 +410,10 @@ df.models <- rbind( df.models,
                                        get_pval( fit.temp.solar),
                                        get_pval( fit.wind.solar) )
                                 ))
-df.models %>%
-  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+df.models |>
+  mutate( P = format( P, scientific=TRUE, digits=3)) |>
   kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.",
-         digits = 3) %>%
+         digits = 3) |>
   kable_minimal()
 ```
 
@@ -453,10 +453,10 @@ df.models$R2 = cell_spec( format( df.models$R2,
                                           "green",
                                           "black"))
 
-df.models %>%
-  mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
+df.models |>
+  mutate( P = format( P, digits=3, scientific = TRUE) ) |> 
   kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.",
-         escape = FALSE) %>%
+         escape = FALSE) |>
   kable_paper( "striped", full_width = FALSE )
 ```
 
@@ -493,10 +493,10 @@ data.frame( Models = names( random.models ),
             P = sapply( random.models, 
                         FUN = get_pval ) ) -> df.random
 
-df.random %>%
+df.random |>
   kable( caption = "Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data.",
          digits=4,
-         row.names = FALSE ) %>%
+         row.names = FALSE ) |>
   kable_paper("striped", full_width = FALSE )
 ```
 
@@ -532,12 +532,12 @@ df.random$AIC <- sapply( random.models,
 
 df.random$deltaAIC = df.random$AIC - min( df.random$A)
 
-df.random %>%
-  select( -P ) %>%
+df.random |>
+  select( -P ) |>
   kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models.",
          escape = FALSE,
          row.names = FALSE, 
-         digits = 3) %>%
+         digits = 3) |>
   kable_paper( "striped", full_width = FALSE )
 ```
 

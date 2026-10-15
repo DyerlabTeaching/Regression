@@ -517,7 +517,7 @@ Grabbing the predicted values $\hat{y}$ from the model.
 
 ```{r}
 df$yhat <- predict( fit )
-df %>% 
+df |> 
   ggplot( aes(x,yhat) ) + geom_line() + geom_point() +
   geom_point( aes(y=y), col="darkred", size=2)
 ```
@@ -529,7 +529,7 @@ The residuals are the distances between the observed value and its corresponding
 
 ```{r}
 df$residuals <- residuals( fit ) 
-df %>%
+df |>
   ggplot( aes(yhat, residuals) ) + 
   geom_point() + 
   geom_abline( slope=0,intercept=0, color="red")
@@ -590,7 +590,7 @@ There are two parameters that we have already looked at that may help.  These ar
 Let's start by looking at some air quality data, that is built into `R` as an example data set.
 
 ```{r}
-airquality %>%
+airquality |>
   select( -Month, -Day ) -> df.air
 summary( df.air )
 ```
@@ -628,11 +628,11 @@ data.frame( Model = c( "Ozone ~ Solar",
                    get_pval( fit.temp ),
                    get_pval( fit.wind ) ) ) -> df.models
 
-df.models %>%
-  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+df.models |>
+  mutate( P = format( P, scientific=TRUE, digits=3)) |>
   kable( caption = "Model parameters predicting mean ozone in parts per billion mearsured in New York during the period of 1 May 1973 - 30 September 1973 as predicted by Temperature, Windspeed, and Solar Radiation.",
          digits = 3,
-         align='l') %>%
+         align='l') |>
   kable_classic_2()
 ```
 
@@ -668,11 +668,11 @@ df.models <- rbind( df.models,
                                        get_pval( fit.temp.solar),
                                        get_pval( fit.wind.solar) )
                                 ))
-df.models %>%
-  mutate( P = format( P, scientific=TRUE, digits=3)) %>%
+df.models |>
+  mutate( P = format( P, scientific=TRUE, digits=3)) |>
   kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 1973 - 30 September 1973.",
          digits = 3,
-         align="l") %>%
+         align="l") |>
   kable_classic()
 ```
 
@@ -709,9 +709,9 @@ df.models <- rbind( df.models,
 #                                          "green",
 #                                          "black"))
 
-df.models %>%
-  mutate( P = format( P, digits=3, scientific = TRUE) ) %>% 
-  kable( escape = FALSE ) %>%
+df.models |>
+  mutate( P = format( P, digits=3, scientific = TRUE) ) |> 
+  kable( escape = FALSE ) |>
   kable_paper( "striped", full_width = FALSE )
 ```
 
@@ -758,26 +758,26 @@ data.frame( Models = names( random.models ),
 
 
 ```{r echo=FALSE}
-df.random %>%
-  head( n = 7 ) %>%
-  select( Models, R2 ) %>%
+df.random |>
+  head( n = 7 ) |>
+  select( Models, R2 ) |>
   kable( caption = "Original data in models.",
          digits=4,
          row.names = FALSE,
-         align="l") %>%
+         align="l") |>
   kable_paper("striped", full_width = FALSE )
 ```
 
 ## Random Data Effects
 
 ```{r echo=FALSE}
-df.random %>%
-  tail( n = 8 ) %>%
-  select( Models, R2 ) %>%
+df.random |>
+  tail( n = 8 ) |>
+  select( Models, R2 ) |>
   kable( caption = "Original full model + X random variables",
          digits=4,
          row.names = FALSE,
-         align='l') %>%
+         align='l') |>
   kable_paper("striped", full_width = FALSE )
 ```
 
@@ -834,12 +834,12 @@ df.random$AIC <- sapply( random.models,
                          FUN = AIC, 
                          simplify = TRUE )
 
-df.random %>%
-  mutate( deltaAIC = AIC - min(AIC) ) %>%
-  select( -P ) %>%
+df.random |>
+  mutate( deltaAIC = AIC - min(AIC) ) |>
+  select( -P ) |>
   kable( escape = FALSE,
          row.names = FALSE, 
-         digits = 3) %>%
+         digits = 3) |>
   kable_paper( "striped", full_width = FALSE )
 ```
 
