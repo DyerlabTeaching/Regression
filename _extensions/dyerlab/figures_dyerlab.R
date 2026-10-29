@@ -57,7 +57,7 @@ variable_types_grid <- function(highlight = NULL,
     ggplot2::geom_tile(ggplot2::aes(fill = fill), color = p$background,
                        linewidth = 3) +
     ggplot2::geom_text(ggplot2::aes(label = label, color = text),
-                       size = base_size / ggplot2::.pt * 1.25,
+                       size = base_size / ggplot2::.pt * 1.05,
                        fontface = "bold", lineheight = 0.9, vjust = 0.2) +
     ggplot2::geom_text(ggplot2::aes(label = sub, color = text),
                        size = base_size / ggplot2::.pt * 0.85,
