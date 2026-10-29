@@ -6,6 +6,16 @@ execute:
   echo: true
 ---
 
+## Choosing an Approach
+
+```{r}
+#| echo: false
+#| fig-align: center
+source("_extensions/dyerlab/figures_dyerlab.R")
+variable_types_grid(highlight = "regression")
+```
+
+
 ## Linear Models 
 
 The overall goal for our introduction here, is to develop models that may be parameterized by one or more terms.  The most simple model:
