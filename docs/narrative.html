@@ -184,13 +184,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     beta0             beta1        
- Min.   :-19.554   Min.   :-4.9570  
- 1st Qu.: -4.635   1st Qu.:-2.3057  
- Median : 11.234   Median : 0.2171  
- Mean   : 10.745   Mean   : 0.1361  
- 3rd Qu.: 24.967   3rd Qu.: 2.5970  
- Max.   : 39.863   Max.   : 4.9949  </code></pre>
+<pre><code>     beta0             beta1         
+ Min.   :-19.427   Min.   :-4.96299  
+ 1st Qu.: -5.634   1st Qu.:-2.15912  
+ Median :  8.216   Median : 0.25542  
+ Mean   :  8.882   Mean   : 0.08405  
+ 3rd Qu.: 21.305   3rd Qu.: 2.44190  
+ Max.   : 39.405   Max.   : 4.99179  </code></pre>
 </div>
 </div>
 <p>We can plot these and the original data and all these randomly defined models.</p>
@@ -241,13 +241,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      beta0       beta1      dist
-1 27.835820  2.52930110 11.317012
-2 30.478793  0.04739209  9.124285
-3 21.426543 -3.97952569 37.722378
-4 -9.509767  0.67482257 38.294488
-5 -7.461769  3.59551132 20.293648
-6 25.427630  4.74321268 21.361474</code></pre>
+<pre><code>      beta0      beta1      dist
+1  32.72714  3.6649825 22.007072
+2  32.62498 -3.8083793 27.759799
+3  21.44344  1.1711823  7.721005
+4  17.88130 -2.5730585 32.154006
+5  16.36595 -1.9299389 29.547134
+6 -16.02425 -0.8301046 53.500356</code></pre>
 </div>
 </div>
 <p>If we look through these models, we can see which are better than others by sorting in increasing squared distance.</p>
@@ -864,42 +864,42 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: right;">0.6071</td>
+<td style="text-align: right;">0.6070</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.6075</td>
+<td style="text-align: right;">0.6071</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.6267</td>
+<td style="text-align: right;">0.6100</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.6322</td>
+<td style="text-align: right;">0.6121</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.6322</td>
+<td style="text-align: right;">0.6136</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.6346</td>
+<td style="text-align: right;">0.6138</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.6359</td>
+<td style="text-align: right;">0.6143</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.6374</td>
+<td style="text-align: right;">0.6187</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 </tbody>
@@ -952,91 +952,91 @@ AIC = -2 \ln L + 2p
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
 <td style="text-align: right;">1067.706</td>
-<td style="text-align: right;">69.013</td>
+<td style="text-align: right;">68.989</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
 <td style="text-align: right;">0.362</td>
 <td style="text-align: right;">1093.187</td>
-<td style="text-align: right;">94.494</td>
+<td style="text-align: right;">94.470</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
 <td style="text-align: right;">0.121</td>
 <td style="text-align: right;">1083.714</td>
-<td style="text-align: right;">85.021</td>
+<td style="text-align: right;">84.997</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
 <td style="text-align: right;">0.569</td>
 <td style="text-align: right;">1049.741</td>
-<td style="text-align: right;">51.048</td>
+<td style="text-align: right;">51.024</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.510</td>
 <td style="text-align: right;">1020.820</td>
-<td style="text-align: right;">22.126</td>
+<td style="text-align: right;">22.103</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.449</td>
 <td style="text-align: right;">1033.816</td>
-<td style="text-align: right;">35.122</td>
+<td style="text-align: right;">35.098</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: right;">0.606</td>
 <td style="text-align: right;">998.717</td>
-<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
 <td style="text-align: right;">0.607</td>
-<td style="text-align: right;">1000.379</td>
-<td style="text-align: right;">1.686</td>
+<td style="text-align: right;">1000.398</td>
+<td style="text-align: right;">1.681</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
 <td style="text-align: right;">0.607</td>
-<td style="text-align: right;">1002.274</td>
-<td style="text-align: right;">3.580</td>
+<td style="text-align: right;">1002.368</td>
+<td style="text-align: right;">3.650</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.627</td>
-<td style="text-align: right;">998.693</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.610</td>
+<td style="text-align: right;">1003.543</td>
+<td style="text-align: right;">4.826</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.632</td>
-<td style="text-align: right;">999.060</td>
-<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">0.612</td>
+<td style="text-align: right;">1004.965</td>
+<td style="text-align: right;">6.248</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.632</td>
-<td style="text-align: right;">1001.046</td>
-<td style="text-align: right;">2.352</td>
+<td style="text-align: right;">0.614</td>
+<td style="text-align: right;">1006.519</td>
+<td style="text-align: right;">7.801</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.635</td>
-<td style="text-align: right;">1002.326</td>
-<td style="text-align: right;">3.632</td>
+<td style="text-align: right;">0.614</td>
+<td style="text-align: right;">1008.454</td>
+<td style="text-align: right;">9.737</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.636</td>
-<td style="text-align: right;">1003.935</td>
-<td style="text-align: right;">5.241</td>
+<td style="text-align: right;">0.614</td>
+<td style="text-align: right;">1010.321</td>
+<td style="text-align: right;">11.604</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.637</td>
-<td style="text-align: right;">1005.477</td>
-<td style="text-align: right;">6.784</td>
+<td style="text-align: right;">0.619</td>
+<td style="text-align: right;">1011.038</td>
+<td style="text-align: right;">12.321</td>
 </tr>
 </tbody>
 </table>
