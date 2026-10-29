@@ -13,8 +13,8 @@ if (!exists("theme_dyerlab")) source("_extensions/dyerlab/theme_dyerlab.R")
 #' @param highlight Cell(s) to emphasize: any of "correlation",
 #'   "regression", "aov", "logistic", "contingency". Correlation and
 #'   regression share a cell. NULL emphasizes every cell.
-#' @param later Cell(s) without a module yet; drawn dimmed with a
-#'   "coming later" note. Remove a name once its module exists.
+#' @param later Cell(s) without a module yet; drawn dimmed. Remove a
+#'   name once its module exists.
 #' @param formulas Show the R model formula in each cell.
 #' @param theme Dyerlab theme name; NULL uses the active theme.
 #' @param base_size Base font size in pts.
@@ -47,8 +47,7 @@ variable_types_grid <- function(highlight = NULL,
   cells$fill <- ifelse(cells$on, p$h3, paste0(p$foreground, "14"))
   cells$text <- ifelse(cells$on, p$background,
                        ifelse(cells$later, paste0(p$foreground, "80"), p$foreground))
-  cells$sub  <- ifelse(cells$later, "coming later",
-                       if (formulas) cells$formula else "")
+  cells$sub  <- if (formulas) cells$formula else ""
 
   cells$predictor <- factor(cells$predictor, levels = c("Continuous", "Discrete"))
   cells$response  <- factor(cells$response,  levels = c("Discrete", "Continuous"))
