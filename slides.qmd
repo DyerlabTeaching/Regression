@@ -6,7 +6,7 @@ execute:
   echo: true
 ---
 
-## Choosing an Approach
+## &nbsp;
 
 ```{r}
 #| echo: false
