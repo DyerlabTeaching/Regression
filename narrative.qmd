@@ -59,7 +59,7 @@ ggplot( df, aes(x,y) ) +
 The notion here is to estimate the underlying formula for that red line that describes the variation in the original values in how `y` changes systematically across measured values of `x`.
 
 
-## Least Squares Fitting
+## Least Squares Fitting {.theory .application}
 
 So how do we figure this out?  One of the most common ways is to use a method called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the intercept ($\beta_0$) and slope ($\beta_1$) coefficients.  These *could be* close to a good models or not.
 
@@ -181,7 +181,7 @@ You could imagine that we could iteratively zoom in this grid and find the best 
 There is a more direct way to get to these results (though is much less pretty to look at) using the `lm()` linear models function.
 
 
-## Our Friend `lm()`
+## Our Friend `lm()` {.application}
 
 To specify a potential model, we need to get the function the form we are interested in using.
 
@@ -207,7 +207,7 @@ grid |>
 Fortunately, we have a lot of additional information available to us because we used the `lm()` function.
 
 
-## Model Fit
+## Model Fit {.application}
 
 We can estimate a bunch of different models but before we look to see if it is well behaved.  There are several interesting plots that we can examine from the model object such as:
 
@@ -225,7 +225,7 @@ plot( fit, which = 5 )
 ```
 
 
-## Analysis of Variance Tables - Decomposing Variation
+## Analysis of Variance Tables - Decomposing Variation {.theory .application}
 
 Thus far, we've been able to estimate a model, but is it one that explains a significant amount of variation? To determine this, we use the *analysis of variance table*.
 
@@ -252,7 +252,7 @@ The terms in this table are:
 - `Pr(>F)` is the probability associated with the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
 
 
-## Variance Explained
+## Variance Explained {.theory .application}
 
 There is a correlative measurement in regression models to the Pearson Product Moment Coefficient, ($\rho$) in a statistic called $R^2$.  This parameter tells you, *How much of the observed variation in `y` is explained by the model?*  
 
@@ -298,7 +298,7 @@ c( `Regression R^2` = summary( fit )$r.squared,
 
 (e.g., the square of the correlation estimate $r$ is equal to $R^2$).
 
-## Extensions of the Model
+## Extensions of the Model {.application}
 
 There are several helper functions for dealing with regression models such as finding the predicted values.
 
@@ -328,7 +328,7 @@ abline(0, 0, lty=2, col="red")
 ```
 
 
-## Comparing Models
+## Comparing Models {.theory .application}
 
 OK, so we have a model that appears to suggest that the predicted values in `x` can explain the variation observed in `y`.  Great.  But, is this the best model or only one that is sufficiently *meh* such that we can reject the null hypothesis?  How can we tell?
 
@@ -504,7 +504,7 @@ So if we just add random data to a model, we get a better fit!!!!  Sounds great.
 
 This is a well-known situation in statistics.  And in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
 
-## Akaike Information Content
+## Akaike Information Content {.theory .application}
 
 To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of predictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
 
