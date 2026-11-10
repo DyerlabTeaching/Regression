@@ -2237,7 +2237,7 @@ vertical-align: -.125em;
  Mean   :2013   Mean   : 6.549   Mean   :15.71   Mean   :1349   Mean   :1344  
  3rd Qu.:2013   3rd Qu.:10.000   3rd Qu.:23.00   3rd Qu.:1744   3rd Qu.:1729  
  Max.   :2013   Max.   :12.000   Max.   :31.00   Max.   :2400   Max.   :2359  
-                                                 NAs    :8255                 
+                                                 NA&#39;s   :8255                 
    dep_delay          arr_time    sched_arr_time   arr_delay       
  Min.   : -43.00   Min.   :   1   Min.   :   1   Min.   : -86.000  
  1st Qu.:  -5.00   1st Qu.:1104   1st Qu.:1124   1st Qu.: -17.000  
@@ -2245,23 +2245,23 @@ vertical-align: -.125em;
  Mean   :  12.64   Mean   :1502   Mean   :1536   Mean   :   6.895  
  3rd Qu.:  11.00   3rd Qu.:1940   3rd Qu.:1945   3rd Qu.:  14.000  
  Max.   :1301.00   Max.   :2400   Max.   :2359   Max.   :1272.000  
- NAs    :8255      NAs    :8713                  NAs    :9430      
-      carrier           flight          tailnum             origin      
- Length   :336776   Min.   :   1   Length   :336776   Length   :336776  
- N.unique :    16   1st Qu.: 553   N.unique :  4043   N.unique :     3  
- N.blank  :     0   Median :1496   N.blank  :     0   N.blank  :     0  
- Min.nchar:     2   Mean   :1972   Min.nchar:     5   Min.nchar:     3  
- Max.nchar:     2   3rd Qu.:3465   Max.nchar:     6   Max.nchar:     3  
-                    Max.   :8500   NAs      :  2512                     
+ NA&#39;s   :8255      NA&#39;s   :8713                  NA&#39;s   :9430      
+   carrier              flight       tailnum             origin         
+ Length:336776      Min.   :   1   Length:336776      Length:336776     
+ Class :character   1st Qu.: 553   Class :character   Class :character  
+ Mode  :character   Median :1496   Mode  :character   Mode  :character  
+                    Mean   :1972                                        
+                    3rd Qu.:3465                                        
+                    Max.   :8500                                        
                                                                         
-        dest           air_time        distance         hour      
- Length   :336776   Min.   : 20.0   Min.   :  17   Min.   : 1.00  
- N.unique :   105   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
- N.blank  :     0   Median :129.0   Median : 872   Median :13.00  
- Min.nchar:     3   Mean   :150.7   Mean   :1040   Mean   :13.18  
- Max.nchar:     3   3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
+     dest              air_time        distance         hour      
+ Length:336776      Min.   : 20.0   Min.   :  17   Min.   : 1.00  
+ Class :character   1st Qu.: 82.0   1st Qu.: 502   1st Qu.: 9.00  
+ Mode  :character   Median :129.0   Median : 872   Median :13.00  
+                    Mean   :150.7   Mean   :1040   Mean   :13.18  
+                    3rd Qu.:192.0   3rd Qu.:1389   3rd Qu.:17.00  
                     Max.   :695.0   Max.   :4983   Max.   :23.00  
-                    NAs    :9430                                  
+                    NA&#39;s   :9430                                  
      minute        time_hour                  
  Min.   : 0.00   Min.   :2013-01-01 05:00:00  
  1st Qu.: 8.00   1st Qu.:2013-04-04 13:00:00  
@@ -2276,14 +2276,14 @@ vertical-align: -.125em;
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( weather )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       origin           year          month             day       
- Length   :26115   Min.   :2013   Min.   : 1.000   Min.   : 1.00  
- N.unique :    3   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
- N.blank  :    0   Median :2013   Median : 7.000   Median :16.00  
- Min.nchar:    3   Mean   :2013   Mean   : 6.504   Mean   :15.68  
- Max.nchar:    3   3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
-                   Max.   :2013   Max.   :12.000   Max.   :31.00  
-                                                                  
+<pre><code>    origin               year          month             day       
+ Length:26115       Min.   :2013   Min.   : 1.000   Min.   : 1.00  
+ Class :character   1st Qu.:2013   1st Qu.: 4.000   1st Qu.: 8.00  
+ Mode  :character   Median :2013   Median : 7.000   Median :16.00  
+                    Mean   :2013   Mean   : 6.504   Mean   :15.68  
+                    3rd Qu.:2013   3rd Qu.: 9.000   3rd Qu.:23.00  
+                    Max.   :2013   Max.   :12.000   Max.   :31.00  
+                                                                   
       hour            temp             dewp           humid       
  Min.   : 0.00   Min.   : 10.94   Min.   :-9.94   Min.   : 12.74  
  1st Qu.: 6.00   1st Qu.: 39.92   1st Qu.:26.06   1st Qu.: 47.05  
@@ -2291,7 +2291,7 @@ vertical-align: -.125em;
  Mean   :11.49   Mean   : 55.26   Mean   :41.44   Mean   : 62.53  
  3rd Qu.:17.00   3rd Qu.: 69.98   3rd Qu.:57.92   3rd Qu.: 78.79  
  Max.   :23.00   Max.   :100.04   Max.   :78.08   Max.   :100.00  
-                 NAs    :1        NAs    :1       NAs    :1       
+                 NA&#39;s   :1        NA&#39;s   :1       NA&#39;s   :1       
     wind_dir       wind_speed         wind_gust         precip        
  Min.   :  0.0   Min.   :   0.000   Min.   :16.11   Min.   :0.000000  
  1st Qu.:120.0   1st Qu.:   6.905   1st Qu.:20.71   1st Qu.:0.000000  
@@ -2299,7 +2299,7 @@ vertical-align: -.125em;
  Mean   :199.8   Mean   :  10.517   Mean   :25.49   Mean   :0.004469  
  3rd Qu.:290.0   3rd Qu.:  13.809   3rd Qu.:28.77   3rd Qu.:0.000000  
  Max.   :360.0   Max.   :1048.361   Max.   :66.75   Max.   :1.210000  
- NAs    :460     NAs    :4          NAs    :20778                     
+ NA&#39;s   :460     NA&#39;s   :4          NA&#39;s   :20778                     
     pressure          visib          time_hour                  
  Min.   : 983.8   Min.   : 0.000   Min.   :2013-01-01 01:00:00  
  1st Qu.:1012.9   1st Qu.:10.000   1st Qu.:2013-04-01 21:30:00  
@@ -2307,7 +2307,7 @@ vertical-align: -.125em;
  Mean   :1017.9   Mean   : 9.255   Mean   :2013-07-01 18:26:37  
  3rd Qu.:1023.0   3rd Qu.:10.000   3rd Qu.:2013-09-30 13:00:00  
  Max.   :1042.1   Max.   :10.000   Max.   :2013-12-30 18:00:00  
- NAs    :2729                                                   </code></pre>
+ NA&#39;s   :2729                                                   </code></pre>
 </div>
 </div>
 <section id="question" class="level1">
