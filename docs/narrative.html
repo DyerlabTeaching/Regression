@@ -142,7 +142,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \sigma_{Total}^2 = \sigma_{Model}^2 + \sigma_{Residual}^2
 \]</span></p>
-<p><mark>In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is <em>residual</em> (or left over).</mark> For regression analyses, consider the simple linear regression model.</p>
+<p>That is, some of the underlying variation goes towards explaining the patterns in the data (the model) and the rest of the variation is <em>residual</em> (or left over). For regression analyses, consider the simple linear regression model.</p>
 <p><span class="math display">\[
 y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 \]</span></p>
@@ -161,12 +161,8 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>( <span class="at">method=</span><span class="st">"lm"</span>, </span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">formula =</span> y <span class="sc">~</span> x, </span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">se=</span><span class="cn">FALSE</span>, </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"red"</span>, <span class="at">linewidth=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -178,30 +174,30 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <p>The notion here is to estimate the underlying formula for that red line that describes the variation in the original values in how <code>y</code> changes systematically across measured values of <code>x</code>.</p>
 <section id="least-squares-fitting" class="level2 theory application">
 <h2 class="theory application anchored" data-anchor-id="least-squares-fitting">Least Squares Fitting</h2>
-<p>So how do we figure this out? One of the most common ways is to use a method called <em>Least Squared Distance</em> fitting. To describe this, consider a set of hypothetical random models with random values estimated for both the intercept (<span class="math inline">\(\beta_0\)</span>) and slope (<span class="math inline">\(\beta_1\)</span>) coefficients. These <em>could be</em> close to a good models or not.</p>
+<p>So how do we figure this out? One of the most common ways is to use a method called <em>Least Squared Distance</em> fitting. To describe this, consider a set of hypothetical random models with random values estimated for both the intercept (<span class="math inline">\(\beta_0\)</span>) and slope (<span class="math inline">\(\beta_1\)</span>) coefficients. Some of these <em>could be</em> close to a good model; most will not be.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">beta0 =</span> <span class="fu">runif</span>(<span class="dv">250</span>,<span class="sc">-</span><span class="dv">20</span>,<span class="dv">40</span>),</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">beta0 =</span> <span class="fu">runif</span>(<span class="dv">250</span>,<span class="sc">-</span><span class="dv">20</span>,<span class="dv">40</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0             beta1         
- Min.   :-19.864   Min.   :-4.98633  
- 1st Qu.: -7.296   1st Qu.:-2.63908  
- Median :  8.378   Median :-0.04585  
- Mean   :  8.668   Mean   :-0.17432  
- 3rd Qu.: 22.938   3rd Qu.: 2.27831  
- Max.   : 39.737   Max.   : 4.97065  </code></pre>
+ Min.   :-19.996   Min.   :-4.97498  
+ 1st Qu.: -6.661   1st Qu.:-2.44813  
+ Median :  8.873   Median : 0.19125  
+ Mean   :  8.836   Mean   : 0.01681  
+ 3rd Qu.: 23.442   3rd Qu.: 2.58101  
+ Max.   : 39.902   Max.   : 4.89069  </code></pre>
 </div>
 </div>
 <p>We can plot these and the original data and all these randomly defined models.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>( <span class="fu">aes</span>(<span class="at">intercept =</span> beta0, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">slope =</span> beta1), </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> models,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(x,y), </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>( <span class="fu">aes</span>(<span class="at">intercept =</span> beta0, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">slope =</span> beta1), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> models,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(x,y), </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>df )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -224,42 +220,42 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <p>Let’s look at those hypothetical models. I’m going to make a few little functions to help make the code look easy.</p>
 <p>First, here is a function that returns the distances between the original points and a hypothesized regression line defined by an intercept and slope from the original points.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( intercept, slope, X, Y ) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  yhat <span class="ot">&lt;-</span> intercept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> Y <span class="sc">-</span> yhat</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( <span class="fu">sqrt</span>( <span class="fu">mean</span>( diff <span class="sc">^</span> <span class="dv">2</span> ) ) )</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( intercept, slope, X, Y ) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  yhat <span class="ot">&lt;-</span> intercept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> Y <span class="sc">-</span> yhat</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( <span class="fu">sqrt</span>( <span class="fu">mean</span>( diff <span class="sc">^</span> <span class="dv">2</span> ) ) )</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, let’s go through all the models and estimate the mean squared distances between the proposed line (from intercept and slope) and the original data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>models<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(models) ) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  models<span class="sc">$</span>dist[i] <span class="ot">&lt;-</span> <span class="fu">model_distance</span>( models<span class="sc">$</span>beta0[i],</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                    models<span class="sc">$</span>beta1[i],</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                    df<span class="sc">$</span>x,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                    df<span class="sc">$</span>y )</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>models<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(models) ) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  models<span class="sc">$</span>dist[i] <span class="ot">&lt;-</span> <span class="fu">model_distance</span>( models<span class="sc">$</span>beta0[i],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                                    models<span class="sc">$</span>beta1[i],</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                    df<span class="sc">$</span>x,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                    df<span class="sc">$</span>y )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       beta0      beta1      dist
-1  22.493435 -1.1115306 19.441838
-2  27.197318  4.2936003 20.369699
-3 -18.103011 -0.2833546 52.319380
-4  33.542365 -1.3943116 13.962301
-5   6.934069  3.0727982  9.554631
-6  20.048593  2.4230484  5.525980</code></pre>
+<pre><code>      beta0     beta1      dist
+1 33.621422 -3.796030 26.977167
+2  8.780530 -4.173433 50.149905
+3 22.176574 -3.986269 37.125937
+4  5.533079 -4.314720 54.005767
+5 35.274004  3.447046 23.234703
+6  4.872860  3.697292  8.907453</code></pre>
 </div>
 </div>
 <p>If we look through these models, we can see which are better than others by sorting in increasing squared distance.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()  <span class="sc">+</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>( <span class="fu">aes</span>(<span class="at">intercept =</span> beta0,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">slope =</span> beta1, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color =</span> <span class="sc">-</span>dist),</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> <span class="fu">filter</span>( models, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span> ),</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(x,y),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>df) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()  <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>( <span class="fu">aes</span>(<span class="at">intercept =</span> beta0,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">slope =</span> beta1, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color =</span> <span class="sc">-</span>dist),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> <span class="fu">filter</span>( models, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span> ),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(x,y),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>df) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -270,13 +266,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 <p>These models in the <em>parameter space</em> of intercepts and slopes can be visualized as this. These red-circles are close to where the best models are located.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>( models, <span class="fu">aes</span>(<span class="at">x =</span> beta0, </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> beta1,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> <span class="sc">-</span>dist)) <span class="sc">+</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">data =</span> <span class="fu">filter</span>( models, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span>), </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>( models, <span class="fu">aes</span>(<span class="at">x =</span> beta0, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> beta1,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> <span class="sc">-</span>dist)) <span class="sc">+</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">data =</span> <span class="fu">filter</span>( models, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span>), </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -287,23 +283,23 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 </div>
 <p>In addition to a random search, we can be a bit more systematic about it and make a grid of intercept and slope values, using a <em>grid search</em>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>( <span class="at">beta0 =</span> <span class="fu">seq</span>(<span class="dv">15</span>,<span class="dv">20</span>, <span class="at">length =</span> <span class="dv">25</span>),</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">beta1 =</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="fl">3.5</span>, <span class="at">length =</span> <span class="dv">25</span>))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid) ) {</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  grid<span class="sc">$</span>dist[i] <span class="ot">&lt;-</span> <span class="fu">model_distance</span>( grid<span class="sc">$</span>beta0[i],</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                                  grid<span class="sc">$</span>beta1[i],</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                  df<span class="sc">$</span>x,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                                  df<span class="sc">$</span>y )</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>( grid, <span class="fu">aes</span>(<span class="at">x =</span> beta0, </span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> beta1,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> <span class="sc">-</span>dist)) <span class="sc">+</span> </span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">data =</span> <span class="fu">filter</span>( grid, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span>), </span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>( <span class="at">beta0 =</span> <span class="fu">seq</span>(<span class="dv">15</span>,<span class="dv">20</span>, <span class="at">length =</span> <span class="dv">25</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">beta1 =</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="fl">3.5</span>, <span class="at">length =</span> <span class="dv">25</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid) ) {</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  grid<span class="sc">$</span>dist[i] <span class="ot">&lt;-</span> <span class="fu">model_distance</span>( grid<span class="sc">$</span>beta0[i],</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                                  grid<span class="sc">$</span>beta1[i],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                  df<span class="sc">$</span>x,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                                  df<span class="sc">$</span>y )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>( grid, <span class="fu">aes</span>(<span class="at">x =</span> beta0, </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> beta1,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> <span class="sc">-</span>dist)) <span class="sc">+</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="at">data =</span> <span class="fu">filter</span>( grid, <span class="fu">rank</span>(dist) <span class="sc">&lt;=</span> <span class="dv">10</span>), </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -319,8 +315,8 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <h2 class="application anchored" data-anchor-id="our-friend-lm">Our Friend <code>lm()</code></h2>
 <p>To specify a potential model, we need to get the function the form we are interested in using.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>( y <span class="sc">~</span> x, <span class="at">data =</span> df )</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>( y <span class="sc">~</span> x, <span class="at">data =</span> df )</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -333,16 +329,16 @@ Coefficients:
 </div>
 <p>We can see that for the values of the coefficients (labeled <em>Intercept</em> and <em>x</em>), it has a <code>model_distance()</code> of</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_distance</span>( <span class="sc">-</span><span class="fl">1.76</span>, <span class="fl">3.385</span>, df<span class="sc">$</span>x, df<span class="sc">$</span>y )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_distance</span>( <span class="sc">-</span><span class="fl">1.76</span>, <span class="fl">3.385</span>, df<span class="sc">$</span>x, df<span class="sc">$</span>y )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 15.90948</code></pre>
 </div>
 </div>
 <p>which we can see is pretty close in terms of the coefficients and has a smaller model distance than those examined in the grid.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>grid <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>( dist ) <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>( <span class="at">n =</span> <span class="dv">1</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>grid <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>( dist ) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>( <span class="at">n =</span> <span class="dv">1</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0 beta1     dist
 1 17.29167 2.625 5.240071</code></pre>
@@ -352,9 +348,9 @@ Coefficients:
 </section>
 <section id="model-fit" class="level2 application">
 <h2 class="application anchored" data-anchor-id="model-fit">Model Fit</h2>
-<p>We can estimate a bunch of different models but before we look to see if it is well behaved. There are several interesting plots that we can examine from the model object such as:</p>
+<p>Before we interpret a model, we should check that it is well behaved. There are several diagnostic plots that we can examine from the model object such as:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -364,7 +360,7 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">2</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">2</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -374,7 +370,7 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -388,7 +384,7 @@ Coefficients:
 <h2 class="theory application anchored" data-anchor-id="analysis-of-variance-tables---decomposing-variation">Analysis of Variance Tables - Decomposing Variation</h2>
 <p>Thus far, we’ve been able to estimate a model, but is it one that explains a significant amount of variation? To determine this, we use the <em>analysis of variance table</em>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -402,7 +398,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>The terms in this table are:</p>
 <ul>
-<li><p>Degrees of Freedom (<em>df</em>): representing <code>1</code> degree of freedom for the model, and <code>N-1</code> for the residuals.</p></li>
+<li><p>Degrees of Freedom (<em>df</em>): representing <code>1</code> degree of freedom for the model (one per predictor), and <code>N-2</code> for the residuals (<code>N-1</code> in total, less the one used by the model).</p></li>
 <li><p>Sums of Squared Deviations:</p>
 <ul>
 <li><span class="math inline">\(SS_{Total} = \sum_{i=1}^N (y_i - \bar{y})^2\)</span></li>
@@ -427,7 +423,7 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 \]</span></p>
 <p>The value of this parameter is bound by 0 (the model explains no variation) and 1.0 (the model explains all the variation in the data). We can get to this and a few other parameters in the regression model by taking its summary.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -451,7 +447,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 <p>Just like the model itself, the <code>summary.lm</code> object also has all these data contained within it in case you need to access them in textual format or to annotate graphical output.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>( <span class="fu">summary</span>( fit ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>( <span class="fu">summary</span>( fit ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "call"          "terms"         "residuals"     "coefficients" 
  [5] "aliased"       "sigma"         "df"            "r.squared"    
@@ -460,23 +456,24 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 <p>Notice that the <code>p-value</code> is not in this list… It is estimable from the <code>fstatistic</code> and <code>df</code> values and here is a quick function that returns the raw p-value by looking up the area under the curve equal to or greater than the observed <code>fstatistic</code> with those degrees of freedom.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>get_pval <span class="ot">&lt;-</span> <span class="cf">function</span>( model ) {</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">2</span>]</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  df2 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">3</span>]</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fl">1.0</span> <span class="sc">-</span> <span class="fu">pf</span>( f, df1, df2 ) )</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( p  )</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">get_pval</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>get_pval <span class="ot">&lt;-</span> <span class="cf">function</span>( model ) {</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">2</span>]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  df2 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">3</span>]</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fu">pf</span>( f, df1, df2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span> ) )</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( p  )</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">get_pval</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0035813</code></pre>
 </div>
 </div>
+<p>The function asks <code>pf()</code> for the upper tail directly (<code>lower.tail = FALSE</code>) rather than computing <code>1 - pf()</code>. The two are the same in principle, but when the <span class="math inline">\(F\)</span>-statistic is very large, <code>pf()</code> is so close to 1 that <code>1 - pf()</code> rounds to exactly 0, and a <em>P</em>-value is never actually zero.</p>
 <p>As an often-overlooked side effect, the <span class="math inline">\(R^2\)</span> from a simple one predictor regression model and the correlation coefficient <span class="math inline">\(r\)</span> from <code>cor.test(method='pearson')</code> are related as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>( <span class="st">`</span><span class="at">Regression R^2</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>( fit )<span class="sc">$</span>r.squared,</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>   <span class="st">`</span><span class="at">Squared Correlation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>( <span class="fu">cor.test</span>( df<span class="sc">$</span>x, df<span class="sc">$</span>y )<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>( <span class="st">`</span><span class="at">Regression R^2</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>( fit )<span class="sc">$</span>r.squared,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>   <span class="st">`</span><span class="at">Squared Correlation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>( <span class="fu">cor.test</span>( df<span class="sc">$</span>x, df<span class="sc">$</span>y )<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Regression R^2 Squared Correlation 
           0.6743782           0.6743782 </code></pre>
@@ -488,8 +485,8 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <h2 class="application anchored" data-anchor-id="extensions-of-the-model">Extensions of the Model</h2>
 <p>There are several helper functions for dealing with regression models such as finding the predicted values.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>( fit ) <span class="ot">-&gt;</span> yhat </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>yhat </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>( fit ) <span class="ot">-&gt;</span> yhat </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>yhat </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2        3        4        5        6        7        8 
 19.90545 22.53091 25.15636 27.78182 30.40727 33.03273 35.65818 38.28364 
@@ -499,7 +496,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 <p>And we can plot it as:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( yhat <span class="sc">~</span> df<span class="sc">$</span>x, <span class="at">type=</span><span class="st">'l'</span>, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( yhat <span class="sc">~</span> df<span class="sc">$</span>x, <span class="at">type=</span><span class="st">'l'</span>, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="st">"red"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -510,8 +507,8 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 <p>The residual values (e.g., the distance between the original data on the y-axis and the fitted regression model).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">residuals</span>( fit ) <span class="ot">-&gt;</span> resids</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>resids </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">residuals</span>( fit ) <span class="ot">-&gt;</span> resids</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>resids </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         1          2          3          4          5          6          7 
 -4.4054545  5.5690909 -2.8563636  4.5181818  0.6927273 -6.2327273  6.1418182 
@@ -521,8 +518,8 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 <p>We almost <strong>always</strong> need to look at the residuals of a regression model to help diagnose any potential problems (as shown above in the plots of the raw model itself).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( resids <span class="sc">~</span> yhat, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">xlab=</span><span class="st">"Predicted Values"</span>, <span class="at">ylab=</span><span class="st">"Residuals (yhat - y)"</span>, <span class="at">pch=</span><span class="dv">16</span> )</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( resids <span class="sc">~</span> yhat, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">xlab=</span><span class="st">"Predicted Values"</span>, <span class="at">ylab=</span><span class="st">"Residuals (y - yhat)"</span>, <span class="at">pch=</span><span class="dv">16</span> )</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -541,25 +538,26 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <li><p>The <span class="math inline">\(R^2\)</span>: Models that explain more of the variation may be considered more informative.</p></li>
 </ul>
 <p>Let’s start by looking at some airquality data we have played with previously when working on <a href="https://dyerlabteaching.github.io/Data-Containers/narrative.html">data.frame objects</a>.</p>
+<p>Some days are missing a value for <code>Ozone</code> or <code>Solar.R</code>. The <code>lm()</code> function quietly drops any row with a missing value in the variables a model uses, so a model with <code>Solar.R</code> in it would be fit to fewer days than one without it. Models can only be compared with each other (as we do below) when they are fit to the same observations, so we keep only the days that have every measurement.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="ot">-&gt;</span> df.air</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( Ozone ), <span class="sc">!</span><span class="fu">is.na</span>( Solar.R ) ) <span class="ot">-&gt;</span> df.air</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     Ozone           Solar.R           Wind             Temp      
- Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
- 1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
- Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
- Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
- 3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
- Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
- NA's   :37       NA's   :7                                       </code></pre>
+<pre><code>     Ozone          Solar.R           Wind            Temp      
+ Min.   :  1.0   Min.   :  7.0   Min.   : 2.30   Min.   :57.00  
+ 1st Qu.: 18.0   1st Qu.:113.5   1st Qu.: 7.40   1st Qu.:71.00  
+ Median : 31.0   Median :207.0   Median : 9.70   Median :79.00  
+ Mean   : 42.1   Mean   :184.8   Mean   : 9.94   Mean   :77.79  
+ 3rd Qu.: 62.0   3rd Qu.:255.5   3rd Qu.:11.50   3rd Qu.:84.50  
+ Max.   :168.0   Max.   :334.0   Max.   :20.70   Max.   :97.00  </code></pre>
 </div>
 </div>
 <p>Let’s assume that we are interested in trying to explain the variation in <code>Ozone</code> (the response) by one or more of the other variables as predictors.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fit.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R, <span class="at">data =</span> df.air )</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit.solar )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fit.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R, <span class="at">data =</span> df.air )</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( fit.solar )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -573,25 +571,25 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Let’s look at all the predictors and take a look at both the <code>p-value</code> and <code>R-squared</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fit.temp <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> df.air )</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fit.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind, <span class="at">data =</span> df.air )</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Solar"</span>,</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Ozone ~ Temp"</span>,</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Ozone ~ Wind"</span>), </span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.solar )<span class="sc">$</span>r.squared,</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>( fit.temp )<span class="sc">$</span>r.squared,</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>( fit.wind )<span class="sc">$</span>r.squared ), </span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.solar), </span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">get_pval</span>( fit.temp ),</span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">get_pval</span>( fit.wind ) ) ) <span class="ot">-&gt;</span> df.models</span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>( <span class="sc">-</span>R2 ) <span class="sc">|&gt;</span></span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit.temp <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> df.air )</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>fit.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind, <span class="at">data =</span> df.air )</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Solar"</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Ozone ~ Temp"</span>,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Ozone ~ Wind"</span>), </span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.solar )<span class="sc">$</span>r.squared,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>( fit.temp )<span class="sc">$</span>r.squared,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summary</span>( fit.wind )<span class="sc">$</span>r.squared ), </span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.solar), </span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">get_pval</span>( fit.temp ),</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">get_pval</span>( fit.wind ) ) ) <span class="ot">-&gt;</span> df.models</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>( <span class="sc">-</span>R2 ) <span class="sc">|&gt;</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-minimal caption-top table table-sm table-striped small">
 <caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
@@ -606,12 +604,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.362</td>
-<td style="text-align: left;">9.27e-13</td>
+<td style="text-align: right;">0.375</td>
+<td style="text-align: left;">9.09e-13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
@@ -622,35 +620,35 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </table>
 </div>
 </div>
-<p>So if we look at these results, we see that in both <span class="math inline">\(R^2\)</span> and <span class="math inline">\(P\)</span>, the model with <code>Temp</code> seems to be most explanatory as well as having the lowest probability. But is is significantly better?</p>
+<p>So if we look at these results, we see that in both <span class="math inline">\(R^2\)</span> and <span class="math inline">\(P\)</span>, the model with <code>Temp</code> seems to be most explanatory as well as having the lowest probability. But is it significantly better?</p>
 <p>How about if we start adding more than one variable to the equation so that we now have two variables (multiple regression) with the general model specified as:</p>
 <p><span class="math display">\[
-y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon
 \]</span></p>
 <p>Now, we are estimating two regression coefficients and an intercept. For three predictors, this gives us 3 more models.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fit.temp.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fit.temp.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>fit.wind.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fit.temp.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fit.temp.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>fit.wind.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, we can add these output to the table.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>df.models <span class="ot">&lt;-</span> <span class="fu">rbind</span>( df.models, </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Temp + Wind"</span>,</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ozone ~ Temp + Solar"</span>,</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ozone ~ Wind + Solar"</span> ),</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.temp.wind )<span class="sc">$</span>r.squared,</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="fu">summary</span>( fit.temp.solar )<span class="sc">$</span>r.squared,</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="fu">summary</span>( fit.wind.solar )<span class="sc">$</span>r.squared ),</span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.temp.wind),</span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">get_pval</span>( fit.temp.solar),</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">get_pval</span>( fit.wind.solar) )</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>                                ))</span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>df.models <span class="ot">&lt;-</span> <span class="fu">rbind</span>( df.models, </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Temp + Wind"</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ozone ~ Temp + Solar"</span>,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Ozone ~ Wind + Solar"</span> ),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.temp.wind )<span class="sc">$</span>r.squared,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="fu">summary</span>( fit.temp.solar )<span class="sc">$</span>r.squared,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="fu">summary</span>( fit.wind.solar )<span class="sc">$</span>r.squared ),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.temp.wind),</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">get_pval</span>( fit.temp.solar),</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">get_pval</span>( fit.wind.solar) )</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>                                ))</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">scientific=</span><span class="cn">TRUE</span>, <span class="at">digits=</span><span class="dv">3</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973."</span>,</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-minimal caption-top table table-sm table-striped small">
 <caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
@@ -670,27 +668,27 @@ y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.362</td>
-<td style="text-align: left;">9.27e-13</td>
+<td style="text-align: right;">0.375</td>
+<td style="text-align: left;">9.09e-13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: right;">0.569</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: right;">0.581</td>
+<td style="text-align: left;">3.79e-21</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.510</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.80e-17</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.449</td>
-<td style="text-align: left;">9.99e-15</td>
+<td style="text-align: left;">1.00e-14</td>
 </tr>
 </tbody>
 </table>
@@ -702,35 +700,35 @@ y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
 y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 \]</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>fit.all <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R <span class="sc">+</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fit.all <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R <span class="sc">+</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let’s add that one</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>df.models <span class="ot">&lt;-</span> <span class="fu">rbind</span>( df.models, </span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Temp + Wind + Solar"</span>),</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.all )<span class="sc">$</span>r.squared ),</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.all)  )</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                                ))</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>df.models<span class="sc">$</span>P <span class="ot">=</span> <span class="fu">cell_spec</span>( <span class="fu">format</span>( df.models<span class="sc">$</span>P, </span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">digits=</span><span class="dv">3</span>, </span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">scientific=</span><span class="cn">TRUE</span>), </span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>                         <span class="at">color =</span> <span class="fu">ifelse</span>( df.models<span class="sc">$</span>P <span class="sc">==</span> <span class="fu">min</span>(df.models<span class="sc">$</span>P), </span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"red"</span>,</span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"black"</span>))</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>df.models<span class="sc">$</span>R2 <span class="ot">=</span> <span class="fu">cell_spec</span>( <span class="fu">format</span>( df.models<span class="sc">$</span>R2, </span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">digits=</span><span class="dv">3</span>, </span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">scientific=</span><span class="cn">TRUE</span>), </span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">color =</span> <span class="fu">ifelse</span>( df.models<span class="sc">$</span>R2 <span class="sc">==</span> <span class="fu">max</span>( df.models<span class="sc">$</span>R2), </span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"green"</span>,</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"black"</span>))</span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
-<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">digits=</span><span class="dv">3</span>, <span class="at">scientific =</span> <span class="cn">TRUE</span>) ) <span class="sc">|&gt;</span> </span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability."</span>,</span>
-<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df.models <span class="ot">&lt;-</span> <span class="fu">rbind</span>( df.models, </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">data.frame</span>( <span class="at">Model =</span> <span class="fu">c</span>( <span class="st">"Ozone ~ Temp + Wind + Solar"</span>),</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">R2 =</span> <span class="fu">c</span>( <span class="fu">summary</span>( fit.all )<span class="sc">$</span>r.squared ),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">P =</span> <span class="fu">c</span>( <span class="fu">get_pval</span>( fit.all)  )</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                                ))</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>df.models<span class="sc">$</span>P <span class="ot">=</span> <span class="fu">cell_spec</span>( <span class="fu">format</span>( df.models<span class="sc">$</span>P, </span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">digits=</span><span class="dv">3</span>, </span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">scientific=</span><span class="cn">TRUE</span>), </span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>                         <span class="at">color =</span> <span class="fu">ifelse</span>( df.models<span class="sc">$</span>P <span class="sc">==</span> <span class="fu">min</span>(df.models<span class="sc">$</span>P), </span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"red"</span>,</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"black"</span>))</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>df.models<span class="sc">$</span>R2 <span class="ot">=</span> <span class="fu">cell_spec</span>( <span class="fu">format</span>( df.models<span class="sc">$</span>R2, </span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">digits=</span><span class="dv">3</span>, </span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">scientific=</span><span class="cn">TRUE</span>), </span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">color =</span> <span class="fu">ifelse</span>( df.models<span class="sc">$</span>R2 <span class="sc">==</span> <span class="fu">max</span>( df.models<span class="sc">$</span>R2), </span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"green"</span>,</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"black"</span>))</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>df.models <span class="sc">|&gt;</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">P =</span> <span class="fu">format</span>( P, <span class="at">digits=</span><span class="dv">3</span>, <span class="at">scientific =</span> <span class="cn">TRUE</span>) ) <span class="sc">|&gt;</span> </span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.  Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability."</span>,</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top table table-sm table-striped small">
 <caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973. Values in green indicate the model with the largest variance explained and those in red indicate models with the lowest probability.</caption>
@@ -750,32 +748,32 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: left;">&lt;span style="color: black !important;" &gt;4.88e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;1.55e-17&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: left;">&lt;span style="color: black !important;" &gt;3.62e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: black !important;" &gt;9.27e-13&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;3.75e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;9.09e-13&lt;/span&gt;</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: left;">&lt;span style="color: black !important;" &gt;5.69e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;5.81e-01&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;3.79e-21&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: left;">&lt;span style="color: black !important;" &gt;5.10e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;1.80e-17&lt;/span&gt;</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: left;">&lt;span style="color: black !important;" &gt;4.49e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: black !important;" &gt;9.99e-15&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: black !important;" &gt;1.00e-14&lt;/span&gt;</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: left;">&lt;span style="color: green !important;" &gt;6.06e-01&lt;/span&gt;</td>
-<td style="text-align: left;">&lt;span style="color: red !important;" &gt;0.00e+00&lt;/span&gt;</td>
+<td style="text-align: left;">&lt;span style="color: red !important;" &gt;1.51e-21&lt;/span&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -787,35 +785,36 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <p>Before we can answer this, we should be clear about one thing. We are getting more variance explained by adding more predictor variables. In fact, by adding any variable, whether they are informative or not, one can explain some amount of the Sums of Squares in a model. Taken to the extreme, this means that we could add an infinite number of explanatory variables to a model and explain all the variation there is!</p>
 <p>Here is an example using our small data set. I’m going to make several models, one of which is the original one and the remaining add one more predictor variable that is made up of a random variable. We will then look at the <span class="math inline">\(R^2\)</span> of each of these models.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>random.models  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp"</span>]] <span class="ot">&lt;-</span> fit.temp</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Wind"</span>]] <span class="ot">&lt;-</span> fit.wind</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Solar"</span>]] <span class="ot">&lt;-</span> fit.solar</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp + Wind"</span>]] <span class="ot">&lt;-</span> fit.temp.wind</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp + Solar"</span>]] <span class="ot">&lt;-</span> fit.temp.solar</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Wind + Solar"</span>]] <span class="ot">&lt;-</span> fit.wind.solar</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>random.models[[ <span class="st">"Ozone ~ Temp + Wind + Solar"</span> ]] <span class="ot">&lt;-</span> fit.all</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>df.tmp <span class="ot">&lt;-</span> df.air</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> ) {</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  lbl <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Ozone ~ Temp + Wind + Solar + "</span>, i, <span class="st">" Random Variables"</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  df.tmp[[lbl]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>( <span class="fu">nrow</span>(df.tmp) )</span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>  random.models[[lbl]] <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> ., <span class="at">data =</span> df.tmp ) </span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">Models =</span> <span class="fu">names</span>( random.models ),</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">R2 =</span> <span class="fu">sapply</span>( random.models, </span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>                          <span class="at">FUN =</span> <span class="cf">function</span>( x ) <span class="fu">return</span>( <span class="fu">summary</span>( x )<span class="sc">$</span>r.squared), </span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>                          <span class="at">simplify =</span> <span class="cn">TRUE</span> ),</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">P =</span> <span class="fu">sapply</span>( random.models, </span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FUN =</span> get_pval ) ) <span class="ot">-&gt;</span> df.random</span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>df.random <span class="sc">|&gt;</span></span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data."</span>,</span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits=</span><span class="dv">4</span>,</span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">row.names =</span> <span class="cn">FALSE</span> ) <span class="sc">|&gt;</span></span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>random.models  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp"</span>]] <span class="ot">&lt;-</span> fit.temp</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Wind"</span>]] <span class="ot">&lt;-</span> fit.wind</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Solar"</span>]] <span class="ot">&lt;-</span> fit.solar</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp + Wind"</span>]] <span class="ot">&lt;-</span> fit.temp.wind</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Temp + Solar"</span>]] <span class="ot">&lt;-</span> fit.temp.solar</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>random.models[[<span class="st">"Ozone ~ Wind + Solar"</span>]] <span class="ot">&lt;-</span> fit.wind.solar</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>random.models[[ <span class="st">"Ozone ~ Temp + Wind + Solar"</span> ]] <span class="ot">&lt;-</span> fit.all</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>df.tmp <span class="ot">&lt;-</span> df.air</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>( <span class="dv">100</span> )</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span> ) {</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>  lbl <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Ozone ~ Temp + Wind + Solar + "</span>, i, <span class="st">" Random Variables"</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>  df.tmp[[lbl]] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>( <span class="fu">nrow</span>(df.tmp) )</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>  random.models[[lbl]] <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> ., <span class="at">data =</span> df.tmp ) </span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>( <span class="at">Models =</span> <span class="fu">names</span>( random.models ),</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">R2 =</span> <span class="fu">sapply</span>( random.models, </span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>                          <span class="at">FUN =</span> <span class="cf">function</span>( x ) <span class="fu">return</span>( <span class="fu">summary</span>( x )<span class="sc">$</span>r.squared), </span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>                          <span class="at">simplify =</span> <span class="cn">TRUE</span> ),</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">P =</span> <span class="fu">sapply</span>( random.models, </span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FUN =</span> get_pval ) ) <span class="ot">-&gt;</span> df.random</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>df.random <span class="sc">|&gt;</span></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data."</span>,</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits=</span><span class="dv">4</span>,</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">row.names =</span> <span class="cn">FALSE</span> ) <span class="sc">|&gt;</span></span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top table table-sm table-striped small">
 <caption>Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data.</caption>
@@ -829,12 +828,12 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp</td>
-<td style="text-align: right;">0.4877</td>
+<td style="text-align: right;">0.4880</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.3619</td>
+<td style="text-align: right;">0.3752</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
@@ -844,7 +843,7 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: right;">0.5687</td>
+<td style="text-align: right;">0.5814</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
@@ -864,42 +863,42 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: right;">0.6076</td>
+<td style="text-align: right;">0.6079</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.6227</td>
+<td style="text-align: right;">0.6112</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.6227</td>
+<td style="text-align: right;">0.6123</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.6414</td>
+<td style="text-align: right;">0.6124</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.6414</td>
+<td style="text-align: right;">0.6126</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.6414</td>
+<td style="text-align: right;">0.6161</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.6420</td>
+<td style="text-align: right;">0.6172</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.6495</td>
+<td style="text-align: right;">0.6174</td>
 <td style="text-align: right;">0e+00</td>
 </tr>
 </tbody>
@@ -910,35 +909,35 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon
 <p>This is a well-known situation in statistics. And in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.</p>
 </section>
 </section>
-<section id="akaike-information-content" class="level2 theory application">
-<h2 class="theory application anchored" data-anchor-id="akaike-information-content">Akaike Information Content</h2>
-<p>To get around this, we have a few tools at our disposal. The most common approach is to look at the <em>information content</em> in each model relative to the amount of predictor variables. In essence, we must <em>punish</em> ourselves for adding more predictors so that we do not all run around and add random data to our models. The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.</p>
+<section id="akaike-information-criterion" class="level2 theory application">
+<h2 class="theory application anchored" data-anchor-id="akaike-information-criterion">Akaike Information Criterion</h2>
+<p>To get around this, we have a few tools at our disposal. The most common approach is to look at the <em>information content</em> in each model relative to the amount of predictor variables. In essence, we must <em>punish</em> ourselves for adding more predictors so that we do not all run around and add random data to our models. The most common one is called Akaike Information Criterion (AIC), and it provides a general framework for comparing several models.</p>
 <p><span class="math display">\[
 AIC = -2 \ln L + 2p
 \]</span></p>
-<p>Where <span class="math inline">\(L\)</span> is the log likelihood estimate of the variance and <span class="math inline">\(p\)</span> is the number of parameters. What this does is allow you to evaluate different models with different subsets of parameters. In general, the best model is the one with the smallest value for <code>AIC</code>.</p>
+<p>Where <span class="math inline">\(L\)</span> is the maximized likelihood of the model (so <span class="math inline">\(\ln L\)</span> is its log likelihood) and <span class="math inline">\(p\)</span> is the number of estimated parameters. What this does is allow you to evaluate different models with different subsets of parameters. In general, the best model is the one with the smallest value for <code>AIC</code>.</p>
 <p>We can also evaluate the relative values of all the models by looking in the difference between the “best” model and the rest by taking the difference</p>
 <p><span class="math display">\[
 \delta AIC = AIC - min(AIC)
 \]</span></p>
-<p>The prevailing notion is that models that have <span class="math inline">\(\delta AIC &lt; 2.0\)</span> should be considered as almost equally informative, whereas <mark>those whose <span class="math inline">\(\delta AIC &gt; 5.0\)</span> are to be rejected as being informative</mark>. That <span class="math inline">\(2.0 \le \delta AIC \le 5.0\)</span> range is where it gets a bit fuzzy.</p>
+<p>The prevailing notion is that models that have <span class="math inline">\(\delta AIC &lt; 2.0\)</span> should be considered as almost equally informative, whereas those whose <span class="math inline">\(\delta AIC &gt; 5.0\)</span> are rejected as uninformative relative to the best model. That <span class="math inline">\(2.0 \le \delta AIC \le 5.0\)</span> range is where it gets a bit fuzzy.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>df.random<span class="sc">$</span>AIC <span class="ot">&lt;-</span> <span class="fu">sapply</span>( random.models, </span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">FUN =</span> AIC, </span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">simplify =</span> <span class="cn">TRUE</span> )</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>df.random<span class="sc">$</span>deltaAIC <span class="ot">=</span> df.random<span class="sc">$</span>AIC <span class="sc">-</span> <span class="fu">min</span>( df.random<span class="sc">$</span>A)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>df.random <span class="sc">|&gt;</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>P ) <span class="sc">|&gt;</span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models."</span>,</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">row.names =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df.random<span class="sc">$</span>AIC <span class="ot">&lt;-</span> <span class="fu">sapply</span>( random.models, </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">FUN =</span> AIC, </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">simplify =</span> <span class="cn">TRUE</span> )</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>df.random<span class="sc">$</span>deltaAIC <span class="ot">=</span> df.random<span class="sc">$</span>AIC <span class="sc">-</span> <span class="fu">min</span>( df.random<span class="sc">$</span>AIC )</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>df.random <span class="sc">|&gt;</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( <span class="sc">-</span>P ) <span class="sc">|&gt;</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>( <span class="at">caption =</span> <span class="st">"Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ΔAIC for alternative models."</span>,</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">escape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">row.names =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>( <span class="st">"striped"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top table table-sm table-striped small">
-<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ΔAIC for alternative models.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Models</th>
@@ -951,92 +950,92 @@ AIC = -2 \ln L + 2p
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
-<td style="text-align: right;">1067.706</td>
-<td style="text-align: right;">71.461</td>
+<td style="text-align: right;">1023.775</td>
+<td style="text-align: right;">25.058</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.362</td>
-<td style="text-align: right;">1093.187</td>
-<td style="text-align: right;">96.942</td>
+<td style="text-align: right;">0.375</td>
+<td style="text-align: right;">1045.876</td>
+<td style="text-align: right;">47.159</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
 <td style="text-align: right;">0.121</td>
 <td style="text-align: right;">1083.714</td>
-<td style="text-align: right;">87.469</td>
+<td style="text-align: right;">84.997</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: right;">0.569</td>
-<td style="text-align: right;">1049.741</td>
-<td style="text-align: right;">53.496</td>
+<td style="text-align: right;">0.581</td>
+<td style="text-align: right;">1003.416</td>
+<td style="text-align: right;">4.699</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.510</td>
 <td style="text-align: right;">1020.820</td>
-<td style="text-align: right;">24.574</td>
+<td style="text-align: right;">22.103</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.449</td>
 <td style="text-align: right;">1033.816</td>
-<td style="text-align: right;">37.570</td>
+<td style="text-align: right;">35.098</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: right;">0.606</td>
 <td style="text-align: right;">998.717</td>
-<td style="text-align: right;">2.472</td>
+<td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
 <td style="text-align: right;">0.608</td>
-<td style="text-align: right;">1000.248</td>
-<td style="text-align: right;">4.003</td>
+<td style="text-align: right;">1000.137</td>
+<td style="text-align: right;">1.420</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.623</td>
-<td style="text-align: right;">997.881</td>
-<td style="text-align: right;">1.636</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">1001.206</td>
+<td style="text-align: right;">2.488</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.623</td>
-<td style="text-align: right;">999.871</td>
-<td style="text-align: right;">3.626</td>
+<td style="text-align: right;">0.612</td>
+<td style="text-align: right;">1002.903</td>
+<td style="text-align: right;">4.186</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.641</td>
-<td style="text-align: right;">996.245</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.612</td>
+<td style="text-align: right;">1004.884</td>
+<td style="text-align: right;">6.166</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.641</td>
-<td style="text-align: right;">998.227</td>
-<td style="text-align: right;">1.981</td>
+<td style="text-align: right;">0.613</td>
+<td style="text-align: right;">1006.806</td>
+<td style="text-align: right;">8.089</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.641</td>
-<td style="text-align: right;">1000.225</td>
-<td style="text-align: right;">3.980</td>
+<td style="text-align: right;">0.616</td>
+<td style="text-align: right;">1007.796</td>
+<td style="text-align: right;">9.079</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.642</td>
-<td style="text-align: right;">1002.041</td>
-<td style="text-align: right;">5.796</td>
+<td style="text-align: right;">0.617</td>
+<td style="text-align: right;">1009.488</td>
+<td style="text-align: right;">10.771</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.649</td>
-<td style="text-align: right;">1001.705</td>
-<td style="text-align: right;">5.460</td>
+<td style="text-align: right;">0.617</td>
+<td style="text-align: right;">1011.429</td>
+<td style="text-align: right;">12.712</td>
 </tr>
 </tbody>
 </table>

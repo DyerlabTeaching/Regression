@@ -246,12 +246,12 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb1-3"><a href=""></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0             beta1        
- Min.   :-19.865   Min.   :-4.9447  
- 1st Qu.: -6.428   1st Qu.:-2.7563  
- Median :  8.953   Median :-0.1695  
- Mean   : 10.112   Mean   :-0.1433  
- 3rd Qu.: 26.853   3rd Qu.: 2.3688  
- Max.   : 39.913   Max.   : 4.9338  </code></pre>
+ Min.   :-19.641   Min.   :-4.9720  
+ 1st Qu.: -2.777   1st Qu.:-2.4037  
+ Median : 12.968   Median : 0.2896  
+ Mean   : 11.381   Mean   : 0.1105  
+ 3rd Qu.: 26.887   3rd Qu.: 2.6066  
+ Max.   : 39.968   Max.   : 4.9597  </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -275,8 +275,8 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <section id="searching-random-model-space" class="slide level2">
 <h2>Searching Random Model Space</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( interscept, slope, X, Y ) {</span>
-<span id="cb3-2"><a href=""></a>  yhat <span class="ot">&lt;-</span> interscept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>model_distance <span class="ot">&lt;-</span> <span class="cf">function</span>( intercept, slope, X, Y ) {</span>
+<span id="cb3-2"><a href=""></a>  yhat <span class="ot">&lt;-</span> intercept <span class="sc">+</span> slope <span class="sc">*</span> X</span>
 <span id="cb3-3"><a href=""></a>  diff <span class="ot">&lt;-</span> Y <span class="sc">-</span> yhat</span>
 <span id="cb3-4"><a href=""></a>  <span class="fu">return</span>( <span class="fu">sqrt</span>( <span class="fu">mean</span>( diff <span class="sc">^</span> <span class="dv">2</span> ) ) )</span>
 <span id="cb3-5"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -295,12 +295,12 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb4-8"><a href=""></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       beta0     beta1     dist
-1 -11.913070 -4.906592 74.04448
-2  -8.095129 -4.431277 67.51502
-3  24.914939  3.630876 14.46059
-4  27.551445  3.475721 16.02693
-5   6.882738 -2.907507 44.12473
-6   1.213608 -4.026328 56.25511</code></pre>
+1  34.711146  3.467505 22.80479
+2   6.274431 -1.136444 33.89467
+3  18.121553 -1.405018 24.82493
+4 -19.168992  3.089612 34.32467
+5  15.663395  4.468304 11.31594
+6  33.925070  1.255550 11.22245</code></pre>
 </div>
 </div>
 </section>
@@ -495,7 +495,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <span id="cb22-2"><a href=""></a>  f <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
 <span id="cb22-3"><a href=""></a>  df1 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">2</span>]</span>
 <span id="cb22-4"><a href=""></a>  df2 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">3</span>]</span>
-<span id="cb22-5"><a href=""></a>  p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fl">1.0</span> <span class="sc">-</span> <span class="fu">pf</span>( f, df1, df2 ) )</span>
+<span id="cb22-5"><a href=""></a>  p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fu">pf</span>( f, df1, df2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span> ) )</span>
 <span id="cb22-6"><a href=""></a>  <span class="fu">return</span>( p  )</span>
 <span id="cb22-7"><a href=""></a>}</span>
 <span id="cb22-8"><a href=""></a></span>
@@ -535,7 +535,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <h2>Decomposition of Variance</h2>
 <p>The terms in this table are:</p>
 <ul>
-<li>Degrees of Freedom (<em>df</em>): representing <code>1</code> degree of freedom for the model, and <code>N-1</code> for the residuals.</li>
+<li>Degrees of Freedom (<em>df</em>): representing <code>1</code> degree of freedom for the model, and <code>N-2</code> for the residuals.</li>
 </ul>
 </section>
 <section id="decomposition-of-variance-1" class="slide level2">
@@ -566,7 +566,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <p>The terms in this table are:</p>
 <ul>
 <li><p>The <span class="math inline">\(F\)</span>-statistic is from a known distribution and is defined by the ratio of Mean Squared values.</p></li>
-<li><p><code>Pr(&gt;F)</code> is the probability associated the value of the <span class="math inline">\(F\)</span>-statistic and is dependent upon the degrees of freedom for the model and residuals.</p></li>
+<li><p><code>Pr(&gt;F)</code> is the probability associated with the value of the <span class="math inline">\(F\)</span>-statistic and is dependent upon the degrees of freedom for the model and residuals.</p></li>
 </ul>
 </section>
 <section id="decomposition-of-variance-4" class="slide level2">
@@ -586,8 +586,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="variance-exaplained" class="slide level2">
-<h2>Variance Exaplained</h2>
+<section id="variance-explained" class="slide level2">
+<h2>Variance Explained</h2>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">summary</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -673,17 +673,17 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <p>Let’s start by looking at some air quality data, that is built into <code>R</code> as an example data set.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href=""></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="ot">-&gt;</span> df.air</span>
-<span id="cb35-3"><a href=""></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb35-2"><a href=""></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href=""></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( Ozone ), <span class="sc">!</span><span class="fu">is.na</span>( Solar.R ) ) <span class="ot">-&gt;</span> df.air</span>
+<span id="cb35-4"><a href=""></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     Ozone           Solar.R           Wind             Temp      
- Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00  
- 1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00  
- Median : 31.50   Median :205.0   Median : 9.700   Median :79.00  
- Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88  
- 3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00  
- Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00  
- NA's   :37       NA's   :7                                       </code></pre>
+<pre><code>     Ozone          Solar.R           Wind            Temp      
+ Min.   :  1.0   Min.   :  7.0   Min.   : 2.30   Min.   :57.00  
+ 1st Qu.: 18.0   1st Qu.:113.5   1st Qu.: 7.40   1st Qu.:71.00  
+ Median : 31.0   Median :207.0   Median : 9.70   Median :79.00  
+ Mean   : 42.1   Mean   :184.8   Mean   : 9.94   Mean   :77.79  
+ 3rd Qu.: 62.0   3rd Qu.:255.5   3rd Qu.:11.50   3rd Qu.:84.50  
+ Max.   :168.0   Max.   :334.0   Max.   :20.70   Max.   :97.00  </code></pre>
 </div>
 </div>
 </section>
@@ -704,7 +704,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="lightable-classic-2 caption-top" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Model parameters predicting mean ozone in parts per billion mearsured in New York during the period of 1 May 1973 - 30 September 1973 as predicted by Temperature, Windspeed, and Solar Radiation.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 as predicted by Temperature, Windspeed, and Solar Radiation.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -721,12 +721,12 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: left;">0.488</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: left;">0.362</td>
-<td style="text-align: left;">9.27e-13</td>
+<td style="text-align: left;">0.375</td>
+<td style="text-align: left;">9.09e-13</td>
 </tr>
 </tbody>
 </table>
@@ -748,7 +748,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="lightable-classic caption-top" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
+<caption>Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -765,27 +765,27 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: left;">0.488</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: left;">0.362</td>
-<td style="text-align: left;">9.27e-13</td>
+<td style="text-align: left;">0.375</td>
+<td style="text-align: left;">9.09e-13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: left;">0.569</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">0.581</td>
+<td style="text-align: left;">3.79e-21</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: left;">0.510</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.80e-17</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: left;">0.449</td>
-<td style="text-align: left;">9.99e-15</td>
+<td style="text-align: left;">1.00e-14</td>
 </tr>
 </tbody>
 </table>
@@ -819,33 +819,33 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp</td>
-<td style="text-align: right;">0.4877072</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: right;">0.4879601</td>
+<td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.3618582</td>
-<td style="text-align: left;">9.27e-13</td>
+<td style="text-align: right;">0.3751521</td>
+<td style="text-align: left;">9.09e-13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: right;">0.5687097</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: right;">0.5813780</td>
+<td style="text-align: left;">3.79e-21</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.5103167</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.80e-17</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.4494936</td>
-<td style="text-align: left;">9.99e-15</td>
+<td style="text-align: left;">1.00e-14</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: right;">0.6058946</td>
-<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">1.51e-21</td>
 </tr>
 </tbody>
 </table>
@@ -875,11 +875,11 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp</td>
-<td style="text-align: left;">0.4877</td>
+<td style="text-align: left;">0.4880</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: left;">0.3619</td>
+<td style="text-align: left;">0.3752</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
@@ -887,7 +887,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: left;">0.5687</td>
+<td style="text-align: left;">0.5814</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
@@ -921,35 +921,35 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: left;">0.6097</td>
+<td style="text-align: left;">0.6081</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: left;">0.6115</td>
+<td style="text-align: left;">0.6092</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: left;">0.6192</td>
+<td style="text-align: left;">0.6111</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: left;">0.6203</td>
+<td style="text-align: left;">0.6111</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: left;">0.6216</td>
+<td style="text-align: left;">0.6213</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: left;">0.6257</td>
+<td style="text-align: left;">0.6218</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: left;">0.6334</td>
+<td style="text-align: left;">0.6232</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: left;">0.6360</td>
+<td style="text-align: left;">0.6267</td>
 </tr>
 </tbody>
 </table>
@@ -974,15 +974,15 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <h2>Model Comparisons</h2>
 <p>Akaike Information Criterion (AIC) is a measurement that allows us to compare models while penalizing for adding new parameters.</p>
 <p><span class="math inline">\(AIC = -2 \ln L + 2p\)</span></p>
-<p>The criterion here are to find models with the lowest AIC values.</p>
+<p>The criterion here is to find the models with the lowest AIC values.</p>
 <div class="fragment">
 <h3 id="comparisons">Comparisons</h3>
 <p>To compare, we evaluate the differences in AIC for alternative models.</p>
 <p><span class="math inline">\(\delta AIC = AIC - min( AIC )\)</span></p>
 </div>
 </section>
-<section id="aic-aic" class="slide level2 smaller scrollable">
-<h2>AIC &amp; ∂AIC</h2>
+<section id="aic-delta-aic" class="slide level2 smaller scrollable">
+<h2>AIC &amp; <span class="math inline">\(\delta AIC\)</span></h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="lightable-paper lightable-striped caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
@@ -998,14 +998,14 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.488</td>
-<td style="text-align: right;">1067.706</td>
-<td style="text-align: right;">68.989</td>
+<td style="text-align: right;">1023.775</td>
+<td style="text-align: right;">25.058</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Wind</td>
-<td style="text-align: right;">0.362</td>
-<td style="text-align: right;">1093.187</td>
-<td style="text-align: right;">94.470</td>
+<td style="text-align: right;">0.375</td>
+<td style="text-align: right;">1045.876</td>
+<td style="text-align: right;">47.159</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Solar</td>
@@ -1015,9 +1015,9 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
-<td style="text-align: right;">0.569</td>
-<td style="text-align: right;">1049.741</td>
-<td style="text-align: right;">51.024</td>
+<td style="text-align: right;">0.581</td>
+<td style="text-align: right;">1003.416</td>
+<td style="text-align: right;">4.699</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
@@ -1039,51 +1039,51 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 1 Random Variables</td>
-<td style="text-align: right;">0.610</td>
-<td style="text-align: right;">999.636</td>
-<td style="text-align: right;">0.919</td>
+<td style="text-align: right;">0.608</td>
+<td style="text-align: right;">1000.084</td>
+<td style="text-align: right;">1.367</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 2 Random Variables</td>
-<td style="text-align: right;">0.612</td>
-<td style="text-align: right;">1001.113</td>
-<td style="text-align: right;">2.396</td>
+<td style="text-align: right;">0.609</td>
+<td style="text-align: right;">1001.770</td>
+<td style="text-align: right;">3.052</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 3 Random Variables</td>
-<td style="text-align: right;">0.619</td>
-<td style="text-align: right;">1000.911</td>
-<td style="text-align: right;">2.194</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">1003.254</td>
+<td style="text-align: right;">4.537</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 4 Random Variables</td>
-<td style="text-align: right;">0.620</td>
-<td style="text-align: right;">1002.597</td>
-<td style="text-align: right;">3.880</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">1005.246</td>
+<td style="text-align: right;">6.529</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 5 Random Variables</td>
-<td style="text-align: right;">0.622</td>
-<td style="text-align: right;">1004.189</td>
-<td style="text-align: right;">5.472</td>
+<td style="text-align: right;">0.621</td>
+<td style="text-align: right;">1004.298</td>
+<td style="text-align: right;">5.581</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 6 Random Variables</td>
-<td style="text-align: right;">0.626</td>
-<td style="text-align: right;">1004.984</td>
-<td style="text-align: right;">6.267</td>
+<td style="text-align: right;">0.622</td>
+<td style="text-align: right;">1006.144</td>
+<td style="text-align: right;">7.427</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 7 Random Variables</td>
-<td style="text-align: right;">0.633</td>
-<td style="text-align: right;">1004.680</td>
-<td style="text-align: right;">5.963</td>
+<td style="text-align: right;">0.623</td>
+<td style="text-align: right;">1007.732</td>
+<td style="text-align: right;">9.015</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar + 8 Random Variables</td>
-<td style="text-align: right;">0.636</td>
-<td style="text-align: right;">1005.887</td>
-<td style="text-align: right;">7.170</td>
+<td style="text-align: right;">0.627</td>
+<td style="text-align: right;">1008.697</td>
+<td style="text-align: right;">9.979</td>
 </tr>
 </tbody>
 </table>
