@@ -5,30 +5,92 @@ format: dyerlab-html
 
 ![](media/models.png)
 
-```{r setup, include=FALSE}
+```{r setup}
+#| message: false
+library( terra )
+library( tidyterra )
+library( sf )
 library( tidyverse )
-library( nycflights13 )
 ```
 
-Since regression analysis is such a fundamental component of inferences, I thought it would be a good idea to try to work through a few more examples to give you some more practice.
+In this activity we return to the dogwood trees from the Vector Data activity. These are 58 maternal trees sampled along a gradient from the city of Richmond, Virginia, south to Pocahontas State Park. Back then, the `get_landcover()` function did the raster work for you because we had not covered rasters yet. Now we have, so this time you will pull the land cover out of the raster yourself and then use a regression to describe how the landscape changes along the gradient.
 
-For this we will use some data on flights into and out of Newark (EWR), JFK, and La Guardia airports in NYC metropolitan area.
+## The Data
+
+The trees are in the course data repository. `Habitat` is `Urban`, `Suburban`, or `Native`, and `N` is the number of offspring (seeds) collected from each tree. This time we use all 58 trees, not just the `Preliminary` ones.
 
 ```{r}
-summary( flights )
+url <- "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_Dogwoods.csv"
+read_csv( url ) |>
+  st_as_sf( coords = c("Longitude", "Latitude"), crs = 4326 ) -> trees
+trees
 ```
 
-We also have some data related to local weather conditions.
+The land cover is the 2021 [National Land Cover Database](https://www.mrlc.gov/data) (NLCD) on 30 m cells. Each cell holds a class code; codes `21` through `24` are the four classes of *developed* land (open space, low, medium, and high intensity). See the [NLCD legend](https://www.mrlc.gov/data/legends/national-land-cover-database-class-legend-and-description) for the rest.
 
 ```{r}
-summary( weather )
+nlcd <- rast( "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_NLCD_2021.tif" )
+nlcd
 ```
 
-# Question
+We will measure distances from Richmond City Hall, in the middle of downtown.
 
-What weather features best explain departure delays from JFK for `ExpressJet` airlines?
+```{r}
+data.frame( Name = "City Hall",
+            Longitude = -77.4334,
+            Latitude = 37.5407 ) |>
+  st_as_sf( coords = c("Longitude", "Latitude"), crs = 4326 ) -> downtown
+```
 
-Use the `flights` and `weather` data sets above to build a data set of departure delays and weather conditions for JFK/ExpressJet flights, then fit and compare regression models to answer the question.
+## The Question
+
+> How does the amount of developed land around a dogwood change with its distance from downtown Richmond?
+
+We will work through this together.
+
+1. The raster is in NAD83 / Conus Albers (EPSG:5070), whose units are meters. Reproject `trees` and `downtown` to match the raster, using `st_crs( nlcd )` as the target `crs`.
+
+```{r}
+# Your code here
+
+```
+
+2. Add a column `Distance` to `trees` holding each tree's distance from `downtown` in kilometers. (`st_distance()` returns meters, with units attached; `as.numeric()` drops the units.)
+
+```{r}
+# Your code here
+
+```
+
+3. Make a new raster layer named `Developed` that is `TRUE` for developed cells and `FALSE` for everything else. The single layer in `nlcd` is named `nlcd`, so you can use it like a column inside `mutate()`, then `select()` just the new layer.
+
+```{r}
+# Your code here
+
+```
+
+4. Define each tree's neighborhood as everything within 500 m (`st_buffer()`), and find the proportion of each neighborhood that is developed. When you `terra::extract()` with polygons rather than points, you get back one row for *every cell* inside each polygon, and the `ID` column says which polygon (tree) that cell belongs to. Keep the `ID` this time (leave off `ID = FALSE`). Then use `group_by()` and `summarize()` to collapse the cells to one value per tree. The mean of a `TRUE`/`FALSE` column is the proportion of `TRUE` cells. The summary comes back sorted by `ID`, which is the same order as the trees, so you can add it to `trees` as a column named `Developed`.
+
+```{r}
+# Your code here
+
+```
+
+5. Plot `Developed` against `Distance`, colored by `Habitat`, with the fitted regression line.
+
+```{r}
+# Your code here
+
+```
+
+6. Fit the regression of `Developed` on `Distance`. Is it significant, how much of the variation does it explain, and what does the slope mean in words (with units)? At what distance does the model predict a neighborhood with no development at all?
+
+```{r}
+# Your code here
+
+```
+
+7. Look at the residuals with `plot( fit, which = 1 )` and `plot( fit, which = 2 )`. Is the model well behaved? What explains the pattern you see, and what does it suggest about describing these data as a smooth gradient?
 
 ```{r}
 # Your code here

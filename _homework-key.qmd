@@ -1,0 +1,127 @@
+---
+title: "Regression Homework"
+subtitle: "Answer key"
+author: "Rodney Dyer"
+date: today
+abstract: |
+  Using 58 maternal dogwood trees sampled from Richmond, Virginia, south to Pocahontas State Park, this document measures developed land cover around each tree at five neighborhood sizes (100 m to 2 km), compares regressions of offspring number on developed cover at each scale with AIC, and finds a weak positive effect that the data cannot assign to any one scale.
+format: dyerlab-html
+---
+
+## Methods
+
+> **Data.** We used the locations of 58 maternal dogwood trees (*Cornus florida*) and the number of offspring (seeds) collected from each, along with the 2021 National Land Cover Database (NLCD) on 30 m cells, both from the course data repository. We reprojected the trees to the raster's equal-area projection (NAD83 / Conus Albers, in meters) and made a layer marking developed cells (NLCD classes 21 to 24).
+
+```{r}
+#| message: false
+library( terra )
+library( tidyterra )
+library( sf )
+library( tidyverse )
+library( knitr )
+library( kableExtra )
+
+nlcd <- rast( "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_NLCD_2021.tif" )
+
+read_csv( "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_Dogwoods.csv" ) |>
+  st_as_sf( coords = c("Longitude", "Latitude"), crs = 4326 ) |>
+  st_transform( crs = st_crs( nlcd ) ) -> trees
+
+nlcd |>
+  mutate( Developed = nlcd >= 21 & nlcd <= 24 ) |>
+  select( Developed ) -> developed
+```
+
+> **Landscape at five scales.** For each tree we drew circular neighborhoods of 100, 250, 500, 1000, and 2000 m and extracted the proportion of each neighborhood that was developed, as the mean of the developed layer over the cells in each neighborhood.
+
+```{r}
+scales <- c( 100, 250, 500, 1000, 2000 )
+for( d in scales ) {
+  terra::extract( developed, vect( st_buffer( trees, dist = d ) ) ) |>
+    group_by( ID ) |>
+    summarize( Developed = mean( Developed ) ) -> vals
+  trees[[ paste( "Dev", d, sep = "" ) ]] <- vals$Developed
+}
+
+trees |>
+  st_drop_geometry() -> df
+summary( df )
+```
+
+> **Candidate models.** We fit one simple regression of offspring number on developed cover at each scale.
+
+```{r}
+models <- list()
+models[["N ~ Developed (100 m)"]] <- lm( N ~ Dev100, data = df )
+models[["N ~ Developed (250 m)"]] <- lm( N ~ Dev250, data = df )
+models[["N ~ Developed (500 m)"]] <- lm( N ~ Dev500, data = df )
+models[["N ~ Developed (1000 m)"]] <- lm( N ~ Dev1000, data = df )
+models[["N ~ Developed (2000 m)"]] <- lm( N ~ Dev2000, data = df )
+```
+
+> **Model comparison.** For each model we recorded $R^2$, the *P*-value of its *F*-test, and its AIC, and computed $\delta AIC$ from the lowest AIC (@tbl-scale).
+
+```{r}
+get_pval <- function( model ) {
+  f <- summary( model )$fstatistic[1]
+  df1 <- summary( model )$fstatistic[2]
+  df2 <- summary( model )$fstatistic[3]
+  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
+  return( p  )
+}
+
+data.frame( Model = names( models ),
+            R2 = sapply( models, FUN = function( x ) return( summary( x )$r.squared ) ),
+            P = sapply( models, FUN = get_pval ),
+            AIC = sapply( models, FUN = AIC ) ) -> model_table
+
+model_table$deltaAIC <- model_table$AIC - min( model_table$AIC )
+```
+
+```{r}
+#| label: tbl-scale
+#| tbl-cap: "Regressions of offspring number on the proportion of developed land within five neighborhood sizes around 58 maternal dogwood trees, ordered from lowest to highest AIC."
+model_table |>
+  arrange( AIC ) |>
+  mutate( P = format( P, digits = 3 ) ) |>
+  kable( digits = 3, row.names = FALSE ) |>
+  kable_paper( "striped", full_width = FALSE )
+```
+
+> **Model checking.** We examined the residuals of the lowest-AIC model and decomposed its variation with an analysis of variance table.
+
+```{r}
+best_name <- model_table$Model[ model_table$deltaAIC == 0 ]
+best <- models[[ best_name ]]
+
+plot( best, which = 1 )
+plot( best, which = 2 )
+
+anova( best )
+summary( best )
+```
+
+The residuals have no strong curve, but they bunch up at the two ends of the fitted values, because most trees are either heavily developed (the city) or barely developed (the park) with few in between. The park trees spread more widely than the urban ones, and two of them produced far more offspring than predicted; those two make the upper tail of the quantile plot. The model is acceptable to interpret, with the caution that it is mostly comparing the two ends of the gradient and that two trees carry a lot of weight.
+
+```{r}
+N_trees <- nrow( df )
+n_close <- sum( model_table$deltaAIC < 2 )
+n_models <- nrow( model_table )
+F_best <- format( summary( best )$fstatistic[1], digits = 3 )
+df1_best <- summary( best )$fstatistic[2]
+df2_best <- summary( best )$fstatistic[3]
+P_best <- format( get_pval( best ), digits = 2 )
+R2_best <- format( summary( best )$r.squared, digits = 2 )
+slope <- format( best$coefficients[2], digits = 2 )
+dAIC_max <- format( max( model_table$deltaAIC ), digits = 2 )
+```
+
+## Results
+
+Across the `r N_trees` trees, the best supported model was `r best_name` (@tbl-scale). It was significant (*F*~`r df1_best`,`r df2_best`~ = `r F_best`, *P* = `r P_best`) but explained only `r R2_best` of the variation in offspring number. A tree whose neighborhood was fully developed was predicted to yield `r slope` more offspring than one with no development. However, `r n_close` of the `r n_models` scales fell within $\delta AIC$ < 2 of the best (the largest $\delta AIC$ was `r dAIC_max`), so the data do not single out a scale at which development matters.
+
+## Questions
+
+**Why does AIC rank these models in the same order as $R^2$?** AIC adds a penalty of 2 for every estimated parameter. All five models fit the same response to the same trees with the same number of parameters (an intercept and one slope), so the penalty is identical and only the fit differs. A better fit means both a higher $R^2$ and a lower AIC. In the worked example the models had one, two, or three predictors, so the penalty differed and the two rankings could disagree.
+
+**What can we conclude about scale?** Each larger neighborhood contains the smaller ones, so the five measures share much of the same ground and are strongly correlated with each other (`cor()` on the five columns gives values from about 0.92 to 0.99). A tree in the city is heavily developed at every scale, and a tree in the park is barely developed at any scale. The five predictors therefore carry nearly the same information, and the data cannot tell them apart. The honest conclusion is that more developed surroundings go with somewhat more offspring at every scale from 100 m to 2 km, but we cannot say which scale matters. It is also worth noting that development here is tied up with everything else that differs between the city and the park (the trees in the city are cultivars), so this is an association, not evidence that development itself causes more offspring.

@@ -1,26 +1,205 @@
 ---
 title: "Regression Homework"
+subtitle: "Fitting, checking, and choosing among regression models"
 author: "YOUR NAME HERE"
 format: dyerlab-html
 ---
 
-## Homework
+## The Idea
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Running `lm()` is the easy part. A reproducible regression analysis does three more things before it says anything about the science, and it reports every one of them:[^ref-lm]
 
-## Running Code
+1. **Fit a set of candidate models.** When there are several plausible ways to explain a response (different predictors, combinations of them, or the same predictor measured at different scales), fit each one rather than settling on the first model that comes out significant.
+2. **Choose among them with AIC.** Adding a predictor never lowers $R^2$, even when the predictor is random noise, so $R^2$ cannot pick the best model. AIC penalizes each added parameter, and $\delta AIC$ says how far each model is from the best one.
+3. **Check the chosen model.** Look at its residuals before trusting it, then decompose its variation with an analysis of variance table and report how much of the response it explains.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+The write-up then reports each step, with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.
+
+[^ref-lm]: Fitting with `lm()` is covered in the narrative section [Our Friend `lm()`](https://dyerlabteaching.github.io/Regression/narrative.html#our-friend-lm), the diagnostic plots in [Model Fit](https://dyerlabteaching.github.io/Regression/narrative.html#model-fit), `anova()` in [Analysis of Variance Tables](https://dyerlabteaching.github.io/Regression/narrative.html#analysis-of-variance-tables---decomposing-variation), $R^2$ and `get_pval()` in [Variance Explained](https://dyerlabteaching.github.io/Regression/narrative.html#variance-explained), and model comparison in [Comparing Models](https://dyerlabteaching.github.io/Regression/narrative.html#comparing-models) and [Akaike Information Criterion](https://dyerlabteaching.github.io/Regression/narrative.html#akaike-information-criterion).
+
+The worked example below uses the Rice Rivers Center data you saw in the Tidyverse and Correlation modules to show the whole workflow. Your assignment applies the same structure to the dogwood trees from the in-class activity, asking a question landscape ecologists ask all the time: *at what spatial scale does the surrounding landscape matter?*
+
+## A Worked Example
+
+### Methods
+
+> **Data.** We used the atmospheric and water-quality record from the [Rice Rivers Center](https://ricerivers.vcu.edu) on the James River, stored as a CSV in the course data repository. The instruments take a reading every 15 minutes from January through March 2014. Readings 15 minutes apart are not independent of each other, so we averaged them into one value per day. We converted air temperature from °F to °C and kept the daily mean air temperature, photosynthetically active radiation (PAR), relative humidity, water temperature, and dissolved oxygen.
+
+You can use this chunk exactly as it is in your own document. Everything in it comes from the Tidyverse module except `as_date()`, which drops the clock time from each timestamp so that every reading taken on the same day shares one `Date` to group by.
 
 ```{r}
-1 + 1
+#| message: false
+library( tidyverse )
+library( lubridate )
+library( knitr )
+library( kableExtra )
+
+url <- "https://dyerlabteaching.github.io/CourseData/Environmental/RiceRivers_2014.csv"
+
+read_csv( url ) |>
+  mutate( Date = as_date( mdy_hms( DateTime, tz = "EST" ) ),
+          AirTemp = (AirTempF - 32) * 5 / 9 ) |>
+  group_by( Date ) |>
+  summarize( AirTemp = mean( AirTemp, na.rm = TRUE ),
+             PAR = mean( PAR, na.rm = TRUE ),
+             Humidity = mean( RelHumidity, na.rm = TRUE ),
+             WaterTemp = mean( H2O_TempC, na.rm = TRUE ),
+             DO = mean( ODO_mgl, na.rm = TRUE ) ) -> rice
+
+summary( rice )
 ```
 
-You can add options to executable code like this
+> **Candidate models.** We asked which atmospheric conditions best explain daily mean water temperature. With three candidate predictors (air temperature, PAR, and humidity) there are seven possible models: each predictor alone, each pair, and all three together. We fit all seven with `lm()` and stored them in a list named by their formulas.
 
 ```{r}
-#| echo: false
-2 * 2
+models <- list()
+models[["WaterTemp ~ AirTemp"]] <- lm( WaterTemp ~ AirTemp, data = rice )
+models[["WaterTemp ~ PAR"]] <- lm( WaterTemp ~ PAR, data = rice )
+models[["WaterTemp ~ Humidity"]] <- lm( WaterTemp ~ Humidity, data = rice )
+models[["WaterTemp ~ AirTemp + PAR"]] <- lm( WaterTemp ~ AirTemp + PAR, data = rice )
+models[["WaterTemp ~ AirTemp + Humidity"]] <- lm( WaterTemp ~ AirTemp + Humidity, data = rice )
+models[["WaterTemp ~ PAR + Humidity"]] <- lm( WaterTemp ~ PAR + Humidity, data = rice )
+models[["WaterTemp ~ AirTemp + PAR + Humidity"]] <- lm( WaterTemp ~ AirTemp + PAR + Humidity, data = rice )
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+> **Model comparison.** For each model we recorded the variance explained ($R^2$), the *P*-value of its overall *F*-test, and its AIC, then computed $\delta AIC$ as each model's distance from the lowest AIC. The `get_pval()` function is the one from the narrative.
+
+```{r}
+get_pval <- function( model ) {
+  f <- summary( model )$fstatistic[1]
+  df1 <- summary( model )$fstatistic[2]
+  df2 <- summary( model )$fstatistic[3]
+  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
+  return( p  )
+}
+
+data.frame( Model = names( models ),
+            R2 = sapply( models, FUN = function( x ) return( summary( x )$r.squared ) ),
+            P = sapply( models, FUN = get_pval ),
+            AIC = sapply( models, FUN = AIC ) ) -> model_table
+
+model_table$deltaAIC <- model_table$AIC - min( model_table$AIC )
+```
+
+The comparison table is built in the chunk below the sentence that introduces it, and given a label and caption so the Results can cite it as @tbl-water.[^ref-tables]
+
+[^ref-tables]: Table labels, captions, and `@tbl-` cross-references are covered in the Tidyverse narrative section [Publication-Quality Tables](https://dyerlabteaching.github.io/Tidyverse/narrative.html#publication-quality-tables).
+
+```{r}
+#| label: tbl-water
+#| tbl-cap: "Seven candidate models explaining daily mean water temperature (°C) at the Rice Rivers Center, January to March 2014, ordered from lowest to highest AIC."
+model_table |>
+  arrange( AIC ) |>
+  mutate( P = format( P, scientific = TRUE, digits = 3 ) ) |>
+  kable( digits = 3, row.names = FALSE ) |>
+  kable_paper( "striped", full_width = FALSE )
+```
+
+> **Model checking.** We took the model with the lowest AIC as the best supported model and examined its residuals against its fitted values and in a normal quantile plot before interpreting it. We then decomposed its variation with an analysis of variance table and pulled its coefficients and $R^2$ from its summary.
+
+```{r}
+best_name <- model_table$Model[ model_table$deltaAIC == 0 ]
+best <- models[[ best_name ]]
+
+plot( best, which = 1 )
+plot( best, which = 2 )
+
+anova( best )
+summary( best )
+```
+
+The residuals scatter evenly around zero with no strong curve, and the quantile plot follows the line except for a few of the warmest and coldest days, so the model is reasonable to interpret.
+
+### Preparing the reporting values
+
+Before writing the Results, pull the numbers you will quote into one chunk, `format()` them, and give each a short name. The Results paragraph then carries a short word like `R2_best` instead of a `format(..., digits = 3)` call wedged into the middle of a sentence, and when the data change you edit only this chunk, never the prose.
+
+```{r}
+N <- nrow( rice )
+n_close <- sum( model_table$deltaAIC < 2 )
+R2_air <- format( model_table$R2[ model_table$Model == "WaterTemp ~ AirTemp" ], digits = 3 )
+dAIC_air <- format( model_table$deltaAIC[ model_table$Model == "WaterTemp ~ AirTemp" ], digits = 2 )
+F_best <- format( summary( best )$fstatistic[1], digits = 3 )
+df1_best <- summary( best )$fstatistic[2]
+df2_best <- summary( best )$fstatistic[3]
+P_best <- format( get_pval( best ), digits = 3 )
+R2_best <- format( summary( best )$r.squared, digits = 3 )
+b_air <- format( best$coefficients["AirTemp"], digits = 3 )
+b_par <- format( best$coefficients["PAR"], digits = 3 )
+```
+
+### Results
+
+Across the `r N` days of record, the best supported model of daily mean water temperature was `r best_name` (@tbl-water). It was significant (*F*~`r df1_best`,`r df2_best`~ = `r F_best`, *P* = `r P_best`) and explained `r R2_best` of the variation in water temperature. Water temperature rose by `r b_air` °C for each 1 °C rise in air temperature and by `r b_par` °C for each unit of PAR, holding the other predictor constant. The comparison did not single out one model, though: `r n_close` models fell within $\delta AIC$ < 2 of the best, including air temperature alone ($R^2$ = `r R2_air`, $\delta AIC$ = `r dAIC_air`). Air temperature is the one predictor every well-supported model shares, while the extra support for PAR is weak.
+
+Here is the raw text that produced it:
+
+```{verbatim}
+Across the `r N` days of record, the best supported model of daily mean water temperature was `r best_name` (@tbl-water). It was significant (*F*~`r df1_best`,`r df2_best`~ = `r F_best`, *P* = `r P_best`) and explained `r R2_best` of the variation in water temperature. Water temperature rose by `r b_air` °C for each 1 °C rise in air temperature and by `r b_par` °C for each unit of PAR, holding the other predictor constant. The comparison did not single out one model, though: `r n_close` models fell within $\delta AIC$ < 2 of the best, including air temperature alone ($R^2$ = `r R2_air`, $\delta AIC$ = `r dAIC_air`). Air temperature is the one predictor every well-supported model shares, while the extra support for PAR is weak.
+```
+
+## Your Assignment
+
+In class we found the proportion of developed land within 500 m of each of the 58 dogwoods. But why 500 m? Nothing about a dogwood says its "neighborhood" is 500 m across. The pollinators that move pollen to it and the birds that carry its seeds away each work at their own scale. A common way to find the scale that matters is to measure the landscape at several sizes of neighborhood and let the data say which one best explains the response.
+
+Produce a standalone **Methods** and **Results** write-up asking **at which scale developed land cover best explains the number of offspring collected from each tree (`N`)**. Measure the proportion of developed land in neighborhoods of **100, 250, 500, 1000, and 2000 m** around each tree, and treat each scale as one candidate model, `N ~ Developed` at that scale. Use the extraction code from the in-class activity, which already does this for 500 m.[^ref-inclass]
+
+[^ref-inclass]: The data, the `Developed` layer, `st_buffer()`, and the `terra::extract()` → `group_by( ID )` → `summarize()` steps are all in the [in-class activity](https://dyerlabteaching.github.io/Regression/in-class.html). Extracting raster values is covered in the Raster-Data narrative section [Extracting Values at the Sites](https://dyerlabteaching.github.io/Raster-Data/narrative.html#extracting-values-at-the-sites).
+
+Your document should have:
+
+1. **Methods**, each step a short paragraph followed by its chunk:
+   - *Data*: load the trees and the NLCD raster, reproject the trees to match the raster, and make the `Developed` layer;
+   - *Landscape at five scales*: buffer the trees at each of the five distances and extract the proportion developed, adding each to `trees` as its own column (e.g. `Dev100`, `Dev250`, …);
+   - *Candidate models*: fit the five models with `lm()` and store them in a named list;
+   - *Model comparison*: build a table of $R^2$, *P*, AIC, and $\delta AIC$ for the five models, with a label and caption so you can cite it with `@tbl-`;
+   - *Model checking*: for the model with the lowest AIC, show the residuals-versus-fitted plot and the normal quantile plot, say in a sentence whether the model looks well behaved, and show its `anova()` table.
+2. **A reporting-values chunk**: `format()` the numbers your Results report and give each a short name.
+3. **Results**: one paragraph naming the best supported scale and reporting its *F*-test, $R^2$, and slope in words (with units), and saying how many scales fall within $\delta AIC$ < 2 of it. Write each number as a bare inline value (`` `r R2_best` ``) with no `format()` in the prose.
+
+Then answer briefly, a sentence or two each:
+
+- All five of your models have exactly one predictor. Why does ranking them by AIC give the same order as ranking them by $R^2$, when it did not in the worked example?
+- Developed cover within 250 m and within 1000 m of a tree are measured on overlapping ground. What does that overlap do to your ability to tell the scales apart, and what can you honestly conclude about the scale at which development matters to these trees?
+
+## What You Turn In
+
+**One file: the rendered, self-contained `.html`.** Not the `.qmd`, and not a copy of this page. Make a *new* Quarto document that contains only your own work: your Methods and Results sections with their chunks, the reporting-values chunk, and your brief answers to the two questions.
+
+The worked example above is a model to imitate, not text to paste into your document.
+
+### Making the document
+
+1. In RStudio: **File ▸ New File ▸ Quarto Document…**
+2. In the dialog, enter a title and your name, leave the engine set to **Knitr**, and click **Create**.
+3. Delete everything RStudio puts below the header (the "Quarto" boilerplate and its example chunk).
+4. Replace the header it generated with the one below.
+5. Save the file into your course project folder as `Regression-Homework.qmd`.
+6. Write your content, then click **Render** to produce the `.html`. That HTML file is what you submit.
+
+### The full YAML header
+
+```yaml
+---
+title: "Regression Homework"
+author: "Your Name"
+date: today
+abstract: |
+  A sentence or two saying what the document does: the data, the question, and what you found.
+format:
+  html:
+    self-contained: true
+    code-tools: true
+---
+```
+
+- **`title` / `author` / `date` / `abstract`**: complete front matter, including a short summary where a scientific paper would put its abstract. `date: today` fills itself in at render time.
+- **`format: html`**: render to a single web page I can open in any browser.
+- **`self-contained: true`**: bundle every image, style, and script *into* that one `.html` file. Without it the file depends on a sibling `*_files/` folder that never makes it into the upload, and your figures and formatting arrive broken.
+- **`code-tools: true`**: adds the "</> Code" button in the top-right that lets a reader view the full source. **This is not optional.** If I cannot see the code behind a wrong answer, I cannot tell whether you were one typo away or lost the plot entirely. That means I cannot give partial credit, point out where it went sideways, or help you fix it. A rendered page with no visible code is graded only on what rendered.
+
+Use this same header layout for every document you turn in this course.
+
+## How This Is Graded
+
+This assignment is scored with the **Online Homework Rubric** on the Canvas site, the same rubric used for every online homework in this course. It covers online access to the published document, front matter, formatting, and whether the document stands on its own; the remaining points come from the assignment-specific work above.

@@ -25,7 +25,7 @@ $$
 \sigma_{Total}^2 = \sigma_{Model}^2 + \sigma_{Residual}^2
 $$
 
-<mark>In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is *residual* (or left over).</mark>  For regression analyses, consider the simple linear regression model.
+That is, some of the underlying variation goes towards explaining the patterns in the data (the model) and the rest of the variation is *residual* (or left over).  For regression analyses, consider the simple linear regression model.
 
 
 $$
@@ -52,7 +52,7 @@ ggplot( df, aes(x,y) ) +
   stat_smooth( method="lm", 
                formula = y ~ x, 
                se=FALSE, 
-               color="red", size=0.5) + 
+               color="red", linewidth=0.5) + 
   geom_point() 
 ```
 
@@ -61,7 +61,7 @@ The notion here is to estimate the underlying formula for that red line that des
 
 ## Least Squares Fitting {.theory .application}
 
-So how do we figure this out?  One of the most common ways is to use a method called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the intercept ($\beta_0$) and slope ($\beta_1$) coefficients.  These *could be* close to a good models or not.
+So how do we figure this out?  One of the most common ways is to use a method called *Least Squared Distance* fitting.  To describe this, consider a set of hypothetical random models with random values estimated for both the intercept ($\beta_0$) and slope ($\beta_1$) coefficients.  Some of these *could be* close to a good model; most will not be.
 
 ```{r}
 models <- data.frame( beta0 = runif(250,-20,40),
@@ -209,7 +209,7 @@ Fortunately, we have a lot of additional information available to us because we 
 
 ## Model Fit {.application}
 
-We can estimate a bunch of different models but before we look to see if it is well behaved.  There are several interesting plots that we can examine from the model object such as:
+Before we interpret a model, we should check that it is well behaved.  There are several diagnostic plots that we can examine from the model object such as:
 
 ```{r}
 plot( fit, which = 1 )
@@ -236,7 +236,7 @@ anova( fit )
 
 The terms in this table are:
 
-- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-1` for the residuals.  
+- Degrees of Freedom (*df*): representing `1` degree of freedom for the model (one per predictor), and `N-2` for the residuals (`N-1` in total, less the one used by the model).  
 
 - Sums of Squared Deviations: 
     - $SS_{Total} = \sum_{i=1}^N (y_i - \bar{y})^2$
@@ -281,12 +281,14 @@ get_pval <- function( model ) {
   f <- summary( model )$fstatistic[1]
   df1 <- summary( model )$fstatistic[2]
   df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( 1.0 - pf( f, df1, df2 ) )
+  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
   return( p  )
 }
 
 get_pval( fit )
 ```
+
+The function asks `pf()` for the upper tail directly (`lower.tail = FALSE`) rather than computing `1 - pf()`.  The two are the same in principle, but when the $F$-statistic is very large, `pf()` is so close to 1 that `1 - pf()` rounds to exactly 0, and a *P*-value is never actually zero.
 
 
 As an often-overlooked side effect, the $R^2$ from a simple one predictor regression model and the correlation coefficient $r$ from `cor.test(method='pearson')` are related as follows:
@@ -323,7 +325,7 @@ resids
 We almost **always** need to look at the residuals of a regression model to help diagnose any potential problems (as shown above in the plots of the raw model itself).
 
 ```{r}
-plot( resids ~ yhat, bty="n", xlab="Predicted Values", ylab="Residuals (yhat - y)", pch=16 )
+plot( resids ~ yhat, bty="n", xlab="Predicted Values", ylab="Residuals (y - yhat)", pch=16 )
 abline(0, 0, lty=2, col="red")
 ```
 
@@ -340,9 +342,12 @@ There are two parameters that we have already looked at that may help.  These ar
 
 Let's start by looking at some airquality data we have played with previously when working on [data.frame objects](https://dyerlabteaching.github.io/Data-Containers/narrative.html).
 
+Some days are missing a value for `Ozone` or `Solar.R`.  The `lm()` function quietly drops any row with a missing value in the variables a model uses, so a model with `Solar.R` in it would be fit to fewer days than one without it.  Models can only be compared with each other (as we do below) when they are fit to the same observations, so we keep only the days that have every measurement.
+
 ```{r}
 airquality |>
-  select( -Month, -Day ) -> df.air
+  select( -Month, -Day ) |>
+  filter( !is.na( Ozone ), !is.na( Solar.R ) ) -> df.air
 summary( df.air )
 ```
 
@@ -378,12 +383,12 @@ df.models |>
   kable_minimal()
 ```
 
-So if we look at these results, we see that in both $R^2$ and $P$, the model with `Temp` seems to be most explanatory as well as having the lowest probability.  But is is significantly better?
+So if we look at these results, we see that in both $R^2$ and $P$, the model with `Temp` seems to be most explanatory as well as having the lowest probability.  But is it significantly better?
 
 How about if we start adding more than one variable to the equation so that we now have two variables (multiple regression) with the general model specified as:
 
 $$
-y = \beta_0 + \beta_1 x_1 + beta_2 x_2 + \epsilon
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon
 $$
 
 Now, we are estimating two regression coefficients and an intercept.  For three predictors, this gives us 3 more models.
@@ -479,6 +484,7 @@ random.models[["Ozone ~ Wind + Solar"]] <- fit.wind.solar
 random.models[[ "Ozone ~ Temp + Wind + Solar" ]] <- fit.all
 
 df.tmp <- df.air
+set.seed( 100 )
 
 for( i in 1:8 ) {
   lbl <- paste("Ozone ~ Temp + Wind + Solar + ", i, " Random Variables", sep="")
@@ -504,16 +510,16 @@ So if we just add random data to a model, we get a better fit!!!!  Sounds great.
 
 This is a well-known situation in statistics.  And in fact, we must be very careful when we are examining the differences between models and attempting to decide which set of models are actually better than other sets of models.  
 
-## Akaike Information Content {.theory .application}
+## Akaike Information Criterion {.theory .application}
 
-To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of predictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and provide a general framework for comparing several models.
+To get around this, we have a few tools at our disposal.  The most common approach is to look at the *information content* in each model relative to the amount of predictor variables.  In essence, we must *punish* ourselves for adding more predictors so that we do not all run around and add random data to our models.  The most common one is called Akaike Information Criterion (AIC), and it provides a general framework for comparing several models.
 
 
 $$
 AIC = -2 \ln L + 2p
 $$
 
-Where $L$ is the log likelihood estimate of the variance and $p$ is the number of parameters.  What this does is allow you to evaluate different models with different subsets of parameters.  In general, the best model is the one with the smallest value for `AIC`.
+Where $L$ is the maximized likelihood of the model (so $\ln L$ is its log likelihood) and $p$ is the number of estimated parameters.  What this does is allow you to evaluate different models with different subsets of parameters.  In general, the best model is the one with the smallest value for `AIC`.
 
 We can also evaluate the relative values of all the models by looking in the difference between the "best" model and the rest by taking the difference 
 
@@ -522,7 +528,7 @@ $$
 \delta AIC = AIC - min(AIC)
 $$
 
-The prevailing notion is that models that have $\delta AIC < 2.0$ should be considered as almost equally informative, whereas <mark>those whose $\delta AIC > 5.0$ are to be rejected as being informative</mark>.  That $2.0 \le \delta AIC \le 5.0$ range is where it gets a bit fuzzy. 
+The prevailing notion is that models that have $\delta AIC < 2.0$ should be considered as almost equally informative, whereas those whose $\delta AIC > 5.0$ are rejected as uninformative relative to the best model.  That $2.0 \le \delta AIC \le 5.0$ range is where it gets a bit fuzzy. 
 
 ```{r}
 
@@ -530,11 +536,11 @@ df.random$AIC <- sapply( random.models,
                          FUN = AIC, 
                          simplify = TRUE )
 
-df.random$deltaAIC = df.random$AIC - min( df.random$A)
+df.random$deltaAIC = df.random$AIC - min( df.random$AIC )
 
 df.random |>
   select( -P ) |>
-  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ∂AIC for alternative models.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 with variance explained, AIC, and ΔAIC for alternative models.",
          escape = FALSE,
          row.names = FALSE, 
          digits = 3) |>

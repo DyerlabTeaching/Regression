@@ -1,0 +1,133 @@
+---
+title: "In Class Activity - Regression (Key)"
+author: "Rodney Dyer"
+format: dyerlab-html
+---
+
+![](media/models.png)
+
+```{r setup}
+#| message: false
+library( terra )
+library( tidyterra )
+library( sf )
+library( tidyverse )
+```
+
+In this activity we return to the dogwood trees from the Vector Data activity. These are 58 maternal trees sampled along a gradient from the city of Richmond, Virginia, south to Pocahontas State Park. Back then, the `get_landcover()` function did the raster work for you because we had not covered rasters yet. Now we have, so this time you will pull the land cover out of the raster yourself and then use a regression to describe how the landscape changes along the gradient.
+
+## The Data
+
+The trees are in the course data repository. `Habitat` is `Urban`, `Suburban`, or `Native`, and `N` is the number of offspring (seeds) collected from each tree. This time we use all 58 trees, not just the `Preliminary` ones.
+
+```{r}
+url <- "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_Dogwoods.csv"
+read_csv( url ) |>
+  st_as_sf( coords = c("Longitude", "Latitude"), crs = 4326 ) -> trees
+trees
+```
+
+The land cover is the 2021 [National Land Cover Database](https://www.mrlc.gov/data) (NLCD) on 30 m cells. Each cell holds a class code; codes `21` through `24` are the four classes of *developed* land (open space, low, medium, and high intensity). See the [NLCD legend](https://www.mrlc.gov/data/legends/national-land-cover-database-class-legend-and-description) for the rest.
+
+```{r}
+nlcd <- rast( "https://dyerlabteaching.github.io/CourseData/Spatial/Richmond_NLCD_2021.tif" )
+nlcd
+```
+
+We will measure distances from Richmond City Hall, in the middle of downtown.
+
+```{r}
+data.frame( Name = "City Hall",
+            Longitude = -77.4334,
+            Latitude = 37.5407 ) |>
+  st_as_sf( coords = c("Longitude", "Latitude"), crs = 4326 ) -> downtown
+```
+
+## The Question
+
+> How does the amount of developed land around a dogwood change with its distance from downtown Richmond?
+
+1. Reproject `trees` and `downtown` to match the raster.
+
+```{r}
+trees |>
+  st_transform( crs = st_crs( nlcd ) ) -> trees
+downtown |>
+  st_transform( crs = st_crs( nlcd ) ) -> downtown
+st_crs( trees )$Name
+```
+
+2. Distance from downtown, in kilometers.
+
+```{r}
+trees$Distance <- as.numeric( st_distance( trees, downtown ) ) / 1000
+summary( trees$Distance )
+```
+
+3. A `Developed` layer.
+
+```{r}
+nlcd |>
+  mutate( Developed = nlcd >= 21 & nlcd <= 24 ) |>
+  select( Developed ) -> developed
+developed
+plot( developed )
+```
+
+4. The proportion of each 500 m neighborhood that is developed.
+
+```{r}
+trees |>
+  st_buffer( dist = 500 ) -> nbhd
+
+cells <- terra::extract( developed, vect( nbhd ) )
+head( cells )
+nrow( cells )
+
+cells |>
+  group_by( ID ) |>
+  summarize( Developed = mean( Developed ) ) -> nbhd_dev
+head( nbhd_dev )
+
+trees |>
+  mutate( Developed = nbhd_dev$Developed ) -> trees
+
+trees |>
+  st_drop_geometry() |>
+  group_by( Habitat ) |>
+  summarize( Trees = n(),
+             Distance = mean( Distance ),
+             Developed = mean( Developed ) )
+```
+
+> Each 500 m circle holds roughly 870 cells, so `cells` has about 50,000 rows. `summarize()` collapses them to one row per tree, sorted by `ID`. Because that is the same order as the polygons, the values can be added straight to `trees` with `mutate()`, just as we added elevation to the beetle sites in the Raster Data narrative.
+
+5. The relationship.
+
+```{r}
+ggplot( trees, aes( Distance, Developed ) ) +
+  stat_smooth( method = "lm", formula = y ~ x, se = FALSE, color = "grey40" ) +
+  geom_point( aes( color = Habitat ), size = 3 ) +
+  labs( x = "Distance from City Hall (km)",
+        y = "Proportion of 500 m neighborhood developed" )
+```
+
+6. The regression.
+
+```{r}
+fit <- lm( Developed ~ Distance, data = trees )
+anova( fit )
+summary( fit )
+-fit$coefficients[1] / fit$coefficients[2]
+```
+
+> **Answer:** The regression is highly significant (*F*~1,56~ ≈ 270, *P* ≈ 4 × 10^-23^) and distance explains about 83% of the variation in developed cover. The slope is about −0.060: each kilometer farther from City Hall, the proportion of the neighborhood that is developed drops by about 0.06, or 6 percentage points. Setting the fitted line to zero, the model predicts no development at about 22 km. But the farthest trees are 25 km out, so for them the line predicts *negative* developed cover, which is impossible for a proportion. A straight line can describe the overall trend while still being the wrong shape at the ends.
+
+7. The diagnostics.
+
+```{r}
+plot( fit, which = 1 )
+plot( fit, which = 2 )
+```
+
+> **Answer:** No. The residuals are not a featureless cloud around zero; they rise and fall in a wave, and the wave lines up with the habitats. Native trees (the lowest fitted values) sit mostly below the line, every Suburban tree sits well above it (by about 0.2 on average), and the most urban trees drift back below it. The quantile plot bends away from the line, with a long upper tail made of those Suburban trees. The trees were sampled in three groups at different distances, and the landscape does not fall off at a steady rate between them: the suburbs south of the city are far more developed than a straight line through the city and the park would predict. So the regression summarizes the overall trend, but these data are better described as three distinct landscapes than as a smooth gradient. Comparing groups rather than fitting a slope is what the next module, Analysis of Variance, does.

@@ -43,3 +43,19 @@ that need an author decision are left in place but wrapped in
 |---|---|---|
 | ~23 | "In that some of the underlying variation goes towards explaining the patterns in the data and the rest of the variation is *residual* (or left over)." | "In that" as a sentence opener doesn't read cleanly — possibly meant to refer back to the equation just above ("In that [equation]..."), but I wasn't sure enough to rewrite it. |
 | ~522 | "those whose $\delta AIC > 5.0$ are to be rejected as being informative" | This reads backwards — a high ΔAIC should mean a model is rejected for **not** being informative (poorly supported relative to the best model), not rejected *for* being informative. Left as-is since I didn't want to silently flip the stated meaning of a stats claim; please confirm the intended wording (likely "rejected as **not** being informative" or "rejected as uninformative"). |
+
+**Resolved 2026-11-11:** both flags rewritten in place. The opener now reads "That is, some of the underlying variation goes towards explaining the patterns in the data (the model) and the rest ... is *residual*." The $\delta AIC > 5.0$ clause now reads "are rejected as uninformative relative to the best model."
+
+### Module update — 2026-11-11
+
+- **homework.qmd** written to the course template (`HOMEWORK-DESIGN-GUIDE.md`), replacing the Quarto stub. The worked example (Rice Rivers daily means: seven models of water temperature from air temperature, PAR, and humidity) shows the workflow: candidate models, an AIC table, checking the best model, and inline reporting. The student task is a scale-of-effect analysis on the dogwoods: `N ~` proportion developed within 100/250/500/1000/2000 m, compared by AIC. All five scales fall within ΔAIC < 2 (R² ≈ 0.06–0.09; the scales correlate at 0.92–0.99), which the second question asks students to interpret. A deliberate exception to the guide: the worked example uses a different data set from the task, because the task builds on the in-class code.
+- **in-class.qmd** rewritten. The old flights/weather question needed joins, which have not been taught yet. The new walkthrough returns to the Vector-Data dogwoods, and students now do the raster work that `get_landcover()` used to do for them: reproject, build a `Developed` layer with `tidyterra::mutate()`, `st_buffer()` 500 m, and `terra::extract()` followed by `group_by( ID ) |> summarize()` to turn cells into a proportion per tree. They then regress % developed on distance from City Hall (R² ≈ 0.83). Its residuals show three habitat clusters rather than a smooth gradient, which leads into Analysis of Variance.
+- **Keys:** `_homework-key.qmd` and `_in-class_key.qmd` added for both.
+- **narrative.qmd / slides.qmd, statistical fixes:**
+  - The `airquality` models were fit to different rows (`lm()` drops NAs per model, so the `Solar.R` models used 111 days and the others 116), which made the AIC comparison invalid. The data are now filtered to complete cases first, with a sentence explaining why.
+  - The random-variable demo was unseeded, so the "full model is best" conclusion changed with every render. It is now `set.seed( 100 )`, where it holds.
+  - `get_pval()` used `1 - pf()`, which rounds to exactly 0 for large *F*. It now uses `pf( ..., lower.tail = FALSE )` (explained in the narrative).
+  - The residual df was given as `N-1`; corrected to `N-2`.
+- **narrative.qmd, smaller fixes:** a missing `\beta_2` backslash; `min( df.random$A )` partial matching changed to `$AIC`; the residual axis label `yhat - y` changed to `y - yhat`; "Akaike Information Content" heading renamed to "Criterion"; the definition of $L$ in AIC; ∂AIC changed to ΔAIC; a few grammar fixes; deprecated `size` changed to `linewidth` for line geoms.
+- **slides.qmd, smaller fixes:** "interscept", "Exaplained", "mearsured"/"mresured", and "associated the value".
+

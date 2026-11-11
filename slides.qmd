@@ -67,7 +67,7 @@ ggplot( df, aes(x,y) ) +
   stat_smooth( method="lm", 
                formula = y ~ x, 
                se=FALSE, 
-               color="red", size=1) + 
+               color="red", linewidth=1) + 
   geom_point( size=4 ) 
 ```
 
@@ -121,10 +121,10 @@ ggplot( df ) +
   geom_abline( aes( intercept = fit$coefficients[1],
                     slope = fit$coefficients[2]),
                color="red",
-               size = 1.25 ) +
+               linewidth = 1.25 ) +
   geom_segment( aes(x=x, y = y, xend = x, yend = yhat), 
                 data = yhat,
-                color = "blue", size = 1.25) + 
+                color = "blue", linewidth = 1.25) + 
   geom_point( aes(x,y), size=4 ) 
 ```
 
@@ -136,8 +136,8 @@ ggplot( df ) +
 ## Searching Random Model Space
 
 ```{r}
-model_distance <- function( interscept, slope, X, Y ) {
-  yhat <- interscept + slope * X
+model_distance <- function( intercept, slope, X, Y ) {
+  yhat <- intercept + slope * X
   diff <- Y - yhat
   return( sqrt( mean( diff ^ 2 ) ) )
 }
@@ -377,7 +377,7 @@ get_pval <- function( model ) {
   f <- summary( model )$fstatistic[1]
   df1 <- summary( model )$fstatistic[2]
   df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( 1.0 - pf( f, df1, df2 ) )
+  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
   return( p  )
 }
 
@@ -440,7 +440,7 @@ plot( fit, which=5 )
 
 The terms in this table are:  
 
-- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-1` for the residuals.   
+- Degrees of Freedom (*df*): representing `1` degree of freedom for the model, and `N-2` for the residuals.   
 
 
 
@@ -475,7 +475,7 @@ The terms in this table are:
     
 - The $F$-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
 
-- `Pr(>F)` is the probability associated the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
+- `Pr(>F)` is the probability associated with the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
 
 
 
@@ -490,7 +490,7 @@ anova( fit )
 ```
 
 
-## Variance Exaplained
+## Variance Explained
 
 ```{r}
 summary( fit )
@@ -601,7 +601,8 @@ Let's start by looking at some air quality data, that is built into `R` as an ex
 
 ```{r}
 airquality |>
-  select( -Month, -Day ) -> df.air
+  select( -Month, -Day ) |>
+  filter( !is.na( Ozone ), !is.na( Solar.R ) ) -> df.air
 summary( df.air )
 ```
 
@@ -640,7 +641,7 @@ data.frame( Model = c( "Ozone ~ Solar",
 
 df.models |>
   mutate( P = format( P, scientific=TRUE, digits=3)) |>
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mearsured in New York during the period of 1 May 1973 - 30 September 1973 as predicted by Temperature, Windspeed, and Solar Radiation.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973 as predicted by Temperature, Windspeed, and Solar Radiation.",
          digits = 3,
          align='l') |>
   kable_classic_2()
@@ -680,7 +681,7 @@ df.models <- rbind( df.models,
                                 ))
 df.models |>
   mutate( P = format( P, scientific=TRUE, digits=3)) |>
-  kable( caption = "Model parameters predicting mean ozone in parts per billion mresured in New York during the period of 1 May 1973 - 30 September 1973.",
+  kable( caption = "Model parameters predicting mean ozone in parts per billion measured in New York during the period of 1 May 1973 - 30 September 1973.",
          digits = 3,
          align="l") |>
   kable_classic()
@@ -751,6 +752,7 @@ random.models[["Ozone ~ Wind + Solar"]] <- fit.wind.solar
 random.models[[ "Ozone ~ Temp + Wind + Solar" ]] <- fit.all
 
 df.tmp <- df.air
+set.seed( 100 )
 
 for( i in 1:8 ) {
   lbl <- paste("Ozone ~ Temp + Wind + Solar + ", i, " Random Variables", sep="")
@@ -824,7 +826,7 @@ Akaike Information Criterion (AIC) is a measurement that allows us to compare mo
 
 $AIC = -2 \ln L + 2p$
 
-The criterion here are to find models with the lowest AIC values.
+The criterion here is to find the models with the lowest AIC values.
 
 
 :::{.fragment}
@@ -837,7 +839,7 @@ $\delta AIC = AIC - min( AIC )$
 
 
 
-## AIC & ∂AIC {.smaller .scrollable}
+## AIC & $\delta AIC$ {.smaller .scrollable}
 
 ```{r echo=FALSE}
 df.random$AIC <- sapply( random.models, 
