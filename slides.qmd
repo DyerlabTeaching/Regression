@@ -72,7 +72,7 @@ ggplot( df, aes(x,y) ) +
   geom_point( size=4 ) 
 ```
 
-# Building Models {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
+# How Are Models Built {background-color="black" background-image="media/contour.png" background-size="initial" background-position="right"}
 
 
 
@@ -126,7 +126,36 @@ ggplot( df ) +
   geom_segment( aes(x=x, y = y, xend = x, yend = yhat), 
                 data = yhat,
                 color = "blue", linewidth = 1.25) + 
-  geom_point( aes(x,y), size=4 ) 
+  geom_point( aes(x,y), size=4 ) -> p.search
+
+p.search
+```
+
+## Building A Model - Search Criterion
+
+```{r echo=FALSE}
+x.bar <- mean( df$x )
+y.bar <- mean( df$y )
+arrow.style <- arrow( length = unit( 0.25, "cm" ), type = "closed" )
+
+p.search + 
+  # the fitted line
+  annotate( "segment", x = 2.3, y = 40.5, xend = 3.5, yend = 26.9,
+            arrow = arrow.style ) +
+  annotate( "text", x = 2.3, y = 41.5, size = 6, vjust = 0, parse = TRUE,
+            label = 'paste("Fitted line: ", hat(y) == beta[0] + beta[1]*x)' ) +
+  # the centroid, which the least squares line always passes through
+  annotate( "segment", x = 6.4, y = 19.5, xend = 5.6, yend = 30.6,
+            arrow = arrow.style ) +
+  annotate( "text", x = 6.4, y = 18.5, size = 6, vjust = 1, parse = TRUE,
+            label = 'group("(", list(bar(x), bar(y)), ")")' ) +
+  annotate( "point", x = x.bar, y = y.bar, size = 6, shape = 21,
+            fill = "orange", color = "black", stroke = 1.25 ) +
+  # one of the residuals
+  annotate( "segment", x = 8.7, y = 23.5, xend = 8.05, yend = 33.5,
+            arrow = arrow.style ) +
+  annotate( "text", x = 8.7, y = 22.5, size = 6, vjust = 1, parse = TRUE,
+            label = 'paste("Residual: ", y[i] - hat(y)[i])' )
 ```
 
 
@@ -136,6 +165,15 @@ ggplot( df ) +
 
 ## Searching Random Model Space
 
+Define a function to sum the residual distance between each observation and the fit line, $\epsilon = (y_i - \hat{y}_i)^2$.
+
+from
+
+$$
+y = \beta_0 + \beta_1 x_1 + \epsilon 
+$$
+
+::: {.fragment}
 ```{r}
 model_distance <- function( intercept, slope, X, Y ) {
   yhat <- intercept + slope * X
@@ -143,6 +181,9 @@ model_distance <- function( intercept, slope, X, Y ) {
   return( sqrt( mean( diff ^ 2 ) ) )
 }
 ```
+
+:::
+
 
 ## Searching Random Model Space
 
@@ -369,7 +410,13 @@ The probability can be found by looking at the data in the `F-Statistic` and the
 summary( fit )$fstatistic 
 ```
 
+
+
 ## Tidying Model Output with `broom`
+
+<center>
+![](media/broom_logo.png)
+</center>
 
 The `broom` package turns model objects into `tibble`s:
 
@@ -377,18 +424,31 @@ The `broom` package turns model objects into `tibble`s:
 - `glance()`: one row per model ($R^2$, *F*, *P*, AIC, ...)
 - `augment()`: one row per observation (fitted values, residuals)
 
+
+## Installing the Tidyverse Models 
+
+There are several packages that help tidy up our statistical models that can be installed by:
+
+```{r}
+#| eval: false 
+install.packages("tidymodels")
+library( broom )
+```
+
+
+## Tidying Model Output {.smaller}
+
 ```{r}
 glance( fit )
 ```
 
-## The Overall *P*-value
 
-`anova( fit )` only gives the whole-model test when there is a single predictor; with more, it tests each term in turn.  `glance()` always has it.
 
+::: {.fragment}
 ```{r}
 glance( fit )$p.value
 ```
-
+:::
 
 
 
@@ -480,7 +540,7 @@ The terms in this table are:
     
 - The $F$-statistic is from a known distribution and is defined by the ratio of Mean Squared values.
 
-- `Pr(>F)` is the probability associated with the value of the $F$-statistic and is dependent upon the degrees of freedom for the model and residuals.
+- `Pr(>F)` is the probability associated with the value of the $F$-statistic and is dependent upon the degrees of freedom for the *entire model* and residuals.
 
 
 
@@ -493,6 +553,16 @@ The classis ANOVA Table
 ```{r}
 anova( fit )
 ```
+
+
+&nbsp;
+
+::: {.fragment}
+::: {.callout-note}
+**Warning:** `anova( fit )` only gives the whole-model test when there is a **single predictor**; with more, it tests each term sequentially. 
+:::
+:::
+
 
 
 ## Variance Explained
