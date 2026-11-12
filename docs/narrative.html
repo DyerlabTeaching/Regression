@@ -181,12 +181,12 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     beta0             beta1         
- Min.   :-19.996   Min.   :-4.97498  
- 1st Qu.: -6.661   1st Qu.:-2.44813  
- Median :  8.873   Median : 0.19125  
- Mean   :  8.836   Mean   : 0.01681  
- 3rd Qu.: 23.442   3rd Qu.: 2.58101  
- Max.   : 39.902   Max.   : 4.89069  </code></pre>
+ Min.   :-19.974   Min.   :-4.99179  
+ 1st Qu.: -5.942   1st Qu.:-2.00252  
+ Median : 10.778   Median :-0.00772  
+ Mean   : 10.579   Mean   : 0.24208  
+ 3rd Qu.: 28.270   3rd Qu.: 2.74457  
+ Max.   : 39.948   Max.   : 4.96782  </code></pre>
 </div>
 </div>
 <p>We can plot these and the original data and all these randomly defined models.</p>
@@ -237,13 +237,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      beta0     beta1      dist
-1 33.621422 -3.796030 26.977167
-2  8.780530 -4.173433 50.149905
-3 22.176574 -3.986269 37.125937
-4  5.533079 -4.314720 54.005767
-5 35.274004  3.447046 23.234703
-6  4.872860  3.697292  8.907453</code></pre>
+<pre><code>      beta0      beta1     dist
+1 -10.49673  2.3665544 29.67644
+2 -19.63196 -2.8373258 68.97048
+3  21.55516  0.4104058 11.42220
+4  13.54437  0.4432054 17.73221
+5  30.17555 -4.5020910 33.74281
+6  27.92463  4.7247331 23.58476</code></pre>
 </div>
 </div>
 <p>If we look through these models, we can see which are better than others by sorting in increasing squared distance.</p>
