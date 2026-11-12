@@ -15,6 +15,7 @@ format: dyerlab-narrative-html
 library( knitr )
 library( kableExtra )
 library( tidyverse )
+library( broom )
 theme_set( theme_minimal( base_size = 16) )
 ```
 
@@ -274,21 +275,31 @@ Just like the model itself, the `summary.lm` object also has all these data cont
 names( summary( fit ) )
 ```
 
-Notice that the `p-value` is not in this list...  It is estimable from the `fstatistic` and `df` values and here is a quick function that returns the raw p-value by looking up the area under the curve equal to or greater than the observed `fstatistic` with those degrees of freedom.
+Notice that the `p-value` is not in this list...  The summary prints it on its last line, but it computes it on the fly from the `fstatistic` and its degrees of freedom and never stores it.  You might think to pull it from `anova( fit )` instead, and for this one-predictor model that works.  But once a model has more than one predictor, `anova()` tests each term in turn (one row per predictor), and the test of the *whole* model is not in that table at all.
+
+### Tidying Model Output with `broom`
+
+Digging values out of `lm` and `summary.lm` objects by name is a bit of a pain, and every kind of model in R stores its results a little differently.  The `broom` package fixes this by turning model objects into `tibble`s, the format the rest of the `tidyverse` already expects.  It has three main functions:
+
+- `tidy()` returns one row per model term: the coefficients, their standard errors, *t*-statistics, and *P*-values.
+- `glance()` returns one row for the whole model: $R^2$, the overall *F*-statistic and its *P*-value, AIC, and more.
+- `augment()` returns one row per observation: the original data plus the fitted values and residuals.
 
 ```{r}
-get_pval <- function( model ) {
-  f <- summary( model )$fstatistic[1]
-  df1 <- summary( model )$fstatistic[2]
-  df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
-  return( p  )
-}
-
-get_pval( fit )
+tidy( fit )
 ```
 
-The function asks `pf()` for the upper tail directly (`lower.tail = FALSE`) rather than computing `1 - pf()`.  The two are the same in principle, but when the $F$-statistic is very large, `pf()` is so close to 1 that `1 - pf()` rounds to exactly 0, and a *P*-value is never actually zero.
+```{r}
+glance( fit )
+```
+
+The `p.value` column from `glance()` is the overall model *P*-value we were looking for, the same one printed at the bottom of `summary( fit )`.
+
+```{r}
+glance( fit )$p.value
+```
+
+Because each of these returns a `tibble` with the same columns no matter which model it came from, they are particularly handy when we want to compare several models side by side, which is exactly what we are going to do next.
 
 
 As an often-overlooked side effect, the $R^2$ from a simple one predictor regression model and the correlation coefficient $r$ from `cor.test(method='pearson')` are related as follows:
@@ -371,9 +382,9 @@ data.frame( Model = c( "Ozone ~ Solar",
             R2 = c( summary( fit.solar )$r.squared,
                     summary( fit.temp )$r.squared,
                     summary( fit.wind )$r.squared ), 
-            P = c( get_pval( fit.solar), 
-                   get_pval( fit.temp ),
-                   get_pval( fit.wind ) ) ) -> df.models
+            P = c( glance( fit.solar )$p.value, 
+                   glance( fit.temp )$p.value,
+                   glance( fit.wind )$p.value ) ) -> df.models
 
 df.models |>
   arrange( -R2 ) |>
@@ -411,9 +422,9 @@ df.models <- rbind( df.models,
                                 R2 = c( summary( fit.temp.wind )$r.squared,
                                         summary( fit.temp.solar )$r.squared,
                                         summary( fit.wind.solar )$r.squared ),
-                                P = c( get_pval( fit.temp.wind),
-                                       get_pval( fit.temp.solar),
-                                       get_pval( fit.wind.solar) )
+                                P = c( glance( fit.temp.wind )$p.value,
+                                       glance( fit.temp.solar )$p.value,
+                                       glance( fit.wind.solar )$p.value )
                                 ))
 df.models |>
   mutate( P = format( P, scientific=TRUE, digits=3)) |>
@@ -441,7 +452,7 @@ Now let's add that one
 df.models <- rbind( df.models, 
                     data.frame( Model = c( "Ozone ~ Temp + Wind + Solar"),
                                 R2 = c( summary( fit.all )$r.squared ),
-                                P = c( get_pval( fit.all)  )
+                                P = c( glance( fit.all )$p.value  )
                                 ))
 
 
@@ -497,7 +508,7 @@ data.frame( Models = names( random.models ),
                           FUN = function( x ) return( summary( x )$r.squared), 
                           simplify = TRUE ),
             P = sapply( random.models, 
-                        FUN = get_pval ) ) -> df.random
+                        FUN = function( x ) return( glance( x )$p.value ) ) ) -> df.random
 
 df.random |>
   kable( caption = "Fraction of variation explained by original variable as well as models with incrementally more predictor variables made up of randomly derived data.",

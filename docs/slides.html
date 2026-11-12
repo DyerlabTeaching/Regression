@@ -245,13 +245,13 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb1-2"><a href=""></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
 <span id="cb1-3"><a href=""></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     beta0            beta1        
- Min.   :-19.98   Min.   :-4.9650  
- 1st Qu.: -3.42   1st Qu.:-2.1785  
- Median : 12.25   Median : 0.1452  
- Mean   : 10.61   Mean   : 0.0466  
- 3rd Qu.: 24.14   3rd Qu.: 2.2671  
- Max.   : 39.92   Max.   : 4.9603  </code></pre>
+<pre><code>     beta0             beta1        
+ Min.   :-19.701   Min.   :-4.8742  
+ 1st Qu.: -3.205   1st Qu.:-2.7951  
+ Median : 10.277   Median :-0.3867  
+ Mean   : 10.617   Mean   :-0.1997  
+ 3rd Qu.: 25.748   3rd Qu.: 2.3198  
+ Max.   : 39.165   Max.   : 4.9441  </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -294,13 +294,13 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <span id="cb4-7"><a href=""></a>}</span>
 <span id="cb4-8"><a href=""></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      beta0     beta1     dist
-1  5.422654 -1.003794 33.88984
-2 37.246549  1.785913 16.39717
-3 -3.412070 -3.763473 59.00279
-4 33.529882  3.676436 22.84522
-5 11.809913 -4.873211 51.70529
-6  2.823642  2.908063 13.94916</code></pre>
+<pre><code>        beta0      beta1     dist
+1  29.4771867 -4.2599426 32.82769
+2 -10.8590475  1.9510084 32.33478
+3   0.6078845  2.3252804 19.07712
+4  -2.2314267  2.3033720 21.93798
+5  32.3668526  4.6032549 27.09056
+6  11.5869291 -0.1791617 23.20218</code></pre>
 </div>
 </div>
 </section>
@@ -487,21 +487,33 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 </div>
 </div>
 </section>
-<section id="the-summary-object" class="slide level2">
-<h2>The Summary Object</h2>
-<p>When you print out the <code>summary( fit )</code> object, it uses the <code>fstatistic</code> to estimate a <code>P-value</code>. If we need that P-value directly, this is how it is done.</p>
+<section id="tidying-model-output-with-broom" class="slide level2">
+<h2>Tidying Model Output with <code>broom</code></h2>
+<p>The <code>broom</code> package turns model objects into <code>tibble</code>s:</p>
+<ul>
+<li><code>tidy()</code>: one row per term (coefficients, <em>SE</em>, <em>t</em>, <em>P</em>)</li>
+<li><code>glance()</code>: one row per model (<span class="math inline">\(R^2\)</span>, <em>F</em>, <em>P</em>, AIC, …)</li>
+<li><code>augment()</code>: one row per observation (fitted values, residuals)</li>
+</ul>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>get_pval <span class="ot">&lt;-</span> <span class="cf">function</span>( model ) {</span>
-<span id="cb22-2"><a href=""></a>  f <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
-<span id="cb22-3"><a href=""></a>  df1 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">2</span>]</span>
-<span id="cb22-4"><a href=""></a>  df2 <span class="ot">&lt;-</span> <span class="fu">summary</span>( model )<span class="sc">$</span>fstatistic[<span class="dv">3</span>]</span>
-<span id="cb22-5"><a href=""></a>  p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( <span class="fu">pf</span>( f, df1, df2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span> ) )</span>
-<span id="cb22-6"><a href=""></a>  <span class="fu">return</span>( p  )</span>
-<span id="cb22-7"><a href=""></a>}</span>
-<span id="cb22-8"><a href=""></a></span>
-<span id="cb22-9"><a href=""></a><span class="fu">get_pval</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">glance</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0035813</code></pre>
+<pre><code># A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.674         0.634  5.86      16.6 0.00358     1  -30.8  67.5  68.4
+# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="the-overall-p-value" class="slide level2">
+<h2>The Overall <em>P</em>-value</h2>
+<p><code>anova( fit )</code> only gives the whole-model test when there is a single predictor; with more, it tests each term in turn. <code>glance()</code> always has it.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">glance</span>( fit )<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    value 
+0.0035813 </code></pre>
 </div>
 </div>
 </section></section>
@@ -513,24 +525,24 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <section id="model-diagnostics---residuals" class="slide level2">
 <h2>Model Diagnostics - Residuals</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-
-</div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="normality-of-the-data" class="slide level2">
-<h2>Normality Of the Data</h2>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">2</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="leverage" class="slide level2">
-<h2>Leverage</h2>
+<section id="normality-of-the-data" class="slide level2">
+<h2>Normality Of the Data</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which=</span><span class="dv">5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which =</span> <span class="dv">2</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="slides_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="leverage" class="slide level2">
+<h2>Leverage</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">plot</span>( fit, <span class="at">which=</span><span class="dv">5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="decomposition-of-variance" class="slide level2">
 <h2>Decomposition of Variance</h2>
 <p>The terms in this table are:</p>
@@ -573,7 +585,7 @@ F-statistic: 16.57 on 1 and 8 DF,  p-value: 0.003581</code></pre>
 <h2>Decomposition of Variance</h2>
 <p>The classis ANOVA Table</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">anova</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">anova</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -589,7 +601,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="variance-explained" class="slide level2">
 <h2>Variance Explained</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">summary</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">summary</span>( fit )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -620,8 +632,8 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 \]</span></p>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">c</span>( <span class="st">`</span><span class="at">Regression R^2</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>( fit )<span class="sc">$</span>r.squared,</span>
-<span id="cb31-2"><a href=""></a>   <span class="st">`</span><span class="at">Squared Correlation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>( <span class="fu">cor.test</span>( df<span class="sc">$</span>x, df<span class="sc">$</span>y )<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">c</span>( <span class="st">`</span><span class="at">Regression R^2</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">summary</span>( fit )<span class="sc">$</span>r.squared,</span>
+<span id="cb33-2"><a href=""></a>   <span class="st">`</span><span class="at">Squared Correlation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>( <span class="fu">cor.test</span>( df<span class="sc">$</span>x, df<span class="sc">$</span>y )<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Regression R^2 Squared Correlation 
           0.6743782           0.6743782 </code></pre>
@@ -636,25 +648,25 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <h2>Helper Functions</h2>
 <p>Grabbing the predicted values <span class="math inline">\(\hat{y}\)</span> from the model.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>df<span class="sc">$</span>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>( fit )</span>
-<span id="cb33-2"><a href=""></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb33-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(x,yhat) ) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb33-4"><a href=""></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(<span class="at">y=</span>y), <span class="at">col=</span><span class="st">"darkred"</span>, <span class="at">size=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>df<span class="sc">$</span>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>( fit )</span>
+<span id="cb35-2"><a href=""></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb35-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(x,yhat) ) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb35-4"><a href=""></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(<span class="at">y=</span>y), <span class="at">col=</span><span class="st">"darkred"</span>, <span class="at">size=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="helper-functions---residuals" class="slide level2">
 <h2>Helper Functions - Residuals</h2>
 <p>The residuals are the distances between the observed value and its corresponding value on the fitted line.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>df<span class="sc">$</span>residuals <span class="ot">&lt;-</span> <span class="fu">residuals</span>( fit ) </span>
-<span id="cb34-2"><a href=""></a>df <span class="sc">|&gt;</span></span>
-<span id="cb34-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(yhat, residuals) ) <span class="sc">+</span> </span>
-<span id="cb34-4"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb34-5"><a href=""></a>  <span class="fu">geom_abline</span>( <span class="at">slope=</span><span class="dv">0</span>,<span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>df<span class="sc">$</span>residuals <span class="ot">&lt;-</span> <span class="fu">residuals</span>( fit ) </span>
+<span id="cb36-2"><a href=""></a>df <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href=""></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(yhat, residuals) ) <span class="sc">+</span> </span>
+<span id="cb36-4"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb36-5"><a href=""></a>  <span class="fu">geom_abline</span>( <span class="at">slope=</span><span class="dv">0</span>,<span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section></section>
 <section>
 <section id="comparing-models" class="title-slide slide level1 center" data-background-color="black" data-background-image="media/contour.png" data-background-size="initial" data-background-position="right">
 <h1>Comparing Models</h1>
@@ -672,10 +684,10 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 <h2>New Data Set</h2>
 <p>Let’s start by looking at some air quality data, that is built into <code>R</code> as an example data set.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>airquality <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href=""></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="sc">|&gt;</span></span>
-<span id="cb35-3"><a href=""></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( Ozone ), <span class="sc">!</span><span class="fu">is.na</span>( Solar.R ) ) <span class="ot">-&gt;</span> df.air</span>
-<span id="cb35-4"><a href=""></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>airquality <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href=""></a>  <span class="fu">select</span>( <span class="sc">-</span>Month, <span class="sc">-</span>Day ) <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href=""></a>  <span class="fu">filter</span>( <span class="sc">!</span><span class="fu">is.na</span>( Ozone ), <span class="sc">!</span><span class="fu">is.na</span>( Solar.R ) ) <span class="ot">-&gt;</span> df.air</span>
+<span id="cb37-4"><a href=""></a><span class="fu">summary</span>( df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Ozone          Solar.R           Wind            Temp      
  Min.   :  1.0   Min.   :  7.0   Min.   : 2.30   Min.   :57.00  
@@ -694,9 +706,9 @@ R^2 = \frac{SS_{Model}}{SS_{Total}}
 y = \beta_0 + \beta_1 x_1 + \epsilon
 \]</span></p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>fit.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R, <span class="at">data =</span> df.air )</span>
-<span id="cb37-2"><a href=""></a>fit.temp <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> df.air )</span>
-<span id="cb37-3"><a href=""></a>fit.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>fit.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R, <span class="at">data =</span> df.air )</span>
+<span id="cb39-2"><a href=""></a>fit.temp <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> df.air )</span>
+<span id="cb39-3"><a href=""></a>fit.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="base-models---what-influences-ozone-1" class="slide level2">
@@ -738,9 +750,9 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <p>Multiple Regression Model - Including more than one predictors.</p>
 <p><span class="math inline">\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \epsilon\)</span></p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>fit.temp.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span>
-<span id="cb38-2"><a href=""></a>fit.temp.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span>
-<span id="cb38-3"><a href=""></a>fit.wind.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>fit.temp.wind <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span>
+<span id="cb40-2"><a href=""></a>fit.temp.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Temp <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span>
+<span id="cb40-3"><a href=""></a>fit.wind.solar <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Wind <span class="sc">+</span> Solar.R, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="more-complicated-models-1" class="slide level2">
@@ -796,7 +808,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <h2>For Completeness</h2>
 <p>How about all the predictors. <span class="math inline">\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \epsilon\)</span></p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>fit.all <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R <span class="sc">+</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>fit.all <span class="ot">&lt;-</span> <span class="fu">lm</span>( Ozone <span class="sc">~</span> Solar.R <span class="sc">+</span> Temp <span class="sc">+</span> Wind, <span class="at">data =</span> df.air )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="for-completeness-1" class="slide level2">
@@ -806,6 +818,7 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 <table class="lightable-paper lightable-striped caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">R2</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">P</th>
@@ -813,36 +826,43 @@ y = \beta_0 + \beta_1 x_1 + \epsilon
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">1</td>
 <td style="text-align: left;">Ozone ~ Solar</td>
 <td style="text-align: right;">0.1213419</td>
 <td style="text-align: left;">1.79e-04</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">2</td>
 <td style="text-align: left;">Ozone ~ Temp</td>
 <td style="text-align: right;">0.4879601</td>
 <td style="text-align: left;">1.55e-17</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">3</td>
 <td style="text-align: left;">Ozone ~ Wind</td>
 <td style="text-align: right;">0.3751521</td>
 <td style="text-align: left;">9.09e-13</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">4</td>
 <td style="text-align: left;">Ozone ~ Temp + Wind</td>
 <td style="text-align: right;">0.5813780</td>
 <td style="text-align: left;">3.79e-21</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">5</td>
 <td style="text-align: left;">Ozone ~ Temp + Solar</td>
 <td style="text-align: right;">0.5103167</td>
 <td style="text-align: left;">1.80e-17</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">6</td>
 <td style="text-align: left;">Ozone ~ Wind + Solar</td>
 <td style="text-align: right;">0.4494936</td>
 <td style="text-align: left;">1.00e-14</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">value</td>
 <td style="text-align: left;">Ozone ~ Temp + Wind + Solar</td>
 <td style="text-align: right;">0.6058946</td>
 <td style="text-align: left;">1.51e-21</td>

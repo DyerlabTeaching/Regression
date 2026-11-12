@@ -25,6 +25,7 @@ The overall goal for our introduction here, is to develop models that may be par
 library( knitr )
 library( reshape2 )
 library( tidyverse )
+library( broom )
 library( kableExtra )
 library( fontawesome )
 knitr::opts_chunk$set( fig.retina = 3, 
@@ -368,20 +369,24 @@ The probability can be found by looking at the data in the `F-Statistic` and the
 summary( fit )$fstatistic 
 ```
 
-## The Summary Object
+## Tidying Model Output with `broom`
 
-When you print out the `summary( fit )` object, it uses the `fstatistic` to estimate a `P-value`.  If we need that P-value directly, this is how it is done.
+The `broom` package turns model objects into `tibble`s:
+
+- `tidy()`: one row per term (coefficients, *SE*, *t*, *P*)
+- `glance()`: one row per model ($R^2$, *F*, *P*, AIC, ...)
+- `augment()`: one row per observation (fitted values, residuals)
 
 ```{r}
-get_pval <- function( model ) {
-  f <- summary( model )$fstatistic[1]
-  df1 <- summary( model )$fstatistic[2]
-  df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
-  return( p  )
-}
+glance( fit )
+```
 
-get_pval( fit )
+## The Overall *P*-value
+
+`anova( fit )` only gives the whole-model test when there is a single predictor; with more, it tests each term in turn.  `glance()` always has it.
+
+```{r}
+glance( fit )$p.value
 ```
 
 
@@ -635,9 +640,9 @@ data.frame( Model = c( "Ozone ~ Solar",
             R2 = c( summary( fit.solar )$r.squared,
                     summary( fit.temp )$r.squared,
                     summary( fit.wind )$r.squared ), 
-            P = c( get_pval( fit.solar), 
-                   get_pval( fit.temp ),
-                   get_pval( fit.wind ) ) ) -> df.models
+            P = c( glance( fit.solar )$p.value, 
+                   glance( fit.temp )$p.value,
+                   glance( fit.wind )$p.value ) ) -> df.models
 
 df.models |>
   mutate( P = format( P, scientific=TRUE, digits=3)) |>
@@ -675,9 +680,9 @@ df.models <- rbind( df.models,
                                 R2 = c( summary( fit.temp.wind )$r.squared,
                                         summary( fit.temp.solar )$r.squared,
                                         summary( fit.wind.solar )$r.squared ),
-                                P = c( get_pval( fit.temp.wind),
-                                       get_pval( fit.temp.solar),
-                                       get_pval( fit.wind.solar) )
+                                P = c( glance( fit.temp.wind )$p.value,
+                                       glance( fit.temp.solar )$p.value,
+                                       glance( fit.wind.solar )$p.value )
                                 ))
 df.models |>
   mutate( P = format( P, scientific=TRUE, digits=3)) |>
@@ -703,7 +708,7 @@ fit.all <- lm( Ozone ~ Solar.R + Temp + Wind, data = df.air )
 df.models <- rbind( df.models, 
                     data.frame( Model = c( "Ozone ~ Temp + Wind + Solar"),
                                 R2 = c( summary( fit.all )$r.squared ),
-                                P = c( get_pval( fit.all)  )
+                                P = c( glance( fit.all )$p.value  )
                                 ))
 
 
@@ -765,7 +770,7 @@ data.frame( Models = names( random.models ),
                           FUN = function( x ) return( summary( x )$r.squared), 
                           simplify = TRUE ),
             P = sapply( random.models, 
-                        FUN = get_pval ) ) -> df.random
+                        FUN = function( x ) return( glance( x )$p.value ) ) ) -> df.random
 ```
 
 

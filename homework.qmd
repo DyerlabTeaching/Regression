@@ -15,7 +15,7 @@ Running `lm()` is the easy part. A reproducible regression analysis does three m
 
 The write-up then reports each step, with every number read from a variable in memory using an inline `` `r ` `` expression, never typed by hand.
 
-[^ref-lm]: Fitting with `lm()` is covered in the narrative section [Our Friend `lm()`](https://dyerlabteaching.github.io/Regression/narrative.html#our-friend-lm), the diagnostic plots in [Model Fit](https://dyerlabteaching.github.io/Regression/narrative.html#model-fit), `anova()` in [Analysis of Variance Tables](https://dyerlabteaching.github.io/Regression/narrative.html#analysis-of-variance-tables---decomposing-variation), $R^2$ and `get_pval()` in [Variance Explained](https://dyerlabteaching.github.io/Regression/narrative.html#variance-explained), and model comparison in [Comparing Models](https://dyerlabteaching.github.io/Regression/narrative.html#comparing-models) and [Akaike Information Criterion](https://dyerlabteaching.github.io/Regression/narrative.html#akaike-information-criterion).
+[^ref-lm]: Fitting with `lm()` is covered in the narrative section [Our Friend `lm()`](https://dyerlabteaching.github.io/Regression/narrative.html#our-friend-lm), the diagnostic plots in [Model Fit](https://dyerlabteaching.github.io/Regression/narrative.html#model-fit), `anova()` in [Analysis of Variance Tables](https://dyerlabteaching.github.io/Regression/narrative.html#analysis-of-variance-tables---decomposing-variation), $R^2$ in [Variance Explained](https://dyerlabteaching.github.io/Regression/narrative.html#variance-explained), `broom::glance()` in [Tidying Model Output with `broom`](https://dyerlabteaching.github.io/Regression/narrative.html#tidying-model-output-with-broom), and model comparison in [Comparing Models](https://dyerlabteaching.github.io/Regression/narrative.html#comparing-models) and [Akaike Information Criterion](https://dyerlabteaching.github.io/Regression/narrative.html#akaike-information-criterion).
 
 The worked example below uses the Rice Rivers Center data you saw in the Tidyverse and Correlation modules to show the whole workflow. Your assignment applies the same structure to the dogwood trees from the in-class activity, asking a question landscape ecologists ask all the time: *at what spatial scale does the surrounding landscape matter?*
 
@@ -30,6 +30,7 @@ You can use this chunk exactly as it is in your own document. Everything in it c
 ```{r}
 #| message: false
 library( tidyverse )
+library( broom )
 library( lubridate )
 library( knitr )
 library( kableExtra )
@@ -62,20 +63,12 @@ models[["WaterTemp ~ PAR + Humidity"]] <- lm( WaterTemp ~ PAR + Humidity, data =
 models[["WaterTemp ~ AirTemp + PAR + Humidity"]] <- lm( WaterTemp ~ AirTemp + PAR + Humidity, data = rice )
 ```
 
-> **Model comparison.** For each model we recorded the variance explained ($R^2$), the *P*-value of its overall *F*-test, and its AIC, then computed $\delta AIC$ as each model's distance from the lowest AIC. The `get_pval()` function is the one from the narrative.
+> **Model comparison.** For each model we recorded the variance explained ($R^2$), the *P*-value of its overall *F*-test, and its AIC, then computed $\delta AIC$ as each model's distance from the lowest AIC. The overall *P*-value comes from `glance()` in the `broom` package.
 
 ```{r}
-get_pval <- function( model ) {
-  f <- summary( model )$fstatistic[1]
-  df1 <- summary( model )$fstatistic[2]
-  df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
-  return( p  )
-}
-
 data.frame( Model = names( models ),
             R2 = sapply( models, FUN = function( x ) return( summary( x )$r.squared ) ),
-            P = sapply( models, FUN = get_pval ),
+            P = sapply( models, FUN = function( x ) return( glance( x )$p.value ) ),
             AIC = sapply( models, FUN = AIC ) ) -> model_table
 
 model_table$deltaAIC <- model_table$AIC - min( model_table$AIC )
@@ -122,7 +115,7 @@ dAIC_air <- format( model_table$deltaAIC[ model_table$Model == "WaterTemp ~ AirT
 F_best <- format( summary( best )$fstatistic[1], digits = 3 )
 df1_best <- summary( best )$fstatistic[2]
 df2_best <- summary( best )$fstatistic[3]
-P_best <- format( get_pval( best ), digits = 3 )
+P_best <- format( glance( best )$p.value, digits = 3 )
 R2_best <- format( summary( best )$r.squared, digits = 3 )
 b_air <- format( best$coefficients["AirTemp"], digits = 3 )
 b_par <- format( best$coefficients["PAR"], digits = 3 )

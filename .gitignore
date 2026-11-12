@@ -63,3 +63,5 @@ vignettes/*.pdf
 !/in-class.qmd
 /docs/[Ii]n[-_][Cc]lass?*.html
 /docs/[Ii]n[-_][Cc]lass?*_files/
+
+/.luarc.json

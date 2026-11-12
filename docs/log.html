@@ -2522,6 +2522,14 @@ window.Quarto = {
 <li><strong>narrative.qmd, smaller fixes:</strong> a missing <code>\beta_2</code> backslash; <code>min( df.random$A )</code> partial matching changed to <code>$AIC</code>; the residual axis label <code>yhat - y</code> changed to <code>y - yhat</code>; “Akaike Information Content” heading renamed to “Criterion”; the definition of <span class="math inline">\(L\)</span> in AIC; ∂AIC changed to ΔAIC; a few grammar fixes; deprecated <code>size</code> changed to <code>linewidth</code> for line geoms.</li>
 <li><strong>slides.qmd, smaller fixes:</strong> “interscept”, “Exaplained”, “mearsured”/“mresured”, and “associated the value”.</li>
 </ul>
+</section>
+<section id="broom-replaces-get_pval-2026-11-12" class="level3">
+<h3 class="anchored" data-anchor-id="broom-replaces-get_pval-2026-11-12"><code>broom</code> replaces <code>get_pval()</code> — 2026-11-12</h3>
+<ul>
+<li><strong>narrative.qmd:</strong> the hand-written <code>get_pval()</code> is gone. <em>Variance Explained</em> now explains why the overall <em>P</em>-value can’t come from <code>anova( fit )</code> once there is more than one predictor (that table tests terms sequentially), then a new subsection, <em>Tidying Model Output with <code>broom</code></em>, introduces <code>tidy()</code>, <code>glance()</code>, and <code>augment()</code>. Every model-comparison table now uses <code>glance( x )$p.value</code>. <code>broom</code> is loaded in setup. To do: use <code>broom</code> more fully in the model-comparison section that follows.</li>
+<li><strong>slides.qmd:</strong> the <code>get_pval()</code> slide is replaced with two slides (introducing <code>broom</code>, and why the overall <em>P</em>-value comes from <code>glance()</code>); the comparison tables use <code>glance()</code>.</li>
+<li>**homework.qmd / _homework-key.qmd:** <code>library( broom )</code> added; <code>get_pval()</code> replaced by <code>glance()</code>; the reference footnote links to the new subsection.</li>
+</ul>
 <!-- -->
 
 </section>
@@ -3039,7 +3047,14 @@ window.Quarto = {
 <span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span><span class="in">`get_pval()`</span> used <span class="in">`1 - pf()`</span>, which rounds to exactly 0 for large *F*. It now uses <span class="in">`pf( ..., lower.tail = FALSE )`</span> (explained in the narrative).</span>
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The residual df was given as <span class="in">`N-1`</span>; corrected to <span class="in">`N-2`</span>.</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**narrative.qmd, smaller fixes:** a missing <span class="in">`\beta_2`</span> backslash; <span class="in">`min( df.random$A )`</span> partial matching changed to <span class="in">`$AIC`</span>; the residual axis label <span class="in">`yhat - y`</span> changed to <span class="in">`y - yhat`</span>; &quot;Akaike Information Content&quot; heading renamed to &quot;Criterion&quot;; the definition of $L$ in AIC; ∂AIC changed to ΔAIC; a few grammar fixes; deprecated <span class="in">`size`</span> changed to <span class="in">`linewidth`</span> for line geoms.</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**slides.qmd, smaller fixes:** &quot;interscept&quot;, &quot;Exaplained&quot;, &quot;mearsured&quot;/&quot;mresured&quot;, and &quot;associated the value&quot;.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**slides.qmd, smaller fixes:** &quot;interscept&quot;, &quot;Exaplained&quot;, &quot;mearsured&quot;/&quot;mresured&quot;, and &quot;associated the value&quot;.</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">### `broom` replaces `get_pval()` — 2026-11-12</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**narrative.qmd:** the hand-written <span class="in">`get_pval()`</span> is gone. *Variance Explained* now explains why the overall *P*-value can&#39;t come from `anova( fit )` once there is more than one predictor (that table tests terms sequentially), then a new subsection, *Tidying Model Output with `broom`*, introduces <span class="in">`tidy()`</span>, <span class="in">`glance()`</span>, and <span class="in">`augment()`</span>. Every model-comparison table now uses <span class="in">`glance( x )$p.value`</span>. <span class="in">`broom`</span> is loaded in setup. To do: use <span class="in">`broom`</span> more fully in the model-comparison section that follows.</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**slides.qmd:** the <span class="in">`get_pval()`</span> slide is replaced with two slides (introducing <span class="in">`broom`</span>, and why the overall *P*-value comes from <span class="in">`glance()`</span>); the comparison tables use <span class="in">`glance()`</span>.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**homework.qmd / _homework-key.qmd:** <span class="in">`library( broom )`</span> added; <span class="in">`get_pval()`</span> replaced by <span class="in">`glance()`</span>; the reference footnote links to the new subsection.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

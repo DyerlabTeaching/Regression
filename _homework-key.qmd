@@ -18,6 +18,7 @@ library( terra )
 library( tidyterra )
 library( sf )
 library( tidyverse )
+library( broom )
 library( knitr )
 library( kableExtra )
 
@@ -62,17 +63,9 @@ models[["N ~ Developed (2000 m)"]] <- lm( N ~ Dev2000, data = df )
 > **Model comparison.** For each model we recorded $R^2$, the *P*-value of its *F*-test, and its AIC, and computed $\delta AIC$ from the lowest AIC (@tbl-scale).
 
 ```{r}
-get_pval <- function( model ) {
-  f <- summary( model )$fstatistic[1]
-  df1 <- summary( model )$fstatistic[2]
-  df2 <- summary( model )$fstatistic[3]
-  p <- as.numeric( pf( f, df1, df2, lower.tail = FALSE ) )
-  return( p  )
-}
-
 data.frame( Model = names( models ),
             R2 = sapply( models, FUN = function( x ) return( summary( x )$r.squared ) ),
-            P = sapply( models, FUN = get_pval ),
+            P = sapply( models, FUN = function( x ) return( glance( x )$p.value ) ),
             AIC = sapply( models, FUN = AIC ) ) -> model_table
 
 model_table$deltaAIC <- model_table$AIC - min( model_table$AIC )
@@ -110,7 +103,7 @@ n_models <- nrow( model_table )
 F_best <- format( summary( best )$fstatistic[1], digits = 3 )
 df1_best <- summary( best )$fstatistic[2]
 df2_best <- summary( best )$fstatistic[3]
-P_best <- format( get_pval( best ), digits = 2 )
+P_best <- format( glance( best )$p.value, digits = 2 )
 R2_best <- format( summary( best )$r.squared, digits = 2 )
 slope <- format( best$coefficients[2], digits = 2 )
 dAIC_max <- format( max( model_table$deltaAIC ), digits = 2 )
