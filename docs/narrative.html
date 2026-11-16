@@ -180,13 +180,13 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">beta1 =</span> <span class="fu">runif</span>(<span class="dv">250</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     beta0             beta1        
- Min.   :-19.323   Min.   :-4.9683  
- 1st Qu.: -2.994   1st Qu.:-2.7996  
- Median : 11.598   Median :-0.2728  
- Mean   : 12.358   Mean   :-0.2261  
- 3rd Qu.: 28.777   3rd Qu.: 2.1924  
- Max.   : 39.959   Max.   : 4.9904  </code></pre>
+<pre><code>     beta0             beta1         
+ Min.   :-19.998   Min.   :-4.94172  
+ 1st Qu.: -8.215   1st Qu.:-2.16220  
+ Median : 10.325   Median :-0.06622  
+ Mean   :  9.694   Mean   : 0.02139  
+ 3rd Qu.: 25.390   3rd Qu.: 2.41329  
+ Max.   : 39.890   Max.   : 4.98811  </code></pre>
 </div>
 </div>
 <p>We can plot these and the original data and all these randomly defined models.</p>
@@ -238,12 +238,12 @@ y_{ij} = \beta_0 + \beta_1 x_{i} + \epsilon_j
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( models )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      beta0      beta1      dist
-1 29.597007 -2.7065285 23.479966
-2 22.380098  3.5294050 11.646511
-3  7.631923 -2.9288647 43.563286
-4 23.001225 -0.6879533 16.563370
-5 -2.344306 -1.1450858 42.117239
-6 34.862633  0.1866381  9.690695</code></pre>
+1 25.926164  3.2437913 13.256816
+2 -3.407724  0.7986916 31.616837
+3  9.325447 -0.2955075 25.976919
+4  6.404895 -1.4011873 35.378679
+5  4.457650  4.4522495  7.917733
+6 -8.655728  2.7833675 25.613059</code></pre>
 </div>
 </div>
 <p>If we look through these models, we can see which are better than others by sorting in increasing squared distance.</p>

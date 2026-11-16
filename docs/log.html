@@ -2530,6 +2530,10 @@ window.Quarto = {
 <li><strong>slides.qmd:</strong> the <code>get_pval()</code> slide is replaced with two slides (introducing <code>broom</code>, and why the overall <em>P</em>-value comes from <code>glance()</code>); the comparison tables use <code>glance()</code>.</li>
 <li>**homework.qmd / _homework-key.qmd:** <code>library( broom )</code> added; <code>get_pval()</code> replaced by <code>glance()</code>; the reference footnote links to the new subsection.</li>
 </ul>
+</section>
+<section id="homework.qmd-in-class.qmd-2026-11-16" class="level3">
+<h3 class="anchored" data-anchor-id="homework.qmd-in-class.qmd-2026-11-16">homework.qmd / in-class.qmd — 2026-11-16</h3>
+<p>Homework header now requires <code>execute: echo: false</code> (research-paper style; <code>code-tools</code> still shows the source), with an explanation bullet, a callout above the worked example, and a matching callout in <code>in-class.qmd</code>. The worked example and the in-class activity keep their code visible.</p>
 <!-- -->
 
 </section>
@@ -3054,7 +3058,11 @@ window.Quarto = {
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**narrative.qmd:** the hand-written <span class="in">`get_pval()`</span> is gone. *Variance Explained* now explains why the overall *P*-value can&#39;t come from `anova( fit )` once there is more than one predictor (that table tests terms sequentially), then a new subsection, *Tidying Model Output with `broom`*, introduces <span class="in">`tidy()`</span>, <span class="in">`glance()`</span>, and <span class="in">`augment()`</span>. Every model-comparison table now uses <span class="in">`glance( x )$p.value`</span>. <span class="in">`broom`</span> is loaded in setup. To do: use <span class="in">`broom`</span> more fully in the model-comparison section that follows.</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**slides.qmd:** the <span class="in">`get_pval()`</span> slide is replaced with two slides (introducing <span class="in">`broom`</span>, and why the overall *P*-value comes from <span class="in">`glance()`</span>); the comparison tables use <span class="in">`glance()`</span>.</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**homework.qmd / _homework-key.qmd:** <span class="in">`library( broom )`</span> added; <span class="in">`get_pval()`</span> replaced by <span class="in">`glance()`</span>; the reference footnote links to the new subsection.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**homework.qmd / _homework-key.qmd:** <span class="in">`library( broom )`</span> added; <span class="in">`get_pval()`</span> replaced by <span class="in">`glance()`</span>; the reference footnote links to the new subsection.</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="fu">### homework.qmd / in-class.qmd — 2026-11-16</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>Homework header now requires <span class="in">`execute: echo: false`</span> (research-paper style; <span class="in">`code-tools`</span> still shows the source), with an explanation bullet, a callout above the worked example, and a matching callout in <span class="in">`in-class.qmd`</span>. The worked example and the in-class activity keep their code visible.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

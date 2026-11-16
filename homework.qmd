@@ -19,6 +19,12 @@ The write-up then reports each step, with every number read from a variable in m
 
 The worked example below uses the Rice Rivers Center data you saw in the Tidyverse and Correlation modules to show the whole workflow. Your assignment applies the same structure to the dogwood trees from the in-class activity, asking a question landscape ecologists ask all the time: *at what spatial scale does the surrounding landscape matter?*
 
+::: {.callout-note}
+## Writing like a research paper
+
+Starting with this module, the documents you turn in should read like research, not like R. Your header now includes `echo: false` (see [The full YAML header](#the-full-yaml-header)), which hides the code chunks in the rendered page. The code still has to be there and still has to produce every number, table, and figure, and I can see all of it through the "</> Code" button, but the reader sees only the science. The worked example below shows its code so you can see how it is built; your rendered document will not.
+:::
+
 ## A Worked Example
 
 ### Methods
@@ -183,6 +189,8 @@ format:
   html:
     self-contained: true
     code-tools: true
+execute:
+  echo: false
 ---
 ```
 
@@ -190,8 +198,9 @@ format:
 - **`format: html`**: render to a single web page I can open in any browser.
 - **`self-contained: true`**: bundle every image, style, and script *into* that one `.html` file. Without it the file depends on a sibling `*_files/` folder that never makes it into the upload, and your figures and formatting arrive broken.
 - **`code-tools: true`**: adds the "</> Code" button in the top-right that lets a reader view the full source. **This is not optional.** If I cannot see the code behind a wrong answer, I cannot tell whether you were one typo away or lost the plot entirely. That means I cannot give partial credit, point out where it went sideways, or help you fix it. A rendered page with no visible code is graded only on what rendered.
+- **`execute: echo: false`**: new as of this module. It hides every code chunk in the rendered page, so the reader sees only your words, tables, figures, and inline values, the way a published paper reads. The code still runs, and it is still in the document: the "</> Code" button from `code-tools: true` shows the full source to anyone who wants it. Write your Methods so they make sense to someone who never opens that button.
 
-Use this same header layout for every document you turn in this course.
+Use this same header layout, including `echo: false`, for every document you turn in from here to the end of the semester.
 
 ## How This Is Graded
 

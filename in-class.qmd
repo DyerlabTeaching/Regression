@@ -15,6 +15,19 @@ library( tidyverse )
 
 In this activity we return to the dogwood trees from the Vector Data activity. These are 58 maternal trees sampled along a gradient from the city of Richmond, Virginia, south to Pocahontas State Park. Back then, the `get_landcover()` function did the raster work for you because we had not covered rasters yet. Now we have, so this time you will pull the land cover out of the raster yourself and then use a regression to describe how the landscape changes along the gradient.
 
+::: {.callout-note}
+## From here on: documents that read like research
+
+Starting with this module, the homework you turn in hides its code. Its header adds
+
+```yaml
+execute:
+  echo: false
+```
+
+so the rendered page shows only your words, tables, figures, and inline values, the way a published paper would. The code still runs and is still in the file; the "</> Code" button lets me see all of it. This activity keeps its code visible because you work from it directly, but as you answer the questions, start writing the explanation so it stands on its own without the code beside it.
+:::
+
 ## The Data
 
 The trees are in the course data repository. `Habitat` is `Urban`, `Suburban`, or `Native`, and `N` is the number of offspring (seeds) collected from each tree. This time we use all 58 trees, not just the `Preliminary` ones.

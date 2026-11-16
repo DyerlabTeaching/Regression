@@ -65,3 +65,7 @@ that need an author decision are left in place but wrapped in
 - **narrative.qmd:** the hand-written `get_pval()` is gone. *Variance Explained* now explains why the overall *P*-value can't come from `anova( fit )` once there is more than one predictor (that table tests terms sequentially), then a new subsection, *Tidying Model Output with `broom`*, introduces `tidy()`, `glance()`, and `augment()`. Every model-comparison table now uses `glance( x )$p.value`. `broom` is loaded in setup. To do: use `broom` more fully in the model-comparison section that follows.
 - **slides.qmd:** the `get_pval()` slide is replaced with two slides (introducing `broom`, and why the overall *P*-value comes from `glance()`); the comparison tables use `glance()`.
 - **homework.qmd / _homework-key.qmd:** `library( broom )` added; `get_pval()` replaced by `glance()`; the reference footnote links to the new subsection.
+
+### homework.qmd / in-class.qmd — 2026-11-16
+
+Homework header now requires `execute: echo: false` (research-paper style; `code-tools` still shows the source), with an explanation bullet, a callout above the worked example, and a matching callout in `in-class.qmd`. The worked example and the in-class activity keep their code visible.
